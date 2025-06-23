@@ -1,0 +1,38 @@
+PALETA DE COLORES
+#00A388 - verde jade - 
+#FFFFFF - blanco puro
+#FF8686 - rosa coral suave
+
+Ambiente(ribbon, Basic essences,manifest,secret garden, , ,aromatizadores
+cosmetica facial
+jabones
+cosmetica corporal
+velas, aromas,difusores
+velas escultura
+
+**********************************
+*********************************
+#0EA88E – Verde jade
+
+Uso: Color principal para botones, encabezados, íconos, enlaces y elementos destacados.
+Transmite frescura, naturalidad y bienestar.
+-------------------------
+#FFFFFF – Blanco puro
+
+Uso: Fondo principal, espacio negativo y textos secundarios.
+Aporta limpieza, elegancia y contraste.
+-------------------------
+#FF8686 – Rosa coral suave
+
+Uso: Color de acento para resaltar llamadas a la acción (botones secundarios), precios especiales, promociones o íconos suaves.
+Da calidez y un toque femenino, ideal para productos de belleza.
+-------------------------
+#F9F9F9 – Gris muy claro (sugerido)
+
+Uso: Fondos alternos de secciones para separar contenido sin romper la estética limpia.
+Muy sutil, mantiene claridad sin tanto blanco puro.
+-------------------------
+#333333 – Gris oscuro casi negro (sugerido)
+
+Uso: Texto principal (en vez de negro puro), para una lectura más suave y elegante.
+Da sofisticación y equilibrio visual.

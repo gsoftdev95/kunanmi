@@ -1,0 +1,15 @@
+
+
+carrito.php – Ver y gestionar carrito
+
+pedidoConfirmado.php – Confirmación de compra
+
+perfilCliente.php – Datos del cliente + editar
+
+misPedidos.php – Historial de pedidos
+
+opiniones.php – Opiniones y comentarios
+
+contacto.php – Formulario de contacto
+
+logout.php – Cerrar sesión

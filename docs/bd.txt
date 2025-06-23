@@ -1,0 +1,5 @@
+base de datos hostinger
+
+nombre BD: u213740088_kunanmiBD
+usuario: u213740088_gsoftStudio_ku
+contraseña: Gsofkunanmi3

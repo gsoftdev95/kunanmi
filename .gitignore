@@ -1,0 +1,16 @@
+controladores/controlAcceso.php
+controladores/functionConectionBD.php
+# Ignorar carpetas que no deben subirse
+document/
+bd/
+src/imgborrador/
+
+# Ignorar archivos de video pesados
+*.mp4
+*.MP4
+*.mov
+*.MOV
+
+# Ignorar archivos de configuración locales
+config.php
+.env
