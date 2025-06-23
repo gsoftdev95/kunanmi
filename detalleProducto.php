@@ -16,7 +16,7 @@ if (!$producto) {
     exit;
 }
 
-$opiniones = obtenerOpinionesPorProducto($bd, 'opiniones');
+$opiniones = obtenerOpiniones($bd);
 
 $imagenes = !empty($producto['imagen']) ? json_decode($producto['imagen'],true) : [];
 ?>
@@ -137,38 +137,35 @@ $imagenes = !empty($producto['imagen']) ? json_decode($producto['imagen'],true) 
             </section>            
         </section>
                     
+        <?php if (isset($_SESSION['id'])): ?>
         <section class="formOpinion">
             <section class="formOpinionInner my-5">
                 <h4 class="mb-4">Deja tu opinión</h4>
-                <form action="guardar_opinion.php" method="POST" class="row g-3">
-                    <input type="hidden" name="producto_id" value="<?= $producto['id'] ?>">
+                <form id="form-opinion" method="POST">
+                    <input type="hidden" name="usuario_id" value="<?= $_SESSION['id'] ?>">
 
-                    <div class="col-md-6">
-                    <label for="nombre" class="form-label">Nombre</label>
-                    <input type="text" class="form-control" name="nombre" id="nombre" required>
+                    <textarea name="opinion" required class="form-control" rows="4" placeholder="Escribe tu opinión..."></textarea>
+
+                    <div class="rating my-3">
+                        <?php for ($i = 5; $i >= 1; $i--): ?>
+                            <input type="radio" name="valoracion" id="estrella<?= $i ?>" value="<?= $i ?>" required>
+                            <label for="estrella<?= $i ?>">★</label>
+                        <?php endfor; ?>
                     </div>
 
-                    <div class="col-md-6">
-                    <label for="apellido_p" class="form-label">Apellido Paterno</label>
-                    <input type="text" class="form-control" name="apellido_p" id="apellido_p" required>
-                    </div>
+                    <button type="submit" class="btn btn-primary">Enviar</button>
 
-                    <div class="col-md-6">
-                    <label for="apellido_m" class="form-label">Apellido Materno</label>
-                    <input type="text" class="form-control" name="apellido_m" id="apellido_m" required>
-                    </div>
-
-                    <div class="col-12">
-                    <label for="opinion" class="form-label">Tu opinión</label>
-                    <textarea class="form-control" name="opinion" id="opinion" rows="4" required></textarea>
-                    </div>
-
-                    <div class="col-12">
-                    <button type="submit" class="btn ">Enviar opinión</button>
+                    <div id="popup-exito" style="display: none; color: green; margin-top: 10px;">
+                        ¡Gracias por tu opinión!
                     </div>
                 </form>
-            </section>            
+            </section>
         </section>
+        <?php else: ?>
+            <p style="text-align:center; margin: 2rem 0;">Debes <a href="login.php">iniciar sesión</a> para dejar una opinión.</p>
+        <?php endif; ?>
+
+
 
 
         <section class="highlights">
@@ -294,6 +291,32 @@ $imagenes = !empty($producto['imagen']) ? json_decode($producto['imagen'],true) 
                 },
             });
         </script>
+
+        <!--formulario opiniones-->
+        <script>
+        document.getElementById('form-opinion')?.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const formData = new FormData(this);
+
+            fetch('guardar_opinion.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(res => res.ok ? res.text() : Promise.reject())
+            .then(() => {
+                const popup = document.getElementById('popup-exito');
+                popup.style.display = 'block';
+                setTimeout(() => popup.style.display = 'none', 3000);
+                document.getElementById('form-opinion').reset();
+            })
+            .catch(() => alert('Error al enviar tu opinión'));
+        });
+        </script>
+
+
+
+
 
 
     </body>

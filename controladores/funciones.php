@@ -656,6 +656,12 @@ function obtenerUsuarioPorId($bd, $idUsuario) {
     $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
     return $usuario ? $usuario : null;
 }
+function obtenerPedidosPorUsuario(PDO $bd, int $idUsuario): array {
+    $stmt = $bd->prepare("SELECT id, fecha_pedido, estado, monto_total FROM pedidos WHERE usuario_id = :usuario_id ORDER BY fecha_pedido DESC");
+    $stmt->bindValue(':usuario_id', $idUsuario, PDO::PARAM_INT);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 
 
 
@@ -673,17 +679,19 @@ function obtenerUsuarioPorId($bd, $idUsuario) {
 /****************** */
 /****************** */
 
-function obtenerOpinionesPorProducto($bd, $tabla) {
-    
-    $sql = "SELECT nombre, apellido_paterno, opinion, fecha 
-            FROM $tabla
-            ORDER BY fecha DESC";
+function obtenerOpiniones($bd) {
+    $sql = "SELECT o.opinion, o.fecha, 
+                   u.nombre, u.apellido_paterno
+            FROM opiniones o
+            JOIN usuarios u ON o.usuario_id = u.id
+            ORDER BY o.fecha DESC";
 
-    $query = $bd->prepare($sql);
-    $query->execute();  
-    $opinion = $query->fetchAll(PDO::FETCH_ASSOC);
-    return $opinion;
+    $stmt = $bd->prepare($sql);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+
+
 
 
 

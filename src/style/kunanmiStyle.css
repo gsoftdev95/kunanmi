@@ -1127,6 +1127,19 @@ DETALLE PRODUCTO
     background-color: var(--verdeK);
     border: none;
 }
+.toast-aviso {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #0EA88E;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.3);
+    z-index: 1000;
+    font-size: 16px;
+}
+
 /********************************/
 /********************************/
 /********************************/

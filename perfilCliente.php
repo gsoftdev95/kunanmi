@@ -3,9 +3,16 @@ require_once('helpers/dd.php');
 require_once('controladores/funciones.php');
 require_once('./src/partials/conexionBD.php');
 
+// Verifica que el cliente esté logueado
+if (!isset($_SESSION['id'])) {
+    header('Location: login.php');
+    exit;
+}
 
-$usuario = obtenerUsuarioPorId($bd, $_SESSION['id']);
-
+// Obtener los datos del usuario
+$idUsuario = $_SESSION['id'];
+$usuario = obtenerUsuarioPorId($bd, $idUsuario);
+$pedidos = obtenerPedidosPorUsuario($bd, $idUsuario);
 ?>
 
 <!doctype html>
@@ -20,56 +27,62 @@ $usuario = obtenerUsuarioPorId($bd, $_SESSION['id']);
     </header>
 
     
-    <main class="container">
-        <section class="perfil-container">
-            <h2 class="text-center mb-4">Mi Perfil</h2>
-            
-            <div class="perfil-item">
-                <strong>Nombre:</strong>
-                <span><?= htmlspecialchars($usuario['nombre']) ?></span>
-            </div>
+    <main class="container mt-4 mb-5">
+        <h2 class="mb-4">Mi Perfil</h2>
 
-            <div class="perfil-item">
-                <strong>Apellido paterno:</strong>
-                <span><?= htmlspecialchars($usuario['apellido_paterno']) ?></span>
+        <!-- Datos del usuario -->
+        <div class="card mb-4">
+            <div class="card-body">
+            <h5 class="card-title">Información personal</h5>
+            <p><strong>Nombre:</strong> <?= $usuario['nombre'] . ' ' . $usuario['apellido_paterno'] . ' ' . $usuario['apellido_materno'] ?></p>
+            <p><strong>Email:</strong> <?= $usuario['email'] ?></p>
+            <p><strong>Celular:</strong> <?= $usuario['celular'] ?></p>
+            <p><strong>Dirección:</strong> <?= $usuario['direccion'] ?></p>
+            <p><strong>Fecha de creación:</strong> <?= date('d/m/Y', strtotime($usuario['fecha_creacion'])) ?></p>
             </div>
+        </div>
 
-            <div class="perfil-item">
-                <strong>Apellido materno:</strong>
-                <span><?= htmlspecialchars($usuario['apellido_materno']) ?></span>
+        <!-- Pedidos del usuario -->
+        <div class="card mb-4">
+            <div class="card-body">
+            <h5 class="card-title">Mis Pedidos</h5>
+            <?php if (count($pedidos) > 0): ?>
+                <div class="table-responsive">
+                <table class="table table-striped text-center">
+                    <thead>
+                    <tr>
+                        <th>ID Pedido</th>
+                        <th>Fecha</th>
+                        <th>Estado</th>
+                        <th>Monto Total</th>
+                        <th>Ver Detalle</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php foreach ($pedidos as $pedido): ?>
+                        <tr>
+                        <td><?= $pedido['id'] ?></td>
+                        <td><?= date('d/m/Y', strtotime($pedido['fecha_pedido'])) ?></td>
+                        <td><?= ucfirst($pedido['estado']) ?></td>
+                        <td>S/ <?= number_format($pedido['monto_total'], 2) ?></td>
+                        <td><a href="detallePedido.php?id=<?= $pedido['id'] ?>" class="btn btn-sm btn-outline-primary">Ver</a></td>
+                        </tr>
+                    <?php endforeach; ?>
+                    </tbody>
+                </table>
+                </div>
+            <?php else: ?>
+                <p>No tienes pedidos registrados aún.</p>
+            <?php endif; ?>
             </div>
+        </div>
+        
+        <div class="card">
+            <div class="card-body">
+                <p>Para actualización de datos comunicarse al correo correo@gmail.com</p>            </div>
+            </div>
+        </div>
 
-            <div class="perfil-item">
-                <strong>Email:</strong>
-                <span><?= htmlspecialchars($usuario['email']) ?></span>
-            </div>
-
-            <div class="perfil-item">
-                <strong>Teléfono:</strong>
-                <span><?= htmlspecialchars($usuario['telefono']) ?></span>
-            </div>
-
-            <div class="perfil-item">
-                <strong>Dirección:</strong>
-                <span><?= htmlspecialchars($usuario['direccion']) ?></span>
-            </div>
-
-            <div class="perfil-item">
-                <strong>Perfil:</strong>
-                <span>
-                    <?= $usuario['perfil'] == 9 ? 'Administrador' : 'Usuario' ?>
-                </span>
-            </div>
-
-            <div class="perfil-item">
-                <strong>Fecha de creación:</strong>
-                <span><?= date('d/m/Y H:i', strtotime($usuario['fecha_creacion'])) ?></span>
-            </div>
-
-            <div class="text-center mt-4">
-                <a href="editarPerfil.php?id=<?= $usuario['id'] ?>" class="btn btn-primary">Editar Perfil</a>
-            </div>
-        </section>
     </main>
   
 
