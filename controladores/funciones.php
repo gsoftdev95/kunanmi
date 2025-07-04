@@ -225,7 +225,8 @@ function obtenerSupracategorias($bd) {
 }
 //funcion para obtener atributos con valores
 function obtenerAtributosConValores($bd) {
-    $stmt = $bd->query("SELECT va.id, va.valor, a.nombre AS atributo FROM valores_atributos va JOIN atributos a ON va.id_atributo = a.id ORDER BY a.nombre");
+    $stmt = $bd->query("SELECT va.id, va.valor, a.nombre AS atributo FROM valores_atributos va 
+                        JOIN atributos a ON va.id_atributo = a.id ORDER BY a.nombre");
     $resultado = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     $agrupado = [];

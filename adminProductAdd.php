@@ -7,7 +7,7 @@ require_once('controladores/controlAcceso.php');
 $categorias = obtenerCategorias($bd) ?? [];
 $subcategorias = obtenerSubcategorias($bd);
 $supracategorias = obtenerSupracategorias($bd) ?? [];
-$atributos = obtenerAtributosConValores($bd); // <-- Asegúrate que esta función devuelva el array agrupado por tipo de atributo
+$atributos = obtenerAtributosConValores($bd);
 
 $errores = [];
 if ($_POST) {
@@ -23,7 +23,17 @@ if ($_POST) {
     $modoEmpleoProducto = $_POST['modoEmpleoProducto'];
     $ingredientesProducto = $_POST['ingredientesProducto'];
     $estadoProducto = $_POST['estadoProducto'];
-    $valoresAtributos = array_merge(...array_values($_POST['atributos'] ?? []));
+    $valoresAtributos = [];
+    if (isset($_POST['atributos'])) {
+        if (is_array(reset($_POST['atributos']))) {
+            // Es un array de arrays → aplanar con array_merge
+            $valoresAtributos = array_merge(...array_values($_POST['atributos']));
+        } else {
+            // Es un array plano → usar directamente
+            $valoresAtributos = $_POST['atributos'];
+        }
+    }
+
 
     $errores = array_merge($errores, validarProducto($_POST, $_FILES));
 
@@ -33,7 +43,7 @@ if ($_POST) {
         $idProducto = guardarProducto($bd, 'productos', $_POST, $avatar);
 
         foreach ($valoresAtributos as $idValor) {
-            $stmt = $bd->prepare("INSERT INTO producto_atributo (id_producto, id_valor_atributo) VALUES (:prod, :valor)");
+            $stmt = $bd->prepare("INSERT INTO producto_atributo (producto_id, valor_atributo_id) VALUES (:prod, :valor)");
             $stmt->bindValue(':prod', $idProducto, PDO::PARAM_INT);
             $stmt->bindValue(':valor', $idValor, PDO::PARAM_INT);
             $stmt->execute();
@@ -152,17 +162,24 @@ if ($_POST) {
                             </select>
                         </div>
 
-                        <div class="form-group">
-                            <label for="form-group">Atributos</label>
-                            <?php foreach ($atributos as $grupo => $valores): ?>
-                                <label><?= htmlspecialchars($grupo) ?>:</label>
-                                <select name="atributos[<?= $grupo ?>][]" class="form-control" multiple>
-                                    <?php foreach ($valores as $valor): ?>
-                                        <option value="<?= $valor['id'] ?>"><?= htmlspecialchars($valor['valor']) ?></option>
-                                    <?php endforeach; ?>
-                                </select>
-                            <?php endforeach; ?>
+                        <div class="form-group containerAtributo">
+                            <label>Atributos</label><br>
+                            <div class="listAtributos">
+                                <?php foreach ($atributos as $nombreAtributo => $valores): ?>
+                                    <div>
+                                        <strong><?= htmlspecialchars($nombreAtributo) ?></strong><br>
+                                        <?php foreach ($valores as $valor): ?>
+                                            <label>
+                                                <input type="checkbox" name="atributos[]" value="<?= $valor['id'] ?>">
+                                                <?= htmlspecialchars($valor['valor']) ?>
+                                            </label><br>
+                                        <?php endforeach; ?>
+                                    </div>
+                                    <hr>
+                                <?php endforeach; ?>
+                            </div>                            
                         </div>
+
 
                         
 

@@ -1599,3 +1599,13 @@ body {
     margin: 20px 0px 0px 0px;
     border-radius: 10px;
 }
+
+.containerAtributo{
+}
+.listAtributos{
+    display: flex;
+    flex-wrap: wrap;
+}
+.listAtributos div{
+    margin:0px 30px 30px 10px;
+}

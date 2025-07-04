@@ -1,0 +1,22 @@
+1. Base de datos (BD)
+Crea una tabla para cada atributo (si son listas fijas):
+Ej: tipos, pieles, cabellos, aromas, tematicas, ingredientes
+
+Relaciona esas tablas con productos:
+
+Si un producto solo puede tener un valor por atributo (Ej: una piel, un aroma):
+→ añade una FK (tipo_id, piel_id, etc.) en la tabla productos.
+
+Si puede tener muchos (Ej: varios ingredientes):
+→ usa una tabla intermedia (producto_ingrediente, producto_aroma, etc.).
+
+2. Formulario de producto (crear y editar)
+Usa selects o checkboxes para que el admin seleccione los valores de cada atributo al registrar o editar un producto.
+
+3. Vista tienda
+Agrega filtros por atributo (checkboxes, select, etc.).
+
+Al filtrar, se hace una consulta con WHERE que combine los filtros seleccionados.
+
+4. Filtros dinámicos (opcional)
+Si quieres algo más moderno, puedes usar JS o Ajax para mostrar productos sin recargar la página al aplicar filtros.
