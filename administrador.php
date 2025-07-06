@@ -108,6 +108,7 @@ $pedidos = listarPedidos($bd);
                   <table  class="tableAdminProduct table ">
                     <thead>
                       <tr>
+                        <th class="text-center">Id</th>
                         <th class="text-center">Nombre</th>
                         <th class="text-center">Precio</th>
                         <th class="text-center">Categoria</th>
@@ -122,6 +123,7 @@ $pedidos = listarPedidos($bd);
                     <tbody>
                         <?php foreach ($productos as $id => $producto) :?>
                             <tr>
+                                <td class="text-center text-primary-emphasis"><?= $producto['id']?></td>
                                 <td class="text-center text-primary-emphasis"><?= $producto['nombre']?></td> <!--"nombre" es la columna de la BD-->
                                 <td class="text-center text-primary-emphasis"><?= $producto['precio']?></td>
                                 <td class="text-center text-primary-emphasis"><?= $producto['categoria_nombre']?></td>

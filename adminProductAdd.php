@@ -49,7 +49,7 @@ if ($_POST) {
             $stmt->execute();
         }
 
-        header('location: administrador.php');
+        header('Location: adminProductView.php?id=' . $idProducto);
         exit;
     }
 }
@@ -157,8 +157,8 @@ if ($_POST) {
                             <label for="estadoProducto">Estado del producto</label>
                             <select class="form-control" name="estadoProducto" id="estadoProducto" required>
                                 <option value="">Seleccione el estado</option>
-                                <option value="Activo" <?= (isset($estadoProducto) && $estadoProducto == "activo") ? 'selected' : '' ?>>activo</option>
-                                <option value="Inactivo" <?= (isset($estadoProducto) && $estadoProducto == "inactivo") ? 'selected' : '' ?>>inactivo</option>
+                                <option value="activo" <?= (isset($estadoProducto) && $estadoProducto == "activo") ? 'selected' : '' ?>>activo</option>
+                                <option value="inactivo" <?= (isset($estadoProducto) && $estadoProducto == "inactivo") ? 'selected' : '' ?>>inactivo</option>
                             </select>
                         </div>
 
@@ -178,10 +178,7 @@ if ($_POST) {
                                     <hr>
                                 <?php endforeach; ?>
                             </div>                            
-                        </div>
-
-
-                        
+                        </div>                        
 
                         <button type="submit" class="btn btn-primary">Guardar producto</button>
 

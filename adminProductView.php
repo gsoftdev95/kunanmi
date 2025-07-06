@@ -87,8 +87,20 @@ $productos = detProdForAdmin($bd, $id, 'productos');
                         <p class="ms-5"><?= $productos['estado'] ?></p>
                         <hr>  
 
+                        <h5>Atributos:</h5>
+                        <?php if (!empty($productos['atributos'])): ?>
+                            <ul class="ms-5">
+                                <?php foreach ($productos['atributos'] as $nombreAtributo => $valores): ?>
+                                    <li><strong><?= htmlspecialchars($nombreAtributo) ?>:</strong> <?= implode(', ', array_map('htmlspecialchars', $valores)) ?></li>
+                                <?php endforeach; ?>
+                            </ul>
+                        <?php else: ?>
+                            <p class="ms-5">Sin atributos asignados.</p>
+                        <?php endif; ?>
+
+
                         <h5>Imagenes:</h5>
-                        <div class="d-flex flex-wrap">
+                        <div class="d-flex flex-wrap mb-5">
                             <?php if (!empty($productos['imagen']) && is_array($productos['imagen'])): ?>
                                 <?php foreach ($productos['imagen'] as $imagen): ?>
                                     <figure class="m-2">
@@ -98,6 +110,10 @@ $productos = detProdForAdmin($bd, $id, 'productos');
                             <?php else: ?>
                                 <p>No hay imágenes disponibles.</p>
                             <?php endif; ?>
+                        </div>
+
+                        <div clas="containerbSecond">
+                            <a href="adminProductAdd.php"  class="bSecond">Agregar otro producto</a>
                         </div>
 
 

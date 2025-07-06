@@ -6,14 +6,24 @@ require_once('controladores/controlAcceso.php');
 
 $errores = [];
 $id = $_GET['id'];
+
 $productos = detProdForAdmin($bd, $id, 'productos');    
 $categorias = obtenerCategorias($bd);
 $subcategorias = obtenerSubcategorias($bd);
 $supracategorias = obtenerSupracategorias($bd);
-$descripcion = isset($productos['descripcion']) ? htmlspecialchars($productos['descripcion']) : '';
 $imagenes = is_string($productos['imagen']) ? json_decode($productos['imagen'], true) : $productos['imagen'];
+$atributos = obtenerAtributosConValores($bd);
 
 if ($_POST) {
+    $valoresAtributos = [];
+    if (isset($_POST['atributos'])) {
+        if (is_array(reset($_POST['atributos']))) {
+            $valoresAtributos = array_merge(...array_values($_POST['atributos']));
+        } else {
+            $valoresAtributos = $_POST['atributos'];
+        }
+    }
+
     // ✅ Imágenes actuales desde la BD
     $imagenes_actuales = is_string($productos['imagen']) 
         ? json_decode($productos['imagen'], true) 
@@ -29,6 +39,19 @@ if ($_POST) {
 
     // Actualizamos el producto incluyendo el JSON de imágenes
     modificarProducto($bd, 'productos', $_POST, $avatar);
+
+    // Eliminar atributos anteriores
+    $stmt = $bd->prepare("DELETE FROM producto_atributo WHERE producto_id = :id");
+    $stmt->bindValue(':id', $id, PDO::PARAM_INT);
+    $stmt->execute();
+
+    // Insertar nuevos atributos
+    foreach ($valoresAtributos as $idValor) {
+        $stmt = $bd->prepare("INSERT INTO producto_atributo (producto_id, valor_atributo_id) VALUES (:prod, :valor)");
+        $stmt->bindValue(':prod', $id, PDO::PARAM_INT);
+        $stmt->bindValue(':valor', $idValor, PDO::PARAM_INT);
+        $stmt->execute();
+    }
 
     // Redirigir
     header('Location: adminProductView.php?id=' . $_POST['id']);
@@ -102,11 +125,10 @@ if ($_POST) {
 
                     <div class="form-group">
                         <label for="supracategoriaProducto">Supracategoría</label>
-                        <select id="supracategoriaProducto" name="supracategoriaProducto" class="form-control" required>
+                        <select id="supracategoriaProducto" name="supracategoriaProducto" class="form-control">
                             <option value="">Seleccione una supracategoría</option>
                             <?php foreach ($supracategorias as $supra): ?>
-                                <option value="<?= $supra['id'] ?>" data-supracategoria="<?= $supra['subcategoria_id'] ?>"
-                                    <?= $supra['id'] == $productos['supracategoria_id'] ? 'selected' : '' ?>>
+                                <option value="<?= $supra['id'] ?>" data-supracategoria="<?= $supra['subcategoria_id'] ?>" <?= $supra['id'] == $productos['supracategoria_id'] ? 'selected' : '' ?>>
                                     <?= htmlspecialchars($supra['nombre']) ?>
                                 </option>
                             <?php endforeach; ?>
@@ -149,6 +171,24 @@ if ($_POST) {
                         <?php else: ?>
                             <p>No hay imágenes disponibles para este producto.</p>
                         <?php endif; ?>
+                    </div>
+
+                    <div class="form-group containerAtributo">
+                        <label>Atributos</label><br>
+                        <div class="listAtributos">
+                            <?php foreach ($atributos as $nombreAtributo => $valores): ?>
+                                <div>
+                                    <strong><?= htmlspecialchars($nombreAtributo) ?></strong><br>
+                                    <?php foreach ($valores as $valor): ?>
+                                        <label>
+                                            <input type="checkbox" name="atributos[]" value="<?= $valor['id'] ?>" <?= in_array($valor['id'], array_column($productos['atributosPlano'], 'id')) ? 'checked' : '' ?>>
+                                            <?= htmlspecialchars($valor['valor']) ?>
+                                        </label><br>
+                                    <?php endforeach; ?>
+                                </div>
+                                <hr>
+                            <?php endforeach; ?>
+                        </div>
                     </div>
 
                     <button type="submit" class="btn btn-primary">Guardar cambios</button>

@@ -403,30 +403,59 @@ function listarProductos($bd, $tabla) {
 
 // Función para ver los datos del producto y sus imágenes
 function detProdForAdmin($bd, $id, $tabla) {
-    $sql = "SELECT p.*, 
-                   c.nombre AS categoria_nombre, 
-                   s.nombre AS subcategoria_nombre,
-                   sp.nombre AS supracategoria_nombre
-            FROM $tabla p
-            LEFT JOIN categorias c 
-                ON p.categoria_id = c.id
-            LEFT JOIN subcategorias s 
-                ON p.subcategoria_id = s.id
-            LEFT JOIN supracategoria sp
-                ON p.supracategoria_id = sp.id    
-            WHERE p.id = :id";
+    // 1. Obtener datos del producto + joins con categoría, sub, supra
+    $sql = "SELECT
+                t1.*,
+                t2.nombre as categoria_nombre,
+                t3.nombre as subcategoria_nombre,
+                t4.nombre as supracategoria_nombre
+            FROM $tabla t1
+            LEFT JOIN categorias t2 ON t1.categoria_id = t2.id
+            LEFT JOIN subcategorias t3 ON t1.subcategoria_id = t3.id
+            LEFT JOIN supracategoria t4 ON t1.supracategoria_id = t4.id
+            WHERE t1.id = :id";
+
     $query = $bd->prepare($sql);
     $query->bindValue(':id', $id, PDO::PARAM_INT);
     $query->execute();
-    $productos = $query->fetch(PDO::FETCH_ASSOC);
+    $producto = $query->fetch(PDO::FETCH_ASSOC);
 
-    if (!$productos) {
+    if (!$producto) {
         return null;
     }
-    $productos['imagen'] = json_decode($productos['imagen'], true);
 
-    return $productos;
+    // 2. Decodificar imágenes
+    $producto['imagen'] = json_decode($producto['imagen'], true);
+
+    // 3. Obtener atributos del producto
+    $sqlAttr = "SELECT 
+                    va.id AS valor_id,
+                    va.valor,
+                    a.nombre AS atributo
+                FROM producto_atributo pa
+                JOIN valores_atributos va ON pa.valor_atributo_id = va.id
+                JOIN atributos a ON va.id_atributo = a.id
+                WHERE pa.producto_id = :id";
+
+    $stmtAttr = $bd->prepare($sqlAttr);
+    $stmtAttr->bindValue(':id', $id, PDO::PARAM_INT);
+    $stmtAttr->execute();
+
+    $atributos = [];
+    $atributosPlano = [];
+
+    foreach ($stmtAttr->fetchAll(PDO::FETCH_ASSOC) as $row) {
+        $atributos[$row['atributo']][] = $row['valor'];
+        $atributosPlano[] = ['id' => $row['valor_id']];
+    }
+
+    // 4. Agregar al producto
+    $producto['atributos'] = $atributos;
+    $producto['atributosPlano'] = $atributosPlano;
+
+    return $producto;
 }
+
 //Función para modificar los datos del producto
 function modificarProducto($bd, $tabla, $datos, $avatar)
 {
@@ -471,7 +500,7 @@ function modificarProducto($bd, $tabla, $datos, $avatar)
     $query->bindValue(':stockProducto', $stockProducto);
     $query->bindValue(':categoriaProducto', $categoriaProducto);
     $query->bindValue(':subcategoriaProducto', $subcategoriaProducto);
-    $query->bindValue(':supracategoriaProducto', $supracategoriaProducto);
+    $query->bindValue(':supracategoriaProducto', !empty($supracategoriaProducto) ? $supracategoriaProducto : null, PDO::PARAM_INT);
     $query->bindValue(':beneficiosProducto', $beneficiosProducto);
     $query->bindValue(':modoEmpleo', $modoEmpleo);
     $query->bindValue(':ingredProducto', $ingredProducto);

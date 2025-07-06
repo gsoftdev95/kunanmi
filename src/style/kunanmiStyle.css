@@ -949,6 +949,7 @@ TIENDA TIENDA TIENDA
     font-size: 1rem;
     text-align: left;
     margin: 10px 0px 0px;
+    min-height: 50px;
 
     font-family: "Tenor Sans", sans-serif;
     font-weight: 400;
@@ -1344,7 +1345,7 @@ ADMINISTRADOR
 
 body {
     display: flex;
-    min-height: 100vh;
+    min-height: 150vh;
     flex-direction: column;
 }
 
@@ -1441,11 +1442,9 @@ body {
     color: var(--oscuroK);
     border-radius: 8px;
 }
-
 .tableAdminProductCont{
   max-height: 500px;
-  overflow-y: auto; 
-    
+  overflow-y: auto;    
 }
 .table-responsive-custom {
   max-width: 100%;
@@ -1465,7 +1464,7 @@ body {
 }
 
 .tableAdminProduct tbody {
-  display: block;
+  display:block;
 }
 
 .tableAdminProduct thead tr,
@@ -1537,7 +1536,7 @@ body {
 
 .bodyManupulation{
     width: 100%;
-    height: auto;
+    height: 100%;
     display: flex;
     justify-content: center;
 }
@@ -1608,4 +1607,18 @@ body {
 }
 .listAtributos div{
     margin:0px 30px 30px 10px;
+}
+
+.containerbSecond{
+    background-color: red;
+    height: 100px;
+    width: 100%;
+}
+.bSecond{
+    border: 2px solid var(--verdeK);
+    color: var(--verdeK);
+    margin: 100px 0px 0px;
+    padding: 10px;
+    text-decoration: none;
+    border-radius: 10px;
 }

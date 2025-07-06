@@ -8,7 +8,6 @@ $categoriaId = isset($_GET['categoria']) ? $_GET['categoria'] : '';
 $categoriaNombre = isset($_GET['categoria_nombre']) ? $_GET['categoria_nombre'] : 'General';
 
 
-
 if (!empty($categoriaId)) {
     $productos = obtenerProductosPorCategoria($bd, $categoriaId);
 } else {
@@ -121,7 +120,7 @@ if (!empty($categoriaId)) {
                 <section class="productContainer col-12 col-md-9 col-lg-10 p-4">
                     <section class="productContainerTittle">
                         <h1>
-                            <?= isset($categoriaNombre) ? htmlspecialchars($categoriaNombre) : "General"; ?>
+                            <?= $categoriaNombre; ?>
                         </h1>
 
                         <div>
