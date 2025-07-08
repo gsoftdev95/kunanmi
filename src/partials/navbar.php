@@ -95,7 +95,7 @@
                     <div class="menuN2">
                         <div class="menuN2Inner">
                             <?php foreach ($cat['subcategorias'] as $sub): ?>
-                                <a class="dropdown-item" href="tienda.php?subcategoria=<?= $id ?>&subcategoria_nombre=<?= urlencode($cat['nombre']) ?>">
+                                <a class="dropdown-item" href="tienda.php?subcategoria=<?= $sub['id'] ?>&subcategoria_nombre=<?= urlencode($cat['nombre']) ?>">
                                     <?= htmlspecialchars($sub['nombre']) ?>
                                 </a>
                             <?php endforeach; ?>

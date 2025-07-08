@@ -3,15 +3,61 @@ require_once('./helpers/dd.php');
 require_once('./controladores/funciones.php');
 require_once('./src/partials/conexionBD.php');
 
-// Captura la categoría de la URL
-$categoriaId = isset($_GET['categoria']) ? $_GET['categoria'] : '';
-$categoriaNombre = isset($_GET['categoria_nombre']) ? $_GET['categoria_nombre'] : 'General';
+// Inicializamos
+$categoriaNombre = 'General';
+$productos = [];
 
+if (isset($_GET['subcategoria'])) {
+    $subcategoriaId = $_GET['subcategoria'];
 
-if (!empty($categoriaId)) {
+    // Traer productos por subcategoría
+    $productos = obtenerProductosPorSubcategoria($bd, $subcategoriaId);
+
+    // Obtener nombre de la categoría a la que pertenece la subcategoría
+    $stmt = $bd->prepare("SELECT sc.nombre AS sub_nombre, c.nombre AS cat_nombre 
+                          FROM subcategorias sc 
+                          JOIN categorias c ON sc.categoria_id = c.id 
+                          WHERE sc.id = ?");
+    $stmt->execute([$subcategoriaId]);
+    $res = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($res) {
+        $categoriaNombre = $res['cat_nombre']; // o $res['sub_nombre'] si prefieres el nombre de la subcategoría
+    }
+
+} elseif (isset($_GET['categoria'])) {
+    $categoriaId = $_GET['categoria'];
+
+    // Traer productos por categoría
     $productos = obtenerProductosPorCategoria($bd, $categoriaId);
+
+    // Obtener nombre de la categoría
+    $stmt = $bd->prepare("SELECT nombre FROM categorias WHERE id = ?");
+    $stmt->execute([$categoriaId]);
+    $res = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($res) {
+        $categoriaNombre = $res['nombre'];
+    }
 } else {
+    // General (todos)
     $productos = obtenerProdTienda($bd, "productos");
+}
+
+//Filtros dinamicos
+// Obtener todos los atributos y sus valores
+$atributos = [];
+$sql = "SELECT a.nombre AS atributo_nombre, va.valor 
+        FROM atributos a 
+        JOIN valores_atributos va ON a.id = va.id_atributo 
+        ORDER BY a.nombre, va.valor";
+$stmt = $bd->prepare($sql);
+$stmt->execute();
+$resultado = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+// Organizar en array agrupado por atributo
+foreach ($resultado as $row) {
+    $atributos[$row['atributo_nombre']][] = $row['valor'];
 }
 
 ?>
@@ -33,7 +79,7 @@ if (!empty($categoriaId)) {
 
     <section class="navegacion">
         <section class="navegacionInner">
-            <a href="./index.php">Inicio</a>/Tienda
+            <a href="./index.php">Inicio</a> / <a href="./tienda.php">Tienda</a> 
         </section>
     </section>
 
@@ -43,77 +89,40 @@ if (!empty($categoriaId)) {
                 <!-- Sidebar izquierdo -->
                 <aside class="productFilters col-12 col-md-3 col-lg-2 p-3" style="min-height: 100vh; background-color: #f8f9fa;">
                     <h5 class="mb-3">Filtros</h5>
-                    <form>
-                        <!-- PRECIO -->
-                        <div class="mb-3">
-                            <label for="precio" class="form-label">Precio máximo: <span id="precio-valor">S/. 100</span></label>
-                            <input type="range" class="form-range" id="precio" name="precio" min="10" max="300" step="10" value="100" oninput="document.getElementById('precio-valor').textContent = 'S/. ' + this.value">
+                    <!-- ATRIBUTOS DINÁMICOS EN ACORDEÓN -->
+                    <form id="formFiltros" data-categoria="<?= isset($_GET['categoria']) ? $_GET['categoria'] : '' ?>" data-subcategoria="<?= isset($_GET['subcategoria']) ? $_GET['subcategoria'] : '' ?>">
+                        <div class="accordion mb-3" id="accordionFiltros">
+                            <?php 
+                            $i = 0;
+                            foreach ($atributos as $nombreAtributo => $valores): 
+                                $idAcordeon = 'collapse' . $i;
+                            ?>
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="heading<?= $i ?>">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#<?= $idAcordeon ?>" aria-expanded="false" aria-controls="<?= $idAcordeon ?>">
+                                        <?= ucfirst($nombreAtributo) ?>
+                                    </button>
+                                </h2>
+                                <div id="<?= $idAcordeon ?>" class="accordion-collapse collapse" aria-labelledby="heading<?= $i ?>" data-bs-parent="#accordionFiltros">
+                                    <div class="accordion-body">
+                                        <?php foreach ($valores as $valor): ?>
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" name="<?= $nombreAtributo ?>[]" value="<?= htmlspecialchars($valor) ?>" id="<?= $nombreAtributo . '_' . $valor ?>">
+                                                <label class="form-check-label" for="<?= $nombreAtributo . '_' . $valor ?>">
+                                                    <?= htmlspecialchars(ucfirst($valor)) ?>
+                                                </label>
+                                            </div>
+                                        <?php endforeach; ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <?php 
+                            $i++; 
+                            endforeach; 
+                            ?>
                         </div>
-
-                        <!-- AROMA -->
-                        <div class="mb-3">
-                            <label class="form-label">Aroma</label>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="aroma[]" value="lavanda" id="lavanda">
-                                <label class="form-check-label" for="lavanda">Lavanda</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="aroma[]" value="coco" id="coco">
-                                <label class="form-check-label" for="coco">Coco</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="aroma[]" value="citrico" id="citrico">
-                                <label class="form-check-label" for="citrico">Cítrico</label>
-                            </div>
-                        </div>
-
-                        <!-- INGREDIENTES -->
-                        <div class="mb-3">
-                            <label class="form-label">Ingredientes</label>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="ingredientes[]" value="aloe" id="aloe">
-                                <label class="form-check-label" for="aloe">Aloe vera</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="ingredientes[]" value="colageno" id="colageno">
-                                <label class="form-check-label" for="colageno">Colágeno</label>
-                            </div>
-                        </div>
-
-                        <!-- BENEFICIOS -->
-                        <div class="mb-3">
-                            <label class="form-label">Beneficios</label>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="beneficios[]" value="hidratante" id="hidratante">
-                                <label class="form-check-label" for="hidratante">Hidratante</label>
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" name="beneficios[]" value="antiedad" id="antiedad">
-                                <label class="form-check-label" for="antiedad">Anti edad</label>
-                            </div>
-                        </div>
-
-                        <!-- DESTACADOS -->
-                        <div class="form-check mb-3">
-                            <input class="form-check-input" type="checkbox" id="destacados" name="destacados">
-                            <label class="form-check-label" for="destacados">
-                                Solo productos destacados
-                            </label>
-                        </div>
-
-                        <!-- DISPONIBLES -->
-                        <div class="form-check mb-3">
-                            <input class="form-check-input" type="checkbox" id="disponibles" name="disponibles">
-                            <label class="form-check-label" for="disponibles">
-                                Solo productos en stock
-                            </label>
-                        </div>
-
-                        <!-- BOTONES -->
-                        <button type="submit" class="btn btn-primary w-100 mb-2">Filtrar</button>
-                        <button type="reset" class="btn btn-outline-secondary w-100">Limpiar filtros</button>
                     </form>
-                    </aside>
+                </aside>
 
 
                 <!-- Contenido principal -->
@@ -123,9 +132,18 @@ if (!empty($categoriaId)) {
                             <?= $categoriaNombre; ?>
                         </h1>
 
-                        <div>
-                            ordenar
+                        <div class="mb-3 d-flex justify-content-end">
+                            <label for="ordenar" class="me-2">Ordenar por:</label>
+                            <select class="form-select w-auto" id="ordenar" name="ordenar">
+                                <option value="">-- Seleccionar --</option>
+                                <option value="precio_asc">Precio: menor a mayor</option>
+                                <option value="precio_desc">Precio: mayor a menor</option>
+                                <option value="nombre_asc">Nombre: A-Z</option>
+                                <option value="nombre_desc">Nombre: Z-A</option>
+                                <option value="reciente">Más recientes</option>
+                            </select>
                         </div>
+
                     </section>
                     <section class="containerCards">
                         <?php foreach ($productos as $id => $row) { ?>
@@ -169,5 +187,15 @@ if (!empty($categoriaId)) {
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
+    
+
+    <!--ajaxTienda-->
+    <script src="./src/js/ajaxtienda.js"></script>
+
   </body>
 </html>
+
+intento2 de Tienda
+1
+2
+3

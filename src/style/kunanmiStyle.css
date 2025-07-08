@@ -831,7 +831,7 @@ TIENDA TIENDA TIENDA
 .navegacionInner{
     max-width: 1500px;
     width: 100%;
-    margin: 10px 0px;
+    margin: 10px 0px 0px 50px;
 }
 
 .ContainerMainProduct{
@@ -1487,18 +1487,23 @@ body {
 .tableAdminProduct th{
     background-color: #a3a3a3;
 }
-.tableAdminProduct td:nth-child(7),
-.tableAdminProduct th:nth-child(7),
+.tableAdminProduct td:nth-child(1),
+.tableAdminProduct th:nth-child(1){
+    width: 50px;
+}
+
 .tableAdminProduct td:nth-child(8),
 .tableAdminProduct th:nth-child(8),
 .tableAdminProduct td:nth-child(9),
-.tableAdminProduct th:nth-child(9) {
+.tableAdminProduct th:nth-child(9),
+.tableAdminProduct td:nth-child(10),
+.tableAdminProduct th:nth-child(10) {
     width: 80px;
 }
 
-.tableAdminProduct td:nth-child(7) a,
 .tableAdminProduct td:nth-child(8) a,
-.tableAdminProduct td:nth-child(9) a{
+.tableAdminProduct td:nth-child(9) a,
+.tableAdminProduct td:nth-child(10) a{
     color: var(--rosaK);
     font-size: 1rem;
 }

@@ -592,6 +592,19 @@ function obtenerProductosPorCategoria($bd, $categoriaId) {
     $query->execute();
     return $query->fetchAll(PDO::FETCH_ASSOC);
 }
+function obtenerProductosPorSubcategoria($bd, $subcategoriaId) {
+    $sql = "SELECT p.*, sc.nombre AS subcategoria_nombre
+            FROM productos p
+            LEFT JOIN subcategorias sc ON sc.id = p.subcategoria_id
+            WHERE p.subcategoria_id = :subcategoriaId AND p.estado = 'activo'";
+    
+    $stmt = $bd->prepare($sql);
+    $stmt->bindValue(':subcategoriaId', $subcategoriaId, PDO::PARAM_INT);
+    $stmt->execute();
+    
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
 
 //Función para eliminar el registro del producto
 function eliminarProducto($bd,$tabla,$datos){
