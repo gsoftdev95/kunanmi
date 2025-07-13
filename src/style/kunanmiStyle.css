@@ -18,7 +18,6 @@ html, body {
   margin: 0;
   padding: 0;
   width: 100%;
-  
 }
 
 header{
@@ -148,7 +147,6 @@ header{
         grid-column: span 3 / span 3;
         grid-column-start: 6;
         grid-row-start: 1;
-        background-color: red;
     }
 }
 .iconNav{
@@ -173,12 +171,12 @@ header{
     border-radius: 50%;
 }
 .containerbtnNav{
-    @media (width < 900px) {
+    @media (width < 990px) {
         width: 100%;
     }
 }
 .btnNavicon{
-    @media (width < 900px) {
+    @media (width < 990px) {
         margin: 10px;
         border: none;
     }
@@ -194,9 +192,24 @@ header{
     width: 60%;
     display: flex;
     justify-content: space-around;
+
+    @media (width < 1200px) {
+        width: 70%; 
+    }
+    @media (990px < width < 1050px) {
+        width: 70%; 
+    }
+    @media (width < 450px) {
+        width: 100%;
+        flex-direction: column;
+    }
 }
 .navbarMainText{
     background-color: transparent;
+    @media (width < 450px) {
+        margin: 10px 10px;
+        width: 100;
+    }
 }
 .navbarMainText>a{
     font-size: 1.1rem;
@@ -220,6 +233,10 @@ header{
     width: 100%;
     top: 100%;
     left: 0%;
+    
+    @media (width < 990px) {
+        display: none;
+    }
 }
 .menuN2Inner{
     width: 75%;
@@ -227,6 +244,10 @@ header{
     grid-template-columns: repeat(2, 1fr); /* 2 columnas iguales */
     gap: .5rem;
     padding: .5rem;
+
+    @media (width < 990px) {
+        display: none;
+    }
 }
 .navbarMainText:hover .menuN2{
     display: grid;
@@ -296,6 +317,12 @@ header{
     bottom: 20%;
     text-align: center;
     z-index: 2;
+
+    @media (width <990px) {
+        font-size: 3rem;
+        padding: 10px 10px 30px 10px;
+        bottom: 10%;
+    }
 }
 .bodyCoverTextSlogan{
     font-size: 4rem;
@@ -307,6 +334,11 @@ header{
     font-weight: 500;
     font-style: normal;
 
+
+    @media (width <990px) {
+        font-size: 2.5rem;
+        padding: 10px 10px 20px 10px;
+    }
     @media (width <450px) {
         font-size: 2.5rem;
     }
@@ -336,6 +368,7 @@ header{
     background-color: var(--blancoHumo);
     display: flex;
     justify-content: center;
+    text-align: center;
 
     @media (width < 450px) {
     }
@@ -346,7 +379,7 @@ header{
     margin: 70px 0px 50px;
     @media (width < 450px) {
         max-width: 450px;
-        width: 300px;
+        width: 90%;
     }
 }
 .highlightsTitle{
@@ -365,18 +398,25 @@ header{
     }
 }
 .highlightsSwiper {
+    max-width: 1500px;
     width: 100%;
-    max-width: 1300px; /* límite para escritorio */
-    padding: 40px;
     overflow: hidden;
 
     @media (width < 450px) {
         max-width: 400px;
     }
 }
+.swiper-wrapper{
+    width: 100%;
+}
 .swiper-button-next,
 .swiper-button-prev {
-  color: var(--verdeK);
+  color: var(--verdeK) !important;
+  padding: 30px 20px;
+}
+.swiper-button-next:hover,
+.swiper-button-prev:hover {
+  background-color: rgb(0, 0, 0,0.2);
 }
 
 
@@ -409,23 +449,30 @@ header{
     }
 }
 .categoryIconCards{
+    width: 100%;
     display: flex;
     margin: 100px;
+    justify-content: space-around;
+
+    @media (width < 990px) {
+        width: 95%;
+    }
 
     @media (width < 450px) {
-        margin: 20px 30px;
-        width: 100%;
-        justify-content: space-around;
+        margin: 60px 30px;
     }
-}
-.categoryIconContainer a{
-    text-decoration: none;
 }
 .CategoryIcon1{
     text-align: center;
     color: var(--rosaK);
     margin: 0px 50px;
 
+    @media (width < 990px) {
+        margin: 0px 40px;
+    }
+    @media (width < 750px) {
+        margin: 0px 35px;
+    }
     @media (width < 450px) {
         margin: 0px 10px;
     }
@@ -435,6 +482,12 @@ header{
     height: 80%;
     line-height: 0;
 
+    @media( width < 990px) {
+        font-size: 5rem;
+    }
+    @media( width < 760px) {
+        font-size: 4rem;
+    }
     @media( width < 450px) {
         font-size: 3rem;
     }
@@ -443,6 +496,12 @@ header{
     font-size: 3rem;
     padding: 0px;
 
+    @media( width < 990px) {
+        font-size: 2rem;
+    }
+    @media( width < 750px) {
+        font-size: 1.5rem;
+    }
     @media( width < 450px) {
         font-size: 1rem;
     }
@@ -459,7 +518,7 @@ header{
     position: relative;
     align-items: center;
 
-    @media (width < 450px) {
+    @media (width < 750px) {
         width: 100%;
         position: relative;
         align-items: center;
@@ -473,7 +532,6 @@ header{
 }
 .containerReview div{
     position: absolute;
-    top: 0;
     background-color: var(--verdeK);
     padding: 20px;
     height: auto;
@@ -483,28 +541,39 @@ header{
     top:50%;
     transform: translate(0%,-50%);
 
-    @media (width < 450px) {
+    @media (width < 990px) {
+        font-size: 10px;
+        padding: 10px;
+        width: 90%;
+        left: 90%;
+        top:50%;
+        transform: translate(00%,-50%);
+    }
+    @media (width < 750px) {
         font-size: 10px;
         padding: 5px;
         width: 300px;
         top: 50%;
         left: 50%;
         transform: translate(-50%,-50%);
-        opacity: 0.8;;
+        opacity: 0.8;
     }
 }
 .containerReview div h2{
     font-size: 2rem;
-    font-weight: 500;
     padding: 50px 0px 20px;
 
     font-family: "Tenor Sans", sans-serif;
-    font-weight: 400;
+    font-weight: 500;
     font-style: normal;
 
-    @media (width < 450px) {
+    @media (width < 990px) {
+        font-size: 1.5rem;
+        padding: 30px 0px 15px; 
+    }
+    @media (width < 750px) {
         font-size: 1rem;
-        padding: 10px 0px 10px; 
+        padding: 10px 0px 10px;
     }
 }
 .containerReview div p{
@@ -515,6 +584,10 @@ header{
     font-weight: 400;
     font-style: normal;
 
+    @media (width < 990px) {
+        font-size: 0.85rem;
+        padding: 0px 25px 15px;
+    }
     @media (width < 450px) {
         font-size: 0.7rem;
         padding: 0px 10px 10px;
@@ -556,14 +629,6 @@ header{
     border-radius: 20px;
     padding: 50px 0px;
 }
-/*
-.cardComment img{
-    aspect-ratio: 1/1;
-    border-radius: 50%;
-    margin: 10px auto 0px;
-    width: 60%;
-}
-*/
 .cardComment div{
     text-align: left;
 }
@@ -590,6 +655,12 @@ header{
     font-family: "Tenor Sans", sans-serif;
     font-weight: 400;
     font-style: normal;
+
+    @media (width < 450px ) {
+        flex-direction: column;
+        width: 100%;
+        position: relative; 
+    }
 }
 .containerSolgan div{
     width: 40%;
@@ -603,6 +674,22 @@ header{
     color: var(--blancoK);
     font-weight: 500;
     margin: 10px 0px 10px;
+
+    @media (width < 450px ) {
+        font-size: 1rem; 
+        width: 80%; 
+        height: 150px;    
+    }
+}
+.slg1{
+     @media (width < 990px ) {
+        align-self: flex-start;
+    }
+}
+.slg2{
+    @media (width < 990px ) {
+        align-self: flex-end;
+    }
 }
 
 .containerGalery{
@@ -623,35 +710,70 @@ header{
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(2, 1fr);
     gap: 20px;
+
+    @media (width < 990px) {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-rows: repeat(4, 1fr);
+        gap: 8px;
+    }
 }    
 .imgkunanmi1 {
     grid-row: span 2 / span 2;
-    background-color: red;
     height: 500px;
+    background-color: pink;
+    @media (width < 990px) {
+        grid-column: 1/2;
+        grid-row: 1/3;
+    }
 }
 .imgkunanmi2{
     background-color: purple;
+
+    @media (width < 990px) {
+        grid-column: 2/3;
+        grid-row: 1/2;
+    }
 }
 .imgkunanmi3 {
     grid-column-start: 2;
     grid-row-start: 2;
     background-color: yellow;
+
+    @media (width < 990px) {
+        grid-column: 2/3;
+        grid-row: 2/3;
+    }
 }
 .imgkunanmi4 {
     grid-column: span 2 / span 2;
     grid-column-start: 3;
     grid-row-start: 1;
     background-color: green;
+
+    @media (width < 990px) {
+        grid-column: 1/3;
+        grid-row: 3/4;
+    }
 }
 .imgkunanmi5 {
     grid-column-start: 3;
     grid-row-start: 2;
     background-color: gray;
+
+    @media (width < 990px) {
+        grid-column: 1/2;
+        grid-row: 4/5;
+    }
 }
 .imgkunanmi6 {
     grid-column-start: 4;
     grid-row-start: 2;
     background-color: blue;
+
+    @media (width < 990px) {
+        grid-column: 2/3;
+        grid-row: 4/5;
+    }
 }
 
 
@@ -728,7 +850,6 @@ footer{
 .rrss{
     @media (width < 450px) {
         width: 100%;
-        background-color: red;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -1604,8 +1725,6 @@ body {
     border-radius: 10px;
 }
 
-.containerAtributo{
-}
 .listAtributos{
     display: flex;
     flex-wrap: wrap;
@@ -1615,7 +1734,6 @@ body {
 }
 
 .containerbSecond{
-    background-color: red;
     height: 100px;
     width: 100%;
 }

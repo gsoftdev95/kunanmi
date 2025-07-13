@@ -1,3 +1,11 @@
+<?php
+require_once('./controladores/funciones.php');
+require_once('./src/partials/conexionBD.php');
+
+// Traer productos destacados
+$destacados = obtenerProductosDestacados($bd);
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -25,64 +33,28 @@
             <div class="highlightsTitle">Productos destacados</div>
             <div class="highlightsSwiper swiper mySwiper">
                 <div class="swiper-wrapper">
-                    <!-- Card 1 -->
-                    <div class="swiper-slide cardHL">
-                        <img src="./src/img/velas.png" alt="">                    
+                    <?php foreach ($destacados as $row): ?>
+                    <div class="swiper-slide cardProduct">
+                        <a href="./detalleProducto.php?id=<?= $row['id']; ?>">
+                            <div class="imgProdShopCont">
+                                <?php 
+                                    $imagenes = json_decode($row['imagen'], true);
+                                    $primeraImagen = is_array($imagenes) && count($imagenes) > 0 ? htmlspecialchars($imagenes[0]) : 'default.jpg';
+                                ?>
+                                <img class="img-default" src="src/imgBD/Productos/<?= $primeraImagen ?>" alt="<?= htmlspecialchars($row['nombre']) ?>">
+                                <div class="hoverShop">
+                                    <a href="#" class="btn cardProductTextBut mb-2">añadir al carrito <i class="bi bi-cart"></i></a>
+                                    <a href="./detalleProducto.php?id=<?= $row['id'] ?>" class="btn cardProductTextBut">ver Producto</a>
+                                </div>
+                            </div>                                    
+                        </a>
                         <div class="card-body cardProductText">
-                            <h4 class="card-title cardProductTextTitle">Nombre del producto 1</h4>
-                            <p class="card-text cardProductTextSub">categoría</p>
-                            <p class="card-text cardProductTextPrice">S/ 25.00</p>
-                            <a href="#" class="btn cardProductTextBut">añadir al carrito <i class="bi bi-cart"></i></a>
+                            <div class="card-title cardProductTextTitle"><?= $row['nombre']; ?></div>
+                            <div class="card-text cardProductTextSub"><?= $row['subcategoria_nombre']; ?></div>
+                            <div class="card-text cardProductTextPrice m-0">S/. <?= number_format($row['precio'], 2); ?></div>                                    
                         </div>
                     </div>
-
-                    <!-- Card 2 -->
-                    <div class="swiper-slide cardHL">
-                        <img src="./src/img/velas.png" alt="">                    
-                        <div class="card-body cardProductText">
-                            <h4 class="card-title cardProductTextTitle">Nombre del producto 1</h4>
-                            <p class="card-text cardProductTextSub">categoría</p>
-                            <p class="card-text cardProductTextPrice">S/ 25.00</p>
-                            <a href="#" class="btn cardProductTextBut">añadir al carrito <i class="bi bi-cart"></i></a>
-                        </div>
-                    </div>
-
-                    <div class="swiper-slide cardHL">
-                        <img src="./src/img/velas.png" alt="">                    
-                        <div class="card-body cardProductText">
-                            <h4 class="card-title cardProductTextTitle">Nombre del producto 1</h4>
-                            <p class="card-text cardProductTextSub">categoría</p>
-                            <p class="card-text cardProductTextPrice">S/ 25.00</p>
-                            <a href="#" class="btn cardProductTextBut">añadir al carrito <i class="bi bi-cart"></i></a>
-                        </div>
-                    </div>
-                    <div class="swiper-slide cardHL">
-                        <img src="./src/img/velas.png" alt="">                    
-                        <div class="card-body cardProductText">
-                            <h4 class="card-title cardProductTextTitle">Nombre del producto 1</h4>
-                            <p class="card-text cardProductTextSub">categoría</p>
-                            <p class="card-text cardProductTextPrice">S/ 25.00</p>
-                            <a href="#" class="btn cardProductTextBut">añadir al carrito <i class="bi bi-cart"></i></a>
-                        </div>
-                    </div>
-                    <div class="swiper-slide cardHL">
-                        <img src="./src/img/velas.png" alt="">                    
-                        <div class="card-body cardProductText">
-                            <h4 class="card-title cardProductTextTitle">Nombre del producto 1</h4>
-                            <p class="card-text cardProductTextSub">categoría</p>
-                            <p class="card-text cardProductTextPrice">S/ 25.00</p>
-                            <a href="#" class="btn cardProductTextBut">añadir al carrito <i class="bi bi-cart"></i></a>
-                        </div>
-                    </div>
-                    <div class="swiper-slide cardHL">
-                        <img src="./src/img/velas.png" alt="">                    
-                        <div class="card-body cardProductText">
-                            <h4 class="card-title cardProductTextTitle">Nombre del producto 1</h4>
-                            <p class="card-text cardProductTextSub">categoría</p>
-                            <p class="card-text cardProductTextPrice">S/ 25.00</p>
-                            <a href="#" class="btn cardProductTextBut">añadir al carrito <i class="bi bi-cart"></i></a>
-                        </div>
-                    </div>
+                    <?php endforeach; ?>                    
                 </div>
 
                 <!-- Controles -->
@@ -93,25 +65,19 @@
     </section>
 
     <section class="categoryIconContainer">
-        <section class="categoryIconCards">
-            <a href="#">
-                <section class="CategoryIcon1">
-                    <i class="bi bi-brush"></i>
-                    <div>Artesanal</div>
-                </section>
-            </a>
-            <a href="#">
-                <section class="CategoryIcon1">
-                    <i class="bi bi-leaf"></i>
-                    <div>Natural </div>
-                </section>
-            </a>  
-            <a href="#">
-                <section class="CategoryIcon1">
-                    <i class="bi bi-heart"></i>
-                    <div>Bienestar</div>
-                </section>
-            </a>  
+        <section class="categoryIconCards">            
+            <section class="CategoryIcon1">
+                <i class="bi bi-brush"></i>
+                <div>Artesanal</div>
+            </section>
+            <section class="CategoryIcon1">
+                <i class="bi bi-leaf"></i>
+                <div>Natural </div>
+            </section>        
+            <section class="CategoryIcon1">
+                <i class="bi bi-heart"></i>
+                <div>Bienestar</div>
+            </section>            
         </section>
     </section>
 
@@ -160,8 +126,8 @@
 
     <section class="containerSolgan">
         <section class="containerSolganInner">
-            <div>Lorem ipsum dolor sit amet..</div>
-            <div>Lorem ipsum dolor sit amet.</div>
+            <div class="slg1">Lorem ipsum dolor sit amet..</div>
+            <div class="slg2">Lorem ipsum dolor sit amet.</div>
         </section>
     </section>
 
@@ -185,23 +151,43 @@
     <!--Boostrap-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
 
+    <!--carrusel destacado-->                
     <script>
         const swiper = new Swiper('.highlightsSwiper', {
-            slidesPerView: 4,          // Cuántas se ven al mismo tiempo
-            slidesPerGroup: 1,         // Cuántas se deslizan a la vez
-            spaceBetween: 10,          // Espacio entre tarjetas
+            loop: true, // 🔁 Activa el loop infinito
+
+            slidesPerView: 'auto',
+            spaceBetween: 10, //Espacio entre cada tarjeta
+            slidesPerGroup: 1, //Se desliza de una tarjeta en una
+
             navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
+                nextEl: '.swiper-button-next', //
+                prevEl: '.swiper-button-prev', //
             },
+
+            //Ajustes responsive
             breakpoints: {
-                0: { slidesPerView: 1 },
-                576: { slidesPerView: 2 },
-                768: { slidesPerView: 3 },
-                992: { slidesPerView: 4 }
-            },
+                0: {
+                    slidesPerView: 1.2,
+                },
+                450: {
+                    slidesPerView: 2.5,
+                },
+                768: {
+                    slidesPerView: 3.5,
+                },
+                1024: {
+                    slidesPerView: 4.5,
+                },
+                1400: {
+                    slidesPerView: 5.5,
+                }
+            }
         });
     </script>
+
+</script>
+
     
 
 

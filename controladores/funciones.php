@@ -640,6 +640,19 @@ function detUserForAdmin($bd, $id, $tabla) {
 
     return $productos;
 }
+//obtener productos destacados
+function obtenerProductosDestacados($bd) {
+    $sql = "SELECT p.*, s.nombre AS subcategoria_nombre 
+            FROM productos p
+            LEFT JOIN subcategorias s ON p.subcategoria_id = s.id
+            WHERE p.destacado = 1 
+            ORDER BY p.fecha_creacion DESC
+            LIMIT 10";
+    $stmt = $bd->prepare($sql);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
 //Función para modificar los datos del usuario
 function modificarUsuarioAdmin($bd, $tabla, $datos){
 
