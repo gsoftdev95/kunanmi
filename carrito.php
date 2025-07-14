@@ -31,11 +31,13 @@ $carrito = $_SESSION['carrito'];
         <?php include_once('./src/partials/navbar.php'); ?>
     </header>
 
-    <section class="container py-5">
-        <h1 class="text-center mb-4">Tu carrito de compras</h1>
+    <section class="container">
+        <h1 class="text-center">Tu carrito de compras</h1>
 
         <?php if (empty($carrito)) : ?>
-            <div class="alert alert-info text-center">Tu carrito está vacío.</div>
+            <section class="alertCarrito">
+                <div class="alert alert-info text-center ">Tu carrito está vacío.</div>
+            </section>
         <?php else: ?>
             <div class="table-responsive">
                 <table class="table align-middle">

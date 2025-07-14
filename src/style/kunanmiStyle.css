@@ -162,7 +162,7 @@ header{
 }
 .cart-count {
     position: absolute;
-    top: -5px;
+    top: -6px;
     right: -10px;
     background-color: var(--verdeK);
     color: white;
@@ -1466,7 +1466,6 @@ ADMINISTRADOR
 
 body {
     display: flex;
-    min-height: 150vh;
     flex-direction: column;
 }
 
@@ -1774,4 +1773,8 @@ img {
     h1 {
         font-size: 1.5rem;
     }
+}
+
+.alertCarrito{
+    min-height: 700px;
 }
