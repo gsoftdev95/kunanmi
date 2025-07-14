@@ -13,10 +13,10 @@ $destacados = obtenerProductosDestacados($bd);
 </head>
 <body>
    
-    <header>    
+    <header>
         <section class="contTopBar">
             <div class="topBar">Hecho con amor — Productos artesanales y naturales</div>
-        </section>
+        </section>        
         <?php include_once('./src/partials/navbar.php')?>
     </header>
 

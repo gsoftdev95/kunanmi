@@ -25,9 +25,6 @@ $carrito = $_SESSION['carrito'];
 </head>
 <body>    
    <header>
-        <section class="contTopBar">
-            <div class="topBar">Hecho con amor — Productos artesanales y naturales</div>
-        </section>
         <?php include_once('./src/partials/navbar.php'); ?>
     </header>
 

@@ -42,7 +42,7 @@ if (isset($_SESSION['carrito'])) {
 }
 ?>
 
-<nav class="navbar navbar-expand-lg navbarMain d-block m-0 p-0">    
+<nav class="navbar navbar-expand-lg navbarMain d-block m-0 p-0">  
     <div class="container-fluid d-flex flex-column m-0 p-0">
         <div class="headerGrid">
             <div class="divhead div1">
