@@ -61,10 +61,10 @@ $carrito = $_SESSION['carrito'];
                             <td><?= htmlspecialchars($producto['nombre']) ?></td>
                             <td>S/ <?= number_format($producto['precio'], 2) ?></td>
                             <td>
-                                <form method="post" action="actualizarCarrito.php" class="d-flex">
-                                    <input type="hidden" name="id" value="<?= $producto['id'] ?>">
-                                    <input type="number" name="cantidad" value="<?= $producto['cantidad'] ?>" min="1" class="form-control form-control-sm me-2" style="width: 80px;">
-                                    <button class="btn btn-outline-success btn-sm" type="submit">Actualizar</button>
+                                <form method="post" class="d-flex form-actualizar" data-id="<?= $producto['id'] ?>">
+                                    <input type="number" name="cantidad" value="<?= $producto['cantidad'] ?>" min="1"
+                                        class="form-control form-control-sm me-2 input-cantidad" style="width: 80px;">
+                                    <button type="submit" class="btn btn-outline-success btn-sm">Actualizar</button>
                                 </form>
                             </td>
                             <td>S/ <?= number_format($subtotal, 2) ?></td>
@@ -94,6 +94,37 @@ $carrito = $_SESSION['carrito'];
 
     <!--Boostrap-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const formularios = document.querySelectorAll('.form-actualizar');
+
+            formularios.forEach(form => {
+                form.addEventListener('submit', function (e) {
+                    e.preventDefault();
+
+                    const id = form.getAttribute('data-id');
+                    const cantidad = form.querySelector('.input-cantidad').value;
+
+                    const formData = new FormData();
+                    formData.append('id', id);
+                    formData.append('cantidad', cantidad);
+
+                    fetch('actualizarCarrito.php', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(res => res.ok ? res.text() : Promise.reject())
+                    .then(() => {
+                        // Actualizar subtotal y total sin recargar (opcionalmente)
+                        location.reload(); // o puedes actualizar valores en la misma página con JS
+                    })
+                    .catch(() => alert('Error al actualizar cantidad'));
+                });
+            });
+        });
+    </script>
+
 
 </body>
 </html>
