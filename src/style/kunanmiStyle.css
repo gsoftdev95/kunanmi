@@ -1745,3 +1745,33 @@ body {
     text-decoration: none;
     border-radius: 10px;
 }
+
+
+/******************************/
+/******************************/
+/******************************/
+/******************************/
+/*carrito carrito*/
+/******************************/
+/******************************/
+/******************************/
+
+
+table th, table td {
+    vertical-align: middle;
+    text-align: center;
+}
+
+img {
+    border-radius: 10px;
+}
+
+@media (max-width: 768px) {
+    .table-responsive {
+        font-size: 0.9rem;
+    }
+
+    h1 {
+        font-size: 1.5rem;
+    }
+}

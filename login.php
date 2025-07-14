@@ -23,6 +23,18 @@ if ($_POST) {
                 if (isset($_POST['recordarme'])) {
                     seteoCookie($usuario);
                 }
+
+                // Redirección inteligente
+                if (isset($_SESSION['url_redireccion'])) {
+                    $url = $_SESSION['url_redireccion'];
+                    unset($_SESSION['url_redireccion']); // Limpiar la variable
+                    header("Location: $url");
+                    exit;
+                } else {
+                    header('Location: index.php');
+                    exit;
+                }
+
                 header('Location: index.php');
                 exit();
             }

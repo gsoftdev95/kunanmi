@@ -69,7 +69,7 @@
                     
                     <a href="login.php" class="iconNav text-dark fs-5"><i class="bi bi-person"></i></a>
 
-                    <a href="#" class="iconNav text-dark cart-icon">
+                    <a href="carrito.php" class="iconNav text-dark cart-icon">
                         <i class="bi bi-cart"></i>
                         <span class="cart-count">3</span>
                     </a>

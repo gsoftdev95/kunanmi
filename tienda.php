@@ -148,21 +148,22 @@ foreach ($resultado as $row) {
                     <section class="containerCards">
                         <?php foreach ($productos as $id => $row) { ?>
                             <div class="cardProduct" style="width: 18rem;">
-                                <a href="./detalleProducto.php?id=<?php echo $row['id']; ?>">
-                                    <div class="imgProdShopCont">
-                                        <?php 
-                                            $imagenes = json_decode($row['imagen'], true);
-                                            $primeraImagen = is_array($imagenes) && count($imagenes) > 0 ? htmlspecialchars($imagenes[0]) : 'default.jpg';
-                                            $segundaImagen = is_array($imagenes) && count($imagenes) > 1 ? htmlspecialchars($imagenes[1]) : 'default.jpg';
-                                        ?>
-                                        <img class="img-default" src="src/imgBD/Productos/<?= $primeraImagen ?>" alt="<?= htmlspecialchars($row['nombre']) ?>" alt="<?php echo $row['nombre']; ?>">
-                                        <!--<img class="img-hover" src="src/imgBD/Productos/<?= $segundaImagen ?>" alt="<?= htmlspecialchars($row['nombre']) ?>" alt="<?php echo $row['nombre']; ?>">-->
-                                        <div class="hoverShop">
-                                            <a href="#" class="btn cardProductTextBut mb-2">añadir al carrito <i class="bi bi-cart"></i></a>
-                                            <a href="./detalleProducto.php?id=<?= $row['id'] ?>" class="btn cardProductTextBut">ver Producto</a>
-                                        </div>
-                                    </div>                                    
-                                </a>
+                                
+                                <div class="imgProdShopCont">
+                                    <?php 
+                                        $imagenes = json_decode($row['imagen'], true);
+                                        $primeraImagen = is_array($imagenes) && count($imagenes) > 0 ? htmlspecialchars($imagenes[0]) : 'default.jpg';
+                                        $segundaImagen = is_array($imagenes) && count($imagenes) > 1 ? htmlspecialchars($imagenes[1]) : 'default.jpg';
+                                    ?>
+                                    <img class="img-default" src="src/imgBD/Productos/<?= $primeraImagen ?>" alt="<?= htmlspecialchars($row['nombre']) ?>" alt="<?php echo $row['nombre']; ?>">                                        
+                                    <form action="agregarAlCarrito.php" method="POST" class="hoverShop form-agregar-carrito">
+
+                                        <input type="hidden" name="id" value="<?= $row['id'] ?>">
+                                        <button type="submit" class="btn cardProductTextBut mb-2">añadir al carrito <i class="bi bi-cart"></i></button>
+                                        <a href="./detalleProducto.php?id=<?= $row['id'] ?>" class="btn cardProductTextBut">ver Producto</a>
+                                    </form>
+                                </div>
+                                
                                 <div class="card-body cardProductText">
                                     <div class="card-title cardProductTextTitle"><?php echo $row['nombre']; ?></div>
                                     <div class="card-text cardProductTextSub"><?php echo $row['subcategoria_nombre']; ?></div>
@@ -182,20 +183,17 @@ foreach ($resultado as $row) {
 
 
     <footer>
-      <?php include_once('./src/partials/footer.php')?>
+        <?php include_once('./src/partials/footer.php')?>
     </footer>
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
     
-
     <!--ajaxTienda-->
     <script src="./src/js/ajaxtienda.js"></script>
 
+    <!--añadirCarrito-Tienda-->
+    <script src="./src/js/añadirCarrito-tienda.js"></script>
+
   </body>
 </html>
-
-intento2 de Tienda
-1
-2
-3

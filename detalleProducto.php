@@ -19,6 +19,7 @@ if (!$producto) {
 $opiniones = obtenerOpiniones($bd);
 
 $imagenes = !empty($producto['imagen']) ? json_decode($producto['imagen'],true) : [];
+$destacados = obtenerProductosDestacados($bd);
 ?>
 
 <!doctype html>
@@ -88,12 +89,22 @@ $imagenes = !empty($producto['imagen']) ? json_decode($producto['imagen'],true) 
                         <div class="beneficios">Descripción</div>
                         <div class="beneficiosP"><?= htmlspecialchars($producto['descripcion']) ?></div>
                         <div class="contador">
-                        <button type="button" class="btn-decrementar">−</button>
-                        <input type="text" class="input-cantidad" value="1" readonly>
-                        <button type="button" class="btn-incrementar">+</button>
+                            <button type="button" class="btn-decrementar">−</button>
+                            <input type="text" class="input-cantidad" value="1" readonly>
+                            <button type="button" class="btn-incrementar">+</button>
                         </div>
                     
-                        <a href="#" class="btn btn-agregar-carrito">Añadir al carrito <i class="bi bi-cart"></i></a>
+                        <form id="form-agregar-carrito" action="agregarAlCarrito.php" method="POST" class="hoverShopdetail">
+                            <input type="hidden" name="id" value="<?= $producto['id'] ?>">
+                            <input type="hidden" name="cantidad" class="input-cantidad-hidden" value="1">
+                            <button type="submit" class="btn btn-agregar-carrito mb-2">añadir al carrito <i class="bi bi-cart"></i></button>                            
+                        </form>
+
+                        <!-- Mensaje de éxito oculto -->
+                        <div id="mensaje-agregado" style="display: none; color: green; margin-top: 10px;">
+                            ¡Producto añadido al carrito!
+                        </div>
+
 
                     </section>
                 </section>
@@ -165,82 +176,10 @@ $imagenes = !empty($producto['imagen']) ? json_decode($producto['imagen'],true) 
             <p style="text-align:center; margin: 2rem 0;">Debes <a href="login.php">iniciar sesión</a> para dejar una opinión.</p>
         <?php endif; ?>
 
-
-
-
         <section class="highlights">
-            <section class="highlightsInner">
-                <div class="highlightsTitle">Productos destacados</div>
-                <div class="highlightsSwiper swiper mySwiper">
-                    <div class="swiper-wrapper">
-                        <!-- Card 1 -->
-                        <div class="swiper-slide cardHL">
-                            <img src="./src/img/velas.png" alt="">                    
-                            <div class="card-body cardProductText">
-                                <h4 class="card-title cardProductTextTitle">Nombre del producto 1</h4>
-                                <p class="card-text cardProductTextSub">categoría</p>
-                                <p class="card-text cardProductTextPrice">S/ 25.00</p>
-                                <a href="#" class="btn cardProductTextBut">añadir al carrito <i class="bi bi-cart"></i></a>
-                            </div>
-                        </div>
-
-                        <!-- Card 2 -->
-                        <div class="swiper-slide cardHL">
-                            <img src="./src/img/velas.png" alt="">                    
-                            <div class="card-body cardProductText">
-                                <h4 class="card-title cardProductTextTitle">Nombre del producto 1</h4>
-                                <p class="card-text cardProductTextSub">categoría</p>
-                                <p class="card-text cardProductTextPrice">S/ 25.00</p>
-                                <a href="#" class="btn cardProductTextBut">añadir al carrito <i class="bi bi-cart"></i></a>
-                            </div>
-                        </div>
-
-                        <div class="swiper-slide cardHL">
-                            <img src="./src/img/velas.png" alt="">                    
-                            <div class="card-body cardProductText">
-                                <h4 class="card-title cardProductTextTitle">Nombre del producto 1</h4>
-                                <p class="card-text cardProductTextSub">categoría</p>
-                                <p class="card-text cardProductTextPrice">S/ 25.00</p>
-                                <a href="#" class="btn cardProductTextBut">añadir al carrito <i class="bi bi-cart"></i></a>
-                            </div>
-                        </div>
-                        <div class="swiper-slide cardHL">
-                            <img src="./src/img/velas.png" alt="">                    
-                            <div class="card-body cardProductText">
-                                <h4 class="card-title cardProductTextTitle">Nombre del producto 1</h4>
-                                <p class="card-text cardProductTextSub">categoría</p>
-                                <p class="card-text cardProductTextPrice">S/ 25.00</p>
-                                <a href="#" class="btn cardProductTextBut">añadir al carrito <i class="bi bi-cart"></i></a>
-                            </div>
-                        </div>
-                        <div class="swiper-slide cardHL">
-                            <img src="./src/img/velas.png" alt="">                    
-                            <div class="card-body cardProductText">
-                                <h4 class="card-title cardProductTextTitle">Nombre del producto 1</h4>
-                                <p class="card-text cardProductTextSub">categoría</p>
-                                <p class="card-text cardProductTextPrice">S/ 25.00</p>
-                                <a href="#" class="btn cardProductTextBut">añadir al carrito <i class="bi bi-cart"></i></a>
-                            </div>
-                        </div>
-                        <div class="swiper-slide cardHL">
-                            <img src="./src/img/velas.png" alt="">                    
-                            <div class="card-body cardProductText">
-                                <h4 class="card-title cardProductTextTitle">Nombre del producto 1</h4>
-                                <p class="card-text cardProductTextSub">categoría</p>
-                                <p class="card-text cardProductTextPrice">S/ 25.00</p>
-                                <a href="#" class="btn cardProductTextBut">añadir al carrito <i class="bi bi-cart"></i></a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Controles -->
-                    <div class="swiper-button-next"></div>
-                    <div class="swiper-button-prev"></div>
-                </div>
-            </section>      
+            <?php include_once('./src/partials/destacados.php') ?>
         </section>
 
-        
 
         <footer>
             <?php include_once('./src/partials/footer.php')?>
@@ -253,44 +192,62 @@ $imagenes = !empty($producto['imagen']) ? json_decode($producto['imagen'],true) 
         <!--Boostrap-->
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
 
-        <!--Script de incremento de cantidad-->
+        <!--Script contador y carrito-->
         <script>
             document.addEventListener('DOMContentLoaded', function () {
+                const form = document.getElementById('form-agregar-carrito');
+                const mensaje = document.getElementById('mensaje-agregado');
+                const inputCantidad = document.querySelector('.input-cantidad');
+                const inputCantidadHidden = document.querySelector('.input-cantidad-hidden');
+
+                // Mantener sincronizados los valores
+                function actualizarHidden() {
+                    inputCantidadHidden.value = inputCantidad.value;
+                }
+
+                form.addEventListener('submit', function (e) {
+                    e.preventDefault(); // evita redirección
+                    actualizarHidden();
+
+                    const formData = new FormData(form);
+
+                    fetch('agregarAlCarrito.php', {
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(res => res.ok ? res.text() : Promise.reject())
+                    .then(() => {
+                        mensaje.style.display = 'block';
+                        setTimeout(() => mensaje.style.display = 'none', 2500);
+                    })
+                    .catch(() => alert('Error al agregar al carrito'));
+                });
+
+
+                // También actualizar cuando el usuario cambia la cantidad manualmente
                 const btnIncrementar = document.querySelector('.btn-incrementar');
                 const btnDecrementar = document.querySelector('.btn-decrementar');
-                const inputCantidad = document.querySelector('.input-cantidad');
 
                 btnIncrementar.addEventListener('click', () => {
-                inputCantidad.value = parseInt(inputCantidad.value) + 1;
+                    inputCantidad.value = parseInt(inputCantidad.value) + 1;
+                    actualizarHidden();
                 });
 
                 btnDecrementar.addEventListener('click', () => {
-                if (parseInt(inputCantidad.value) > 1) {
-                    inputCantidad.value = parseInt(inputCantidad.value) - 1;
-                }
+                    if (parseInt(inputCantidad.value) > 1) {
+                        inputCantidad.value = parseInt(inputCantidad.value) - 1;
+                        actualizarHidden();
+                    }
                 });
+
+                actualizarHidden(); // Inicializar al cargar
             });
         </script>
+
 
 
         <!--scrip para destacados-->
-        <script>
-            const swiper = new Swiper('.highlightsSwiper', {
-                slidesPerView: 4,          // Cuántas se ven al mismo tiempo
-                slidesPerGroup: 1,         // Cuántas se deslizan a la vez
-                spaceBetween: 10,          // Espacio entre tarjetas
-                navigation: {
-                nextEl: '.swiper-button-next',
-                prevEl: '.swiper-button-prev',
-                },
-                breakpoints: {
-                0: { slidesPerView: 1 },
-                576: { slidesPerView: 2 },
-                768: { slidesPerView: 3 },
-                992: { slidesPerView: 4 }
-                },
-            });
-        </script>
+        <script src='./src/js/carruselDestacado.js'></script>
 
         <!--formulario opiniones-->
         <script>
