@@ -699,30 +699,30 @@ function eliminarUsuario($bd,$tabla,$datos){
 }
 
 
-/****************** */
-/****************** */
+/************************* */
+/************************* */
 /*******perfil cliente**** */
-/****************** */
-/****************** */
+/************************* */
+/************************* */
 
 function obtenerUsuarioPorId($bd, $idUsuario) {
-    $stmt = $bd->prepare("SELECT id, nombre, apellido_paterno, apellido_materno, email, celular, direccion, perfil, fecha_creacion FROM usuarios WHERE id = :id");
+    $stmt = $bd->prepare("SELECT id, nombre, apellido_paterno, apellido_materno, email, celular, direccion, perfil, fecha_creacion 
+                            FROM usuarios 
+                            WHERE id = :id");
     $stmt->bindValue(':id', $idUsuario, PDO::PARAM_INT);
     $stmt->execute();
     $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
     return $usuario ? $usuario : null;
 }
 function obtenerPedidosPorUsuario(PDO $bd, int $idUsuario): array {
-    $stmt = $bd->prepare("SELECT id, fecha_pedido, estado, monto_total FROM pedidos WHERE usuario_id = :usuario_id ORDER BY fecha_pedido DESC");
+    $stmt = $bd->prepare("SELECT id, fecha_pedido, estado_id, monto_total 
+                            FROM pedidos 
+                            WHERE usuario_id = :usuario_id 
+                            ORDER BY fecha_pedido DESC");
     $stmt->bindValue(':usuario_id', $idUsuario, PDO::PARAM_INT);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
-
-
-
-
-
 
 
 
@@ -736,11 +736,25 @@ function obtenerPedidosPorUsuario(PDO $bd, int $idUsuario): array {
 /****************** */
 
 function obtenerOpiniones($bd) {
-    $sql = "SELECT o.opinion, o.fecha, 
+    $sql = "SELECT o.opinion, o.fecha, o.valoracion, 
                    u.nombre, u.apellido_paterno
             FROM opiniones o
             JOIN usuarios u ON o.usuario_id = u.id
+            WHERE o.valoracion BETWEEN 3 AND 5
             ORDER BY o.fecha DESC";
+
+    $stmt = $bd->prepare($sql);
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+function obtenerTestimonios($bd) {
+    $sql = "SELECT o.opinion, o.fecha, o.valoracion, 
+                u.nombre, u.apellido_paterno
+            FROM opiniones o
+            JOIN usuarios u ON o.usuario_id = u.id
+            WHERE o.valoracion BETWEEN 3 AND 5
+            ORDER BY o.valoracion DESC, o.fecha DESC
+            LIMIT 3;";
 
     $stmt = $bd->prepare($sql);
     $stmt->execute();
@@ -750,57 +764,29 @@ function obtenerOpiniones($bd) {
 
 
 
+/****************** */
+/****************** */
+/*******pedidos**** */
+/****************** */
+/****************** */
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/*
-
-
-
-  
-
-
-
-
-function detalleUsuario($bd, $id, $table) {
-    //Armado de la sentencia
-    $sql = "select * from $table where id=$id";
-    //Ejecución de la sentencia
-    $query = $bd->prepare($sql);
-    $query->execute();
-    //Lectura de los datos obtenidos en la sentencia como Array Asociativo
-    $usuario = $query->fetch(PDO::FETCH_ASSOC);
-    //dd($usuario);
-    return $usuario;
+function estadoVisibleCliente($estado) {
+    switch ($estado) {
+        case 'pendiente':
+            return 'Pendiente de confirmación';
+        case 'en proceso':
+            return 'Preparando tu pedido';
+        case 'enviado':
+            return 'Pedido en camino';
+        case 'entregado':
+            return 'Pedido entregado';
+        case 'completado':
+            return 'Pedido finalizado';
+        default:
+            return ucfirst($estado);
+    }
 }
-
-
-
-
-
-
-
 
 
 
@@ -854,407 +840,5 @@ function enviarCorreo($usuario) {
     }
 }
 
-
-/*************************************************** */
-
-/*
-CREATE TABLE calificaciones (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    producto_id INT NOT NULL,
-    usuario_id INT NOT NULL,
-    calificacion DECIMAL(2, 1) NOT NULL,
-    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (producto_id) REFERENCES productos(id),
-    FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
-);
-
-CREATE TABLE calificaciones (
-    id INT AUTO_INCREMENT PRIMARY KEY,
-    producto_id INT NOT NULL,
-    usuario_id INT NOT NULL,
-    calificacion DECIMAL(2, 1) NOT NULL,
-    fecha TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (producto_id) REFERENCES productos(id),
-    FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
-);
-
-// Función para guardar la calificación del usuario
-function guardarCalificacion($bd, $producto_id, $usuario_id, $calificacion) {
-    // Armar la consulta
-    $sql = "INSERT INTO calificaciones (producto_id, usuario_id, calificacion) VALUES (:producto_id, :usuario_id, :calificacion)";
-    
-    // Preparar la consulta
-    $query = $bd->prepare($sql);
-    $query->bindValue(':producto_id', $producto_id);
-    $query->bindValue(':usuario_id', $usuario_id);
-    $query->bindValue(':calificacion', $calificacion);
-    
-    // Ejecutar la consulta
-    if ($query->execute()) {
-        return true; // Calificación guardada con éxito
-    } else {
-        return false; // Error al guardar la calificación
-    }
-}
-
-/*
-formulario de calificacion
-<form method="POST" action="guardar_calificacion.php">
-    <input type="hidden" name="producto_id" value="1"> <!-- Cambia el valor según el producto -->
-    <label for="calificacion">Calificación:</label>
-    <select name="calificacion" id="calificacion" required>
-        <option value="5">5</option>
-        <option value="4.5">4.5</option>
-        <option value="4">4</option>
-        <option value="3.5">3.5</option>
-        <option value="3">3</option>
-        <option value="2.5">2.5</option>
-        <option value="2">2</option>
-        <option value="1.5">1.5</option>
-        <option value="1">1</option>
-        <option value="0.5">0.5</option>
-    </select>
-    <button type="submit">Calificar</button>
-</form>
-
-
-<?php
-session_start();
-require_once('tu_archivo_de_conexion.php'); // Asegúrate de incluir tu archivo de conexión
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $producto_id = $_POST['producto_id'];
-    $usuario_id = $_SESSION['usuario_id']; // Asegúrate de tener el ID del usuario en la sesión
-    $calificacion = $_POST['calificacion'];
-
-    // Llamar a la función para guardar la calificación
-    if (guardarCalificacion($bd, $producto_id, $usuario_id, $calificacion)) {
-        echo "Calificación guardada con éxito.";
-    } else {
-        echo "Error al guardar la calificación.";
-    }
-}
-
-//PRODUCTO
-//PRODUCTO
-//PRODUCTO
-//PRODUCTO  
-
-
-
-
-
-function obtenerImagenes($bd, $id) {
-    $sql = "SELECT avatar FROM producto WHERE id = :id";
-    $query = $bd->prepare($sql);
-    $query->execute([$id]);
-    return $query->fetchAll(PDO::FETCH_ASSOC);
-}
-
-function guardarImagenes($bd, $tabla, $id, $imagenes) {
-    foreach ($imagenes as $imagen) {
-        // Aquí deberías insertar la ruta de la imagen en la base de datos
-        $consulta = $bd->prepare("INSERT INTO imagenes (producto_id, ruta) VALUES (?, ?)");
-        $consulta->execute([$id, $imagen]);
-    }
-}
-
-
-
-//TEAM//TEAM//TEAM//TEAM//TEAM//TEAM//TEAM
-//TEAM//TEAM//TEAM//TEAM//TEAM//TEAM//TEAM
-//TEAM//TEAM//TEAM//TEAM//TEAM//TEAM//TEAM
-//TEAM//TEAM//TEAM//TEAM//TEAM//TEAM//TEAM
-//TEAM//TEAM//TEAM//TEAM//TEAM//TEAM//TEAM
-//TEAM//TEAM//TEAM//TEAM//TEAM//TEAM//TEAM
-
-
-
-function obtenerTeam($bd,$tabla) {
-    $sql = "SELECT * FROM $tabla"; // Asegúrate de que la tabla y columnas sean correctas
-    $query = $bd->prepare($sql);
-    $query->execute();
-    return $query->fetchAll(PDO::FETCH_ASSOC);
-}
-
-
-function buscarTeam($bd,$tabla,$busqueda,$tipoBusqueda){
-    //Armar la consulta
-    $sql = "select * from $tabla where  $tipoBusqueda like :busqueda";
-    //Preparar la consulta
-    $query= $bd->prepare($sql);
-    $query->bindValue(':busqueda', "%".$busqueda."%");    
-    //Ejecutar la consulta
-    $query->execute();
-    //Traer los datos de la consulta
-    $usuarios = $query->fetchAll(PDO::FETCH_ASSOC);
-    // dd($usuarios);
-    return $usuarios;   
-}
-function listarTeam($bd, $tabla){
-    //Armar la consulta
-    $sql = "select * from $tabla";
-    //Preparar la consulta
-    $query= $bd->prepare($sql);
-    //Ejecutar la consulta
-    $query->execute();
-    //Traer los datos de la consulta
-    $team = $query->fetchAll(PDO::FETCH_ASSOC);
-    return $team;
-} 
-function validarTeam($datos,$imagen){
-    $errores = [];
-    $nombre = trim($datos['nombre']);
-    $apellido = trim($datos['apellido']);
-    if($nombre === ''){
-        $errores['nombre'] = 'El campo nombre no puede estar vacio';
-    }    
-    if(empty($apellido)){
-        $errores['apellido'] = 'El campo apellido no puede estar vacio';
-    }
-    //Validar si me mandaron la imagen
-    if(isset($imagen)){
-        //dd($imagen);
-        if($imagen['avatar']['error']!=0){
-            $errores['avatar'] = 'Debe subir una imagen';
-        }
-    }
-    return $errores;
-}
-function armarLaImagenTeam($imagen){
-    $avatar = $imagen['imgteamrats']['name']; // Cambié 'avatar' a 'imgteamrats'
-    $ext = pathinfo($avatar, PATHINFO_EXTENSION);
-    $archivoOrigen = $imagen['imgteamrats']['tmp_name'];
-    $nombreArchivo = uniqid('avatar-').'.'.$ext;
-    $ruta = dirname(__DIR__).'/imgRats/Team/';
-    $archivoDestino = $ruta.$nombreArchivo;
-    
-    move_uploaded_file($archivoOrigen, $archivoDestino);
-    return $nombreArchivo;
-}
-
-function guardarTeam($bd,$tabla,$datos,$imgteamrats){
-    //Organizar los datos a ser guardados
-    $nombre = $datos['nombre'];
-    $apellido = $datos['apellido'];
-    
-    //Armar la consulta
-    $sql = "insert into $tabla (nombre,apellido,imgteamrats) values (:nombre,:apellido,:imgteamrats)";
-    //Preparar la consulta
-    $query = $bd->prepare($sql);
-    $query->bindValue(':nombre', $nombre);
-    $query->bindValue(':apellido', $apellido);
-    $query->bindValue(':imgteamrats', $imgteamrats);
-    $query->execute();
-}
-function detalleDeportista($bd, $id, $table) {
-    // Armado de la sentencia
-    $sql = "SELECT * FROM $table WHERE idteamrats = :id"; // Cambia 'id' por 'idteamrats'
-    // Ejecución de la sentencia
-    $query = $bd->prepare($sql);
-    $query->bindParam(':id', $id, PDO::PARAM_INT); // Usar parámetros preparados
-    $query->execute();
-    // Lectura de los datos obtenidos en la sentencia como Array Asociativo
-    $team = $query->fetch(PDO::FETCH_ASSOC);
-    return $team;
-}
-function armarLaImagenDeportista($imagen) {
-    $avatar = $imagen['imgteamrats']['name'];
-    $ext = pathinfo($avatar, PATHINFO_EXTENSION);
-    $archivoOrigen = $imagen['imgteamrats']['tmp_name'];
-    $nombreArchivo = uniqid('avatar-') . '.' . $ext;
-    $ruta = dirname(__DIR__) . '/imgRats/Team/';
-    $archivoDestino = $ruta . $nombreArchivo;
-
-    move_uploaded_file($archivoOrigen, $archivoDestino);
-    return $nombreArchivo;
-}
-
-function modificarDeportista($bd, $tabla, $datos) {
-    // Recopilación de datos $_POST
-    $id = intval($datos['id']);
-    $nombre = $datos['nombre'];
-    $apellido = $datos['apellido'];    
-    $imgteamrats = $datos['imgteamrats'];
-
-    // Armado del update
-    $sql = "UPDATE $tabla SET nombre = :nombre, apellido = :apellido, imgteamrats = :imgteamrats WHERE idteamrats = :idteamrats";
-
-    // Inserción de datos en la sentencia
-    $query = $bd->prepare($sql);    
-    $query->bindValue(':idteamrats', $id);
-    $query->bindValue(':nombre', $nombre);
-    $query->bindValue(':apellido', $apellido);
-    $query->bindValue(':imgteamrats', $imgteamrats);
-
-    // Ejecución de la consulta y manejo de errores
-    if ($query->execute()) {
-        return true;
-    } else {
-        $errorInfo = $query->errorInfo();
-        throw new Exception("Error al modificar deportista: " . $errorInfo[2]);
-    }
-}
-
-
-
-function eliminarDeportista($bd, $tabla, $datos) {
-    try {
-        $id = intval($datos['id']);
-        $sql = "DELETE FROM $tabla WHERE idteamrats = :id";
-        $query = $bd->prepare($sql);
-        $query->bindValue(':id', $id, PDO::PARAM_INT);
-        $query->execute();
-
-        if ($query->rowCount() > 0) {
-            echo "<h2 style='text-align:center'>Registro eliminado</h2>";
-        } else {
-            echo "<h2 style='text-align:center'>No se pudo eliminar el registro</h2>";
-        }
-    } catch (Exception $e) {
-        echo "<h2 style='text-align:center'>Error: " . $e->getMessage() . "</h2>";
-    }
-}
-
-
-
-
-
-//EVENTO//EVENTO//EVENTO//EVENTO//EVENTO//EVENTO
-//EVENTO//EVENTO//EVENTO//EVENTO//EVENTO//EVENTO
-//EVENTO//EVENTO//EVENTO//EVENTO//EVENTO//EVENTO
-//EVENTO//EVENTO//EVENTO//EVENTO//EVENTO//EVENTO
-//EVENTO//EVENTO//EVENTO//EVENTO//EVENTO//EVENTO
-//EVENTO//EVENTO//EVENTO//EVENTO//EVENTO//EVENTO
-
-
-function validarEvento($datos, $imagen) {
-    $errores = [];
-    $nombre = trim($datos['nombreevento']);
-    if ($nombre === '') {
-        $errores['nombreevento'] = 'El campo nombre no puede estar vacío';
-    }
-    
-    // Validar si me mandaron la imagen
-    if (!isset($imagen['imgevento']) || $imagen['imgevento']['error'] != 0) {
-        $errores['imgevento'] = 'Debe subir una imagen';
-    }
-    
-    return $errores;
-}
-
-function armarLaImagenEvento($imagen) {
-    $avatar = $imagen['imgevento']['name'];
-    $ext = pathinfo($avatar, PATHINFO_EXTENSION);
-    $archivoOrigen = $imagen['imgevento']['tmp_name'];
-    $nombreArchivo = uniqid('evento-') . '.' . $ext;
-    $ruta = dirname(__DIR__) . '/imgRats/Eventos/';
-    $archivoDestino = $ruta . $nombreArchivo;
-
-    move_uploaded_file($archivoOrigen, $archivoDestino);
-    return $nombreArchivo;
-}
-
-function guardarEvento($bd, $tabla, $datos, $imgevento) {
-    // Organizar los datos a ser guardados
-    $nombre = $datos['nombreevento'];
-
-    // Armar la consulta
-    $sql = "INSERT INTO $tabla (nombreevento, imgevento) VALUES (:nombreevento, :imgevento)";
-    
-    // Preparar la consulta
-    $query = $bd->prepare($sql);
-    $query->bindValue(':nombreevento', $nombre);
-    $query->bindValue(':imgevento', $imgevento);
-    $query->execute();
-}
-
-function buscarEvento($bd,$tabla,$busqueda,$tipoBusqueda){
-    //Armar la consulta
-    $sql = "select * from $tabla where  $tipoBusqueda like :busqueda";
-    //Preparar la consulta
-    $query= $bd->prepare($sql);
-    $query->bindValue(':busqueda', "%".$busqueda."%");    
-    //Ejecutar la consulta
-    $query->execute();
-    //Traer los datos de la consulta
-    $usuarios = $query->fetchAll(PDO::FETCH_ASSOC);
-    // dd($usuarios);
-    return $usuarios;   
-}
-function listarEvento($bd, $tabla){
-    //Armar la consulta
-    $sql = "select * from $tabla";
-    //Preparar la consulta
-    $query= $bd->prepare($sql);
-    //Ejecutar la consulta
-    $query->execute();
-    //Traer los datos de la consulta
-    $team = $query->fetchAll(PDO::FETCH_ASSOC);
-    return $team;
-}
-
-function detalleEvento($bd, $id, $table) {
-    // Armado de la sentencia
-    $sql = "SELECT * FROM $table WHERE idevento = :id";
-    // Ejecución de la sentencia
-    $query = $bd->prepare($sql);
-    $query->bindParam(':id', $id, PDO::PARAM_INT); // Usar parámetros preparados
-    $query->execute();
-    // Lectura de los datos obtenidos en la sentencia como Array Asociativo
-    $evento = $query->fetch(PDO::FETCH_ASSOC);
-    return $evento;
-}
-
-function modificarEvento($bd, $tabla, $datos) {
-    // Recopilación de datos $_POST
-    $id = intval($datos['idevento']);
-    $nombreevento = $datos['nombreevento'];
-    $imgevento = $datos['imgevento'];
-
-    // Armado del update
-    $sql = "UPDATE $tabla SET nombreevento = :nombreevento, imgevento = :imgevento WHERE idevento = :idevento";
-
-    // Inserción de datos en la sentencia
-    $query = $bd->prepare($sql);
-    $query->bindValue(':nombreevento', $nombreevento);
-    $query->bindValue(':imgevento', $imgevento);
-    $query->bindValue(':idevento', $id, PDO::PARAM_INT);
-
-    // Ejecución de la consulta y manejo de errores
-    if ($query->execute()) {
-        return true;
-    } else {
-        $errorInfo = $query->errorInfo();
-        throw new Exception("Error al modificar evento: " . $errorInfo[2]);
-    }
-}
-
-function obtenerEvento($bd,$tabla) {
-    $sql = "SELECT * FROM $tabla"; 
-    $query = $bd->prepare($sql);
-    $query->execute();
-    return $query->fetchAll(PDO::FETCH_ASSOC);
-}
-
-
-function eliminarEvento($bd, $tabla, $datos) {
-    try {
-        $id = intval($datos['id']);
-        $sql = "DELETE FROM $tabla WHERE idevento = :id";
-        $query = $bd->prepare($sql);
-        $query->bindValue(':id', $id, PDO::PARAM_INT);
-        $query->execute();
-
-        if ($query->rowCount() > 0) {
-            echo "<h2 style='text-align:center'>Registro eliminado</h2>";
-        } else {
-            echo "<h2 style='text-align:center'>No se pudo eliminar el registro</h2>";
-        }
-    } catch (Exception $e) {
-        echo "<h2 style='text-align:center'>Error: " . $e->getMessage() . "</h2>";
-    }
-}
-*/
 
 ?>

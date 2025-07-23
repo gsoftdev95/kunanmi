@@ -150,9 +150,8 @@ foreach ($resultado as $row) {
                                     <?php 
                                         $imagenes = json_decode($row['imagen'], true);
                                         $primeraImagen = is_array($imagenes) && count($imagenes) > 0 ? htmlspecialchars($imagenes[0]) : 'default.jpg';
-                                        $segundaImagen = is_array($imagenes) && count($imagenes) > 1 ? htmlspecialchars($imagenes[1]) : 'default.jpg';
                                     ?>
-                                    <img class="img-default" src="src/imgBD/Productos/<?= $primeraImagen ?>" alt="<?= htmlspecialchars($row['nombre']) ?>" alt="<?php echo $row['nombre']; ?>">                                        
+                                    <img class="img-default" src="src/imgBD/Productos/<?= $primeraImagen ?>" alt="<?= htmlspecialchars($row['nombre']) ?>">                                        
                                     <form action="agregarAlCarrito.php" method="POST" class="hoverShop form-agregar-carrito">
 
                                         <input type="hidden" name="id" value="<?= $row['id'] ?>">
@@ -173,10 +172,6 @@ foreach ($resultado as $row) {
             </div>
         </section>
     </section>
-    
-
-
-
 
 
     <footer>

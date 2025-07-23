@@ -28,7 +28,7 @@ $carrito = $_SESSION['carrito'];
         <?php include_once('./src/partials/navbar.php'); ?>
     </header>
 
-    <section class="container">
+    <section class="container containerCarrito">
         <h1 class="text-center">Tu carrito de compras</h1>
 
         <?php if (empty($carrito)) : ?>
@@ -50,10 +50,10 @@ $carrito = $_SESSION['carrito'];
                     </thead>
                     <tbody>
                         <?php
-                        $total = 0;
-                        foreach ($carrito as $producto) {
-                            $subtotal = $producto['precio'] * $producto['cantidad'];
-                            $total += $subtotal;
+                            $total = 0;
+                            foreach ($carrito as $producto) {
+                                $subtotal = $producto['precio'] * $producto['cantidad'];
+                                $total += $subtotal;
                         ?>
                         <tr>
                             <td><img src="./src/imgBD/Productos/<?= htmlspecialchars($producto['imagen']) ?>" width="80"></td>
@@ -72,6 +72,7 @@ $carrito = $_SESSION['carrito'];
                             </td>
                         </tr>
                         <?php } ?>
+                        <?php $_SESSION['total_carrito'] = $total; ?>
                     </tbody>
                 </table>
             </div>

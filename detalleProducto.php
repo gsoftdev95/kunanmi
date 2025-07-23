@@ -104,8 +104,6 @@ $destacados = obtenerProductosDestacados($bd);
                         <div id="mensaje-agregado" style="display: none; color: green; margin-top: 10px;">
                             ¡Producto añadido al carrito!
                         </div>
-
-
                     </section>
                 </section>
             
@@ -134,19 +132,35 @@ $destacados = obtenerProductosDestacados($bd);
         <section class="OpinionProducto">
             <section class="OpinionProductoInner">
                 <h4>Opiniones de clientes</h4>
-                <?php if (count($opiniones) > 0): ?>
+                <?php if (count($opiniones) > 0): ?>                    
                     <?php foreach ($opiniones as $op): ?>
                         <div class="opinion">
                             <strong><?= htmlspecialchars($op['nombre']) ?> <?= htmlspecialchars($op['apellido_paterno']) ?></strong>
+                            
+                            <!-- Mostramos estrellas -->
+                            <div class="valoracion">
+                                <?php
+                                $valoracion = (int) $op['valoracion'];
+                                for ($i = 1; $i <= 5; $i++):
+                                    if ($i <= $valoracion):
+                                        echo '<span class="estrella">&#9733;</span>'; // estrella llena
+                                    else:
+                                        echo '<span class="estrella vacia">&#9734;</span>'; // estrella vacía
+                                    endif;
+                                endfor;
+                                ?>
+                            </div>
+
                             <p><?= htmlspecialchars($op['opinion']) ?></p>
                             <small><?= htmlspecialchars($op['fecha']) ?></small>
                         </div>
                     <?php endforeach; ?>
                 <?php else: ?>
-                    <p>Aún no hay opiniones para este producto.</p>
+                    <p>Aún no hay opiniones de los clientes</p>
                 <?php endif; ?> 
             </section>            
         </section>
+
                     
         <?php if (isset($_SESSION['id'])): ?>
         <section class="formOpinion">

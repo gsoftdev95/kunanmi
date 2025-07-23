@@ -1229,7 +1229,9 @@ DETALLE PRODUCTO
     font-weight: 400;
     font-style: normal;
 }
-
+.opinion{
+    margin: 30px 0px 0px 0px;
+}
 .formOpinion{
     width: 100%;
     display: flex;
@@ -1244,6 +1246,43 @@ DETALLE PRODUCTO
     font-family: "Tenor Sans", sans-serif;
     font-weight: 400;
     font-style: normal;
+}
+
+.valoracion {
+    color: gold;
+    font-size: 1.2rem;
+    margin-bottom: 0.3rem;
+}
+
+.valoracion .estrella.vacia {
+    color: #939393;
+}
+
+
+
+
+.rating {
+    direction: rtl; /* Estrellas de derecha a izquierda */
+    unicode-bidi: bidi-override;
+    display: inline-flex;
+}
+
+.rating input {
+    display: none;
+}
+
+.rating label {
+    font-size: 2rem;
+    color: #ccc;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.rating input:checked ~ label,
+.rating input:hover ~ label,
+.rating label:hover,
+.rating label:hover ~ label {
+    color: gold;
 }
 .formOpinionInner form button{
     background-color: var(--verdeK);
@@ -1755,7 +1794,10 @@ body {
 /******************************/
 /******************************/
 
-
+.containerCarrito{
+    min-height: 1000px;
+    height: auto;
+}
 table th, table td {
     vertical-align: middle;
     text-align: center;

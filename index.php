@@ -4,6 +4,8 @@ require_once('./src/partials/conexionBD.php');
 
 // Traer productos destacados
 $destacados = obtenerProductosDestacados($bd);
+
+$testimonios = obtenerTestimonios($bd);
 ?>
 
 <!DOCTYPE html>
@@ -62,33 +64,23 @@ $destacados = obtenerProductosDestacados($bd);
     <section class="containerComment row col-sm-6 mb-3 mb-sm-0">
         <div>Testimonios</div>
         <section class="containerCommentInner">
-            <div class="card cardComment " style="width: 22rem;">
-                <div class="card-body">
-                    <h5 class="card-title">Nombre Apellido </h5>
-                    <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam nemo rem ullam, quo ipsam voluptate dolores ex corporis? Minima, repellendus.</p>
-                </div>
-                <ul class="list-group list-group-flush ">
-                    <li class="list-group-item  " style="background-color: transparent;">01/02/2025</li>
-                </ul>        
-            </div>
-            <div class="card cardComment" style="width: 22rem;">
-                <div class="card-body">
-                    <h5 class="card-title">Nombre Apellido </h5>
-                    <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam nemo rem ullam, quo ipsam voluptate dolores ex corporis? Minima, repellendus.</p>
-                </div>
-                <ul class="list-group list-group-flush">
-                    <li class="list-group-item " style="background-color: transparent;">01/02/2025</li>
-                </ul>        
-            </div>
-            <div class="card cardComment" style="width: 22rem;">
-                <div class="card-body">
-                    <h5 class="card-title">Nombre Apellido </h5>
-                    <p class="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. Laboriosam nemo rem ullam, quo ipsam voluptate dolores ex corporis? Minima, repellendus.</p>
-                </div>
-                <ul class="list-group list-group-flush" >
-                    <li class="list-group-item" style="background-color: transparent;font-size: 0.8rem;">01/02/2025</li>
-                </ul>        
-            </div>
+            <?php if(count($testimonios) > 0): ?>
+                <?php foreach ($testimonios as $tes): ?>
+                    <div class="card cardComment" style="width: 22rem;">
+                        <div class="card-body">
+                            <h5 class="card-title"><?= htmlspecialchars($tes['nombre'])?> <?= htmlspecialchars($tes['apellido_paterno']) ?></h5>
+                            <p class="card-text"><?= htmlspecialchars($tes['opinion']) ?></p>
+                        </div>
+                        <ul class="list-group list-group-flush" >
+                            <li class="list-group-item" style="background-color: transparent;font-size: 0.8rem;">
+                                <?= date("d/m/Y", strtotime($tes['fecha'])) ?>
+                            </li>
+                        </ul>        
+                    </div>
+                <?php endforeach; ?>
+            <?php else: ?>
+                <p> Aú no hay testimonios de los clientes</p>
+            <?php endif ?>
         </section>      
     </section>
 

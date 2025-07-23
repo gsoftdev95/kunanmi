@@ -1,0 +1,14 @@
+✅ 1. Registrar a tu cliente en Niubiz
+Tu cliente (el dueño del negocio) debe:
+
+Ingresar a https://www.niubiz.com.pe/
+
+Solicitar una cuenta de comercio (para vender en línea).
+
+Indicar que desea integrar pagos en su tienda virtual.
+
+Firmar los contratos y entregar los documentos que Niubiz solicite (RUC, DNI, cuenta bancaria, etc).
+
+🔸 Resultado esperado: Recibirá un acceso al Portal de Comercios Niubiz, con credenciales y su MERCHANT_ID.
+************************************
+

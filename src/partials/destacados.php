@@ -11,10 +11,12 @@
                             $primeraImagen = is_array($imagenes) && count($imagenes) > 0 ? htmlspecialchars($imagenes[0]) : 'default.jpg';
                         ?>
                         <img class="img-default" src="src/imgBD/Productos/<?= $primeraImagen ?>" alt="<?= htmlspecialchars($row['nombre']) ?>">
-                        <div class="hoverShop">
-                            <a href="#" class="btn cardProductTextBut mb-2">añadir al carrito <i class="bi bi-cart"></i></a>
+                        <form action="agregarAlCarrito.php" method="POST" class="hoverShop form-agregar-carrito">
+
+                            <input type="hidden" name="id" value="<?= $row['id'] ?>">
+                            <button type="submit" class="btn cardProductTextBut mb-2">añadir al carrito <i class="bi bi-cart"></i></button>
                             <a href="./detalleProducto.php?id=<?= $row['id'] ?>" class="btn cardProductTextBut">ver Producto</a>
-                        </div>
+                        </form>
                     </div>                                    
                 </a>
                 <div class="card-body cardProductText">
