@@ -715,14 +715,23 @@ function obtenerUsuarioPorId($bd, $idUsuario) {
     return $usuario ? $usuario : null;
 }
 function obtenerPedidosPorUsuario(PDO $bd, int $idUsuario): array {
-    $stmt = $bd->prepare("SELECT id, fecha_pedido, estado_id, monto_total 
-                            FROM pedidos 
-                            WHERE usuario_id = :usuario_id 
-                            ORDER BY fecha_pedido DESC");
+    $stmt = $bd->prepare("
+        SELECT 
+            p.id, 
+            p.fecha_pedido, 
+            e.estado, 
+            p.monto_total, 
+            e.descripcion_cliente
+        FROM pedidos p
+        JOIN estados_pedido e ON p.estado_id = e.id
+        WHERE p.usuario_id = :usuario_id 
+        ORDER BY p.fecha_pedido DESC
+    ");
     $stmt->bindValue(':usuario_id', $idUsuario, PDO::PARAM_INT);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+
 
 
 

@@ -12,3 +12,8 @@ Firmar los contratos y entregar los documentos que Niubiz solicite (RUC, DNI, cu
 🔸 Resultado esperado: Recibirá un acceso al Portal de Comercios Niubiz, con credenciales y su MERCHANT_ID.
 ************************************
 
+registro
+https://www.niubizenlinea.com.pe/?utm_source=Niubiz&utm_medium=Cliente-boton
+
+Acceder al portal de desarrolladores
+https://developers.niubiz.com.pe/

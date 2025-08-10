@@ -84,7 +84,7 @@ foreach ($resultado as $row) {
         <section class="container-fluid ContainerMainProductInner">
             <div class="row">
                 <!-- Sidebar izquierdo -->
-                <aside class="productFilters col-12 col-md-3 col-lg-2 p-3" style="min-height: 100vh; background-color: #f8f9fa;">
+                <aside class="productFilters col-12 col-md-3 col-lg-2 p-3">
                     <h5 class="mb-3">Filtros</h5>
                     <!-- ATRIBUTOS DINÁMICOS EN ACORDEÓN -->
                     <form id="formFiltros" data-categoria="<?= isset($_GET['categoria']) ? $_GET['categoria'] : '' ?>" data-subcategoria="<?= isset($_GET['subcategoria']) ? $_GET['subcategoria'] : '' ?>">
@@ -123,13 +123,13 @@ foreach ($resultado as $row) {
 
 
                 <!-- Contenido principal -->
-                <section class="productContainer col-12 col-md-9 col-lg-10 p-4">
+                <section class="productContainer col-12 col-md-9 col-lg-10">
                     <section class="productContainerTittle">
                         <h1>
                             <?= $categoriaNombre; ?>
                         </h1>
 
-                        <div class="mb-3 d-flex justify-content-end">
+                        <div class="labelOrder mb-3">
                             <label for="ordenar" class="me-2">Ordenar por:</label>
                             <select class="form-select w-auto" id="ordenar" name="ordenar">
                                 <option value="">-- Seleccionar --</option>
@@ -140,12 +140,11 @@ foreach ($resultado as $row) {
                                 <option value="reciente">Más recientes</option>
                             </select>
                         </div>
-
                     </section>
+
                     <section class="containerCards">
                         <?php foreach ($productos as $id => $row) { ?>
-                            <div class="cardProduct" style="width: 18rem;">
-                                
+                            <div class="cardProduct">                                
                                 <div class="imgProdShopCont">
                                     <?php 
                                         $imagenes = json_decode($row['imagen'], true);

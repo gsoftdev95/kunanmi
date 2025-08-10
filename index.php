@@ -6,6 +6,8 @@ require_once('./src/partials/conexionBD.php');
 $destacados = obtenerProductosDestacados($bd);
 
 $testimonios = obtenerTestimonios($bd);
+
+$opiniones = obtenerOpiniones($bd);
 ?>
 
 <!DOCTYPE html>
@@ -66,11 +68,25 @@ $testimonios = obtenerTestimonios($bd);
         <section class="containerCommentInner">
             <?php if(count($testimonios) > 0): ?>
                 <?php foreach ($testimonios as $tes): ?>
-                    <div class="card cardComment" style="width: 22rem;">
-                        <div class="card-body">
-                            <h5 class="card-title"><?= htmlspecialchars($tes['nombre'])?> <?= htmlspecialchars($tes['apellido_paterno']) ?></h5>
-                            <p class="card-text"><?= htmlspecialchars($tes['opinion']) ?></p>
+                    <div class="card cardComment">
+                        
+                        <h5 class="card-title"><?= htmlspecialchars($tes['nombre'])?> <?= htmlspecialchars($tes['apellido_paterno']) ?></h5>
+
+                        <div class="valoracion">
+                            <?php
+                            $valoracion = isset($tes['valoracion']) ? (int)$tes['valoracion'] : 0;
+                            for ($i = 1; $i <= 5; $i++):
+                                if ($i <= $valoracion):
+                                    echo '<span class="estrella">&#9733;</span>'; // estrella llena
+                                else:
+                                    echo '<span class="estrella vacia">&#9734;</span>'; // estrella vacía
+                                endif;
+                            endfor;
+                            ?>
                         </div>
+
+                        <p class="cardCommentOpinion"><?= htmlspecialchars($tes['opinion']) ?></p>
+                    
                         <ul class="list-group list-group-flush" >
                             <li class="list-group-item" style="background-color: transparent;font-size: 0.8rem;">
                                 <?= date("d/m/Y", strtotime($tes['fecha'])) ?>

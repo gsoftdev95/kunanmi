@@ -3,19 +3,20 @@ require_once('./helpers/dd.php');
 require_once('./controladores/funciones.php');
 require_once('./src/partials/conexionBD.php');
 
-if (!isset($_SESSION['id'])) {
-    $_SESSION['url_redireccion'] = $_SERVER['REQUEST_URI'];
-    header('Location: login.php');
-    exit;
-}
-
 // Inicializar carrito si no existe
 if (!isset($_SESSION['carrito'])) {
     $_SESSION['carrito'] = [];
 }
-
-// Obtener productos del carrito
 $carrito = $_SESSION['carrito'];
+
+// Obtener datos del cliente desde la BD
+$cliente = null;
+if (isset($_SESSION['id'])) {
+    $id_cliente = $_SESSION['id'];
+    $stmt = $bd->prepare("SELECT email, nombre, apellido_paterno, celular, direccion FROM usuarios WHERE id = ?");
+    $stmt->execute([$id_cliente]);
+    $cliente = $stmt->fetch(PDO::FETCH_ASSOC);
+}
 ?>
 
 <!doctype html>
@@ -76,11 +77,30 @@ $carrito = $_SESSION['carrito'];
                     </tbody>
                 </table>
             </div>
-
-            <div class="text-end">
-                <h4>Total: S/ <?= number_format($total, 2) ?></h4>
-                <a href="checkout.php" class="btn btn-primary mt-2">Proceder al pago</a>
-            </div>
+                              
+            <?php if ($cliente): ?>
+                <form action="checkout.php" method="POST">
+                    <input type="hidden" name="amount" value="<?= intval($total * 100) ?>"> <!-- 60.00 soles = 6000 -->
+                    <input type="hidden" name="currency" value="PEN">
+                    <input type="hidden" name="orderId" value="<?= uniqid('ORD_') ?>">
+                    <input type="hidden" name="email" value="<?= htmlspecialchars($cliente['email']) ?>">
+                    <input type="hidden" name="firstName" value="<?= htmlspecialchars($cliente['nombre']) ?>">
+                    <input type="hidden" name="lastName" value="<?= htmlspecialchars($cliente['apellido_paterno']) ?>">
+                    <input type="hidden" name="phoneNumber" value="<?= htmlspecialchars($cliente['celular']) ?>">
+                    <input type="hidden" name="identityType" value="DNI">
+                    <input type="hidden" name="identityCode" value="12345678"> <!-- Puedes reemplazar si lo tienes -->
+                    <input type="hidden" name="address" value="<?= htmlspecialchars($cliente['direccion']) ?>">
+                    <input type="hidden" name="country" value="PE">
+                    <input type="hidden" name="city" value="Lima">
+                    <input type="hidden" name="state" value="Lima">
+                    <input type="hidden" name="zipCode" value="15001">
+                    <button type="submit" class="btn btn-primary mt-2">Proceder al pago</button>
+                </form>
+            <?php else: ?>
+                <div class="alert alert-warning mt-4 text-center">
+                    Debes iniciar sesión para proceder al pago.
+                </div>
+            <?php endif; ?>            
         <?php endif; ?>
     </section>
 

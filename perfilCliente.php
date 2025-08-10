@@ -63,7 +63,7 @@ $pedidos = obtenerPedidosPorUsuario($bd, $idUsuario);
                         <tr>
                         <td><?= $pedido['id'] ?></td>
                         <td><?= date('d/m/Y', strtotime($pedido['fecha_pedido'])) ?></td>
-                        <td><?= ucfirst($pedido['estado']) ?></td>
+                        <td><?= ucfirst($pedido['descripcion_cliente']) ?></td>
                         <td>S/ <?= number_format($pedido['monto_total'], 2) ?></td>
                         <td><a href="detallePedido.php?id=<?= $pedido['id'] ?>" class="btn btn-sm btn-outline-primary">Ver</a></td>
                         </tr>

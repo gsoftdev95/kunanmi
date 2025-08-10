@@ -1,9 +1,44 @@
+1. checkout.php: Resumen final del pedido
+Mostrar:
 
-pedidoConfirmado.php – Confirmación de compra
-misPedidos.php – Historial de pedidos
-contacto.php – Formulario de contacto
+Productos del carrito (nombre, cantidad, subtotal)
 
-logout.php – Cerrar sesión
+Dirección de envío (puedes pedirla aquí si no la tienes)
+
+Total general
+
+Botón de Pagar con PayPal
+
+2. Integrar PayPal (sandbox) en checkout.php
+Agregar botón de pago PayPal JavaScript SDK
+
+Al hacer clic, PayPal abre el popup de pago
+
+Si el pago es exitoso, redirige a tu página (por ejemplo: pago_exitoso.php)
+
+3. Página pago_exitoso.php
+Aquí:
+
+Validas la respuesta de PayPal (ID del pago, estado)
+
+Registras el pedido en la base de datos:
+
+Inserción en pedidos con: usuario_id, fecha, monto_total, estado, direccion_envio
+
+Inserción en detalle_pedido con los productos del carrito
+
+Limpias el carrito (unset($_SESSION['carrito']))
+
+Muestras mensaje de compra exitosa
+
+4. (Opcional) Página pago_cancelado.php
+Muestras mensaje si el usuario cancela el pago desde PayPal
+
+5. (Opcional) Registro del pago (extra seguridad)
+Puedes guardar el payment_id, payer_id, estado, etc. en una tabla pagos para auditoría
+
+6. (Opcional) Enviar correo de confirmación al cliente
+Después de una compra exitosa
 
 ------------------------
 REALIZADO

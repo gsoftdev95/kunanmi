@@ -73,6 +73,12 @@ header{
     width: 100%;
     align-items: center;
 
+    @media (width < 990px) {
+        grid-template-columns: 200px auto auto auto 200px;
+    }
+    @media (width < 600px) {
+        grid-template-columns: 150px auto auto auto 150px;
+    }
     @media (width < 450px) {
         display: grid;
         grid-template-columns: repeat(8, 1fr);
@@ -87,8 +93,9 @@ header{
     }
 }
 .div2 {
+    
     @media (width < 450px) {
-    grid-column-start: 4;
+        grid-column-start: 4;
     }
 }
 .divSearch{
@@ -153,7 +160,8 @@ header{
     margin: 0px 30px 0px 0px;
     font-size: 1.3rem;
 
-    @media (width < 450px) {
+    
+    @media (width < 600px) {
         margin: 0px 10px 0px 0px;
     }
 }
@@ -170,6 +178,7 @@ header{
     padding: 2px 6px;
     border-radius: 50%;
 }
+
 .containerbtnNav{
     @media (width < 990px) {
         width: 100%;
@@ -279,7 +288,8 @@ header{
     position: relative;
     display: flex;
     justify-content: center; /* centra horizontalmente */
-    align-items: center;  
+    align-items: center; 
+    border-radius: 0; 
 
     @media (width < 450px ) {
         height: 400px;
@@ -308,6 +318,7 @@ header{
     height: 100%;
     max-width: 100%;
     object-fit: cover;
+    border-radius: 0; 
 
     @media (width <450px) {
     }
@@ -323,11 +334,16 @@ header{
         padding: 10px 10px 30px 10px;
         bottom: 10%;
     }
+    @media (width <450px) {
+        font-size: 2rem;
+        padding: 10px 10px 30px 10px;
+        bottom: 5%;
+    }
 }
 .bodyCoverTextSlogan{
     font-size: 4rem;
     color: var(--oscuroK);
-    padding: 10px 0px 30px 0px;
+    padding: 10px 0px 30px;
     font-weight: 600;
 
     font-family: "Tenor Sans", sans-serif;
@@ -337,10 +353,11 @@ header{
 
     @media (width <990px) {
         font-size: 2.5rem;
-        padding: 10px 10px 20px 10px;
+        padding: 10px 0px 20px;
     }
     @media (width <450px) {
-        font-size: 2.5rem;
+        font-size: 2rem;
+        padding: 5px 0px 5px;
     }
 }
 .bodyCoverTextButtom{
@@ -356,6 +373,13 @@ header{
     font-family: "Questrial", sans-serif;
     font-weight: 500;
     font-style: normal;
+
+    @media (width <990px) {
+    }
+    @media (width <450px) {
+        font-size: 1rem;
+        padding: 5px 30px;
+    }
 }
 .bodyCoverTextButtom:hover {
     background-color: var(--verdeOsc);
@@ -411,8 +435,12 @@ header{
 }
 .swiper-button-next,
 .swiper-button-prev {
-  color: var(--verdeK) !important;
-  padding: 30px 20px;
+    color: var(--verdeK) !important;
+    padding: 30px 20px;
+
+    @media (width < 450px) {
+        padding: 0px;
+    }
 }
 .swiper-button-next:hover,
 .swiper-button-prev:hover {
@@ -603,6 +631,11 @@ header{
     align-items: center;
     margin: auto;
     background-color: var(--rosabbK);
+
+    @media (width < 450px) {
+        padding: 50px 0px 25px;
+        height: auto;
+    }
 }
 .containerComment>div{
     width: 100%;
@@ -615,6 +648,10 @@ header{
     font-family: "Tenor Sans", sans-serif;
     font-weight: 400;
     font-style: normal;
+
+    @media (width < 450px ) {
+        font-size: 1.5rem;
+    }
 }
 .containerCommentInner{
     max-width: 1500px;
@@ -622,21 +659,39 @@ header{
     display: flex;
     justify-content: space-around;
     margin: 20px auto;
+
+    @media (width < 450px) {
+        flex-direction: column;
+        margin: 10px auto;
+        padding: 10px;
+        height: auto;
+    }
 }
 .cardComment{
     background-color: var(--blancoHumo);
     border: none;
     border-radius: 20px;
-    padding: 50px 0px;
-}
-.cardComment div{
-    text-align: left;
+    padding: 50px 20px;
+    width: 22rem;
+
+    @media (width < 450px) {
+        padding: 20px 10px;
+        margin-bottom: 10px;
+        width: 100%;
+    }
 }
 .cardComment h5{
     font-family: "Questrial", sans-serif;
     font-weight: 400;
     font-style: normal;
     padding-bottom: 20px;
+    
+    @media (width < 450px) {
+        padding-bottom: 0px
+    }
+}
+.valoracion{
+    text-align: left;
 }
 
 .containerSolgan{
@@ -953,6 +1008,11 @@ TIENDA TIENDA TIENDA
     max-width: 1500px;
     width: 100%;
     margin: 10px 0px 0px 50px;
+
+    @media (width < 450px) {
+        font-size: 0.9rem;
+        margin: 5px 0px 0px 20px;
+    }
 }
 
 .ContainerMainProduct{
@@ -973,21 +1033,53 @@ TIENDA TIENDA TIENDA
     position: sticky;
     top: 0;
     z-index: 1;
-    height: fit-content;
     overflow: auto; 
+    min-height: 100vh; 
+    background-color: #f8f9fa;
+
+    @media (width < 770px) {
+        min-height: 50vh;
+        position:relative;
+    }
+    @media (width < 450px) {
+        min-height: 50vh;
+        position:relative;
+    }
 }
 .productFilters form{
     color: var(--oscuroK);  
 }
 
+.productContainer{
+    @media (width < 450px) {
+        padding: 5px 5px;
+    }
+}
 .productContainerTittle{
     display: flex;
     justify-content: space-between;
+
+    @media (width < 450px) {
+        padding: 5px;
+        flex-direction: column;
+        text-align: left;
+    }
+}
+.labelOrder{
+    display: flex;
+    justify-content: flex-end;
+    @media (width < 450px) {
+        justify-content: left;
+    }
 }
 .containerCards{
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
+
+    @media (width < 450px) {
+        padding: 0px 0px;
+    }
 }
 
 .cardProduct{
@@ -995,6 +1087,15 @@ TIENDA TIENDA TIENDA
     flex-basis: 250px;
     margin: 10px 10px 40px;    
     height:auto;
+
+    @media (width < 990px) {
+        flex-basis: 200px;
+        margin: 5px 5px 20px;  
+    }
+    @media (width < 450px) {
+        flex-basis: 45%;
+        margin: 5px 5px 20px;  
+    }
 }
 .imgProdShopCont {
     position: relative;
@@ -1010,7 +1111,10 @@ TIENDA TIENDA TIENDA
     display: block;
     margin: auto;  
     aspect-ratio:1;
-    object-fit: cover;  
+    object-fit: cover;
+    border-radius: 0;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
 
 }
 .imgProdShopCont:hover .img-default {
@@ -1075,6 +1179,13 @@ TIENDA TIENDA TIENDA
     font-family: "Tenor Sans", sans-serif;
     font-weight: 400;
     font-style: normal;
+
+    @media (width < 450px) {
+        font-size: 0.8rem;
+        font-weight: 600;
+        margin: 5px 0px 0px;
+        min-height: 60px;
+    }
 }
 .cardProductTextSub{
     font-size: 0.8rem;
@@ -1085,6 +1196,10 @@ TIENDA TIENDA TIENDA
     font-family: "Tenor Sans", sans-serif;
     font-weight: 500;
     font-style: normal;
+
+    @media (width < 450px) {
+        font-size: 0.7rem;
+    }
 }
 .cardProductTextPrice{
     font-size: 0.9rem;
@@ -1342,7 +1457,7 @@ LOGIN LOGIN LOGIN
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    height: 70vh;
     margin: 0;
     background-color: #f5f5f5;
 }
