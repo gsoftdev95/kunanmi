@@ -40,22 +40,27 @@ if (isset($_SESSION['carrito'])) {
         $totalItems += $item['cantidad'];
     }
 }
+
+
+
 ?>
 
 <nav class="navbar navbar-expand-lg navbarMain d-block m-0 p-0">  
     <div class="container-fluid d-flex flex-column m-0 p-0">
         <div class="headerGrid">
             <div class="divhead div1">
-                <form class="divSearch d-flex" role="search">
-                    <input class="form-control me-2" type="search" placeholder="Buscar..." aria-label="Search"/>
-                    <button class="btn btn-outline-success" type="submit"><i class="bi bi-search"></i></button>
+                <form class="divSearch d-flex" role="search" method="GET" action="tienda.php">
+                    <input class="form-control me-2" type="search" name="q" placeholder="Buscar..." aria-label="Search"/>
+                    <button class="btn btn-outline-success" type="submit">
+                        <i class="bi bi-search"></i>
+                    </button>
                 </form>
             </div>
 
             <div class="divhead div2"></div>
 
             <div class="divhead divLogo">
-                <a class="navbar-brand" href="index.php">KUNANMI</a>
+                <a class="navbar-brand" href="index.php"><img src="./src/img/logokunanmi.png" alt=""></a>
             </div>
 
             <div class="divhead div4"></div>

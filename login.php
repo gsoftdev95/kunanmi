@@ -72,7 +72,7 @@ if ($_POST) {
                     <input type="password" class="mb-0" name="password" id="password" placeholder="Contraseña" required>
                     <button type="button" id="togglePassword" class="botonEyes">
                         <i class="bi bi-eye"></i>
-                    </button>  
+                    </button>
                 </div>
                 
                 <button type="submit" class="botonIngresar">Ingresar</button>
@@ -94,6 +94,9 @@ if ($_POST) {
     <footer>
         <?php include_once('./src/partials/footer.php')?>
     </footer>
+
+
+
 
     <!-- Bootstrap -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>

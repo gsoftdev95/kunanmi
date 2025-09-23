@@ -178,7 +178,7 @@ if ($_POST) {
                                     <hr>
                                 <?php endforeach; ?>
                             </div>                            
-                        </div>                        
+                        </div>
 
                         <button type="submit" class="btn btn-primary">Guardar producto</button>
 

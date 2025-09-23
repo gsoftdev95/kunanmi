@@ -1,5 +1,5 @@
 <section class="highlightsInner">
-    <div class="highlightsTitle">Productos destacados</div>
+    <div class="highlightsTitle subtitleKunnami">Productos destacados</div>
     <div class="highlightsSwiper swiper mySwiper">
         <div class="swiper-wrapper">
             <?php foreach ($destacados as $row): ?>

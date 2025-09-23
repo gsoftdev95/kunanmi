@@ -223,10 +223,16 @@ function obtenerSupracategorias($bd) {
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+//funcion para obtener atributos
+function obtenerAtributos($bd) {
+    $stmt = $bd->query("SELECT id, nombre FROM atributos ORDER BY id");
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
 //funcion para obtener atributos con valores
 function obtenerAtributosConValores($bd) {
     $stmt = $bd->query("SELECT va.id, va.valor, a.nombre AS atributo FROM valores_atributos va 
-                        JOIN atributos a ON va.id_atributo = a.id ORDER BY a.nombre");
+                        JOIN atributos a ON va.id_atributo = a.id ORDER BY a.nombre, va.valor");
     $resultado = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     $agrupado = [];
@@ -254,6 +260,7 @@ function validarProducto($datos, $archivos) {
     if (trim($datos['descripcionProducto']) === '') {
         $errores['descripcionProducto'] = 'La descripción es obligatoria';
     }
+    /*
     // Beneficios
     if (trim($datos['beneficiosProducto']) === '') {
         $errores['beneficiosProducto'] = 'Los beneficios son obligatorios';
@@ -265,7 +272,7 @@ function validarProducto($datos, $archivos) {
     // modo de empleo
     if (trim($datos['ingredientesProducto']) === '') {
         $errores['ingredientesProducto'] = 'coloque los ingredientes de su producto';
-    }
+    }*/
     // Precio
     if (!is_numeric($datos['precioProducto']) || $datos['precioProducto'] <= 0) {
         $errores['precioProducto'] = 'El precio debe ser un número positivo';
@@ -382,6 +389,21 @@ function buscarProductos($bd, $tabla, $busqueda, $tipoBusqueda) {
     $producto = $query->fetchAll(PDO::FETCH_ASSOC);
     return $producto;
 }
+
+function buscadorProductos($bd, $termino) {
+    $sql = "SELECT p.*,
+                c.nombre AS categoria_nombre, 
+                s.nombre AS subcategoria_nombre  
+            FROM productos p
+            LEFT JOIN categorias c ON p.categoria_id = c.id
+            LEFT JOIN subcategorias s ON p.subcategoria_id = s.id
+            WHERE p.nombre LIKE :termino OR p.descripcion LIKE :termino 
+            LIMIT 50"; 
+    $stmt = $bd->prepare($sql);
+    $stmt->execute([":termino" => "%$termino%"]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
 
 
 //Función para listar los datos del producto
@@ -763,7 +785,7 @@ function obtenerTestimonios($bd) {
             JOIN usuarios u ON o.usuario_id = u.id
             WHERE o.valoracion BETWEEN 3 AND 5
             ORDER BY o.valoracion DESC, o.fecha DESC
-            LIMIT 3;";
+            LIMIT 4;";
 
     $stmt = $bd->prepare($sql);
     $stmt->execute();

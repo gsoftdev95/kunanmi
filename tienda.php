@@ -7,42 +7,9 @@ require_once('./src/partials/conexionBD.php');
 $categoriaNombre = 'General';
 $productos = [];
 
-if (isset($_GET['subcategoria'])) {
-    $subcategoriaId = $_GET['subcategoria'];
+//Buscador
+$busqueda = $_GET['q'] ?? null;
 
-    // Traer productos por subcategoría
-    $productos = obtenerProductosPorSubcategoria($bd, $subcategoriaId);
-
-    // Obtener nombre de la categoría a la que pertenece la subcategoría
-    $stmt = $bd->prepare("SELECT sc.nombre AS sub_nombre, c.nombre AS cat_nombre 
-                          FROM subcategorias sc 
-                          JOIN categorias c ON sc.categoria_id = c.id 
-                          WHERE sc.id = ?");
-    $stmt->execute([$subcategoriaId]);
-    $res = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if ($res) {
-        $categoriaNombre = $res['cat_nombre']; // o $res['sub_nombre'] si prefieres el nombre de la subcategoría
-    }
-
-} elseif (isset($_GET['categoria'])) {
-    $categoriaId = $_GET['categoria'];
-
-    // Traer productos por categoría
-    $productos = obtenerProductosPorCategoria($bd, $categoriaId);
-
-    // Obtener nombre de la categoría
-    $stmt = $bd->prepare("SELECT nombre FROM categorias WHERE id = ?");
-    $stmt->execute([$categoriaId]);
-    $res = $stmt->fetch(PDO::FETCH_ASSOC);
-
-    if ($res) {
-        $categoriaNombre = $res['nombre'];
-    }
-} else {
-    // General (todos)
-    $productos = obtenerProdTienda($bd, "productos");
-}
 
 //Filtros dinamicos
 // Obtener todos los atributos y sus valores
@@ -60,14 +27,71 @@ foreach ($resultado as $row) {
     $atributos[$row['atributo_nombre']][] = $row['valor'];
 }
 
+
+
+
+//Buscador
+if ($busqueda) {
+    // ejemplo: llamar una función desde funciones.php
+    $productos = buscadorProductos($bd, $busqueda);
+}elseif (isset($_GET['subcategoria'])){    
+    $subcategoriaId = $_GET['subcategoria'];
+
+    // Traer productos por subcategoría
+    $productos = obtenerProductosPorSubcategoria($bd, $subcategoriaId);
+
+    // Obtener nombre de la categoría a la que pertenece la subcategoría
+    $stmt = $bd->prepare("SELECT sc.nombre AS sub_nombre, c.nombre AS cat_nombre 
+                        FROM subcategorias sc 
+                        JOIN categorias c ON sc.categoria_id = c.id 
+                        WHERE sc.id = ?");
+    $stmt->execute([$subcategoriaId]);
+    $res = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($res) {
+        $categoriaNombre = $res['cat_nombre']; // o $res['sub_nombre'] si prefieres el nombre de la subcategoría
+    }    
+}elseif(isset($_GET['categoria'])){
+    $categoriaId = $_GET['categoria'];
+
+    // Traer productos por categoría
+    $productos = obtenerProductosPorCategoria($bd, $categoriaId);
+
+    // Obtener nombre de la categoría
+    $stmt = $bd->prepare("SELECT nombre FROM categorias WHERE id = ?");
+    $stmt->execute([$categoriaId]);
+    $res = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if ($res) {
+        $categoriaNombre = $res['nombre'];
+    }
+}
+else{
+    $productos = obtenerProdTienda($bd, "productos");
+}
+
+
 ?>
 
 <!doctype html>
 <html lang="es">
-  <head>
+<head>
     <?php include_once('./src/partials/head.php')?>
-  </head>
-  <body>    
+</head>
+<style>
+    .hidden {
+        display: none;
+    }
+    .btn-ver-mas {
+        border: none;
+        background: none;
+        cursor: pointer;
+    }
+    .btn-ver-mas:hover {
+        text-decoration: underline;
+    }
+</style>
+<body>    
     
     <header>
         <?php include_once('./src/partials/navbar.php')?>
@@ -102,14 +126,20 @@ foreach ($resultado as $row) {
                                 </h2>
                                 <div id="<?= $idAcordeon ?>" class="accordion-collapse collapse" aria-labelledby="heading<?= $i ?>" data-bs-parent="#accordionFiltros">
                                     <div class="accordion-body">
-                                        <?php foreach ($valores as $valor): ?>
-                                            <div class="form-check">
+                                        <?php foreach ($valores as $j => $valor): ?>
+                                            <div class="form-check atributo-item <?= $j >= 10 ? 'hidden' : '' ?>">
                                                 <input class="form-check-input" type="checkbox" name="<?= $nombreAtributo ?>[]" value="<?= htmlspecialchars($valor) ?>" id="<?= $nombreAtributo . '_' . $valor ?>">
                                                 <label class="form-check-label" for="<?= $nombreAtributo . '_' . $valor ?>">
                                                     <?= htmlspecialchars(ucfirst($valor)) ?>
                                                 </label>
                                             </div>
                                         <?php endforeach; ?>
+
+                                        <?php if (count($valores) > 10): ?>
+                                            <button type="button" class="btn-ver-mas small text-primary p-0 mt-2" data-step="10">
+                                                + Ver más
+                                            </button>
+                                        <?php endif; ?>
                                     </div>
                                 </div>
                             </div>
@@ -185,6 +215,30 @@ foreach ($resultado as $row) {
 
     <!--añadirCarrito-Tienda-->
     <script src="./src/js/añadirCarrito-tienda.js"></script>
+
+    <!--vermas en filtros-->
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        document.querySelectorAll(".btn-ver-mas").forEach(button => {
+            button.addEventListener("click", function () {
+                const step = parseInt(button.getAttribute("data-step"));
+                const body = button.closest(".accordion-body");
+                const hiddenItems = body.querySelectorAll(".atributo-item.hidden");
+
+                // Mostrar hasta 10 más
+                for (let i = 0; i < step && i < hiddenItems.length; i++) {
+                    hiddenItems[i].classList.remove("hidden");
+                }
+
+                // Si ya no quedan ocultos → eliminar botón
+                if (body.querySelectorAll(".atributo-item.hidden").length === 0) {
+                    button.remove();
+                }
+            });
+        });
+    });
+    </script>
+
 
   </body>
 </html>

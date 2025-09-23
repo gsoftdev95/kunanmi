@@ -25,9 +25,9 @@ $opiniones = obtenerOpiniones($bd);
     </header>
 
     <div class=bodyCover>
-        <img src="./src/img/portada.jpg" alt="imagen de portada" width="100%" loading="lazy">
+        <img src="./src/img/portadaCliente2.png" alt="imagen de portada" loading="lazy">
         <div class="bodyCoverText">
-            <div class="bodyCoverTextSlogan">Bienestar natural en cada vela</div>
+            <div class="bodyCoverTextSlogan">​La esencia de la naturaleza en tu piel y tu hogar.</div>
             <a href="./tienda.php"><div class="bodyCoverTextButtom"> Ver tienda <i class="bi bi-bag"></i></div></a>
         </div>
     </div>
@@ -56,47 +56,49 @@ $opiniones = obtenerOpiniones($bd);
     <section class="review">
         <div class=containerReview>
             <img src="./src/img/reseña.jpg" alt="">
-            <div>
+            <div class="textReview">
                 <h2>KUNANMI</h2>
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Iste tenetur nam repellat nobis! Nemo consequatur exercitationem consectetur totam modi molestias excepturi voluptas, dignissimos iure quibusdam quas officia veritatis ipsum reiciendis maxime a ducimus. Mollitia sunt minus culpa, nisi beatae veritatis porro quaerat possimus, totam doloribus nesciunt aliquam facere quos accusantium!</p>
             </div>        
         </div>
     </section>
 
-    <section class="containerComment row col-sm-6 mb-3 mb-sm-0">
-        <div>Testimonios</div>
+    <section class="containerComment">        
         <section class="containerCommentInner">
-            <?php if(count($testimonios) > 0): ?>
-                <?php foreach ($testimonios as $tes): ?>
-                    <div class="card cardComment">
+            <div class="commentTitle">Testimonios</div>
+            <div class="commentBox">
+                <?php if(count($testimonios) > 0): ?>
+                    <?php foreach ($testimonios as $tes): ?>
+                        <div class="card cardComment">
+                            
+                            <h5 class="card-title"><?= htmlspecialchars($tes['nombre'])?> <?= htmlspecialchars($tes['apellido_paterno']) ?></h5>
+
+                            <div class="valoracion">
+                                <?php
+                                $valoracion = isset($tes['valoracion']) ? (int)$tes['valoracion'] : 0;
+                                for ($i = 1; $i <= 5; $i++):
+                                    if ($i <= $valoracion):
+                                        echo '<span class="estrella">&#9733;</span>'; // estrella llena
+                                    else:
+                                        echo '<span class="estrella vacia">&#9734;</span>'; // estrella vacía
+                                    endif;
+                                endfor;
+                                ?>
+                            </div>
+
+                            <p class="cardCommentOpinion"><?= htmlspecialchars($tes['opinion']) ?></p>
                         
-                        <h5 class="card-title"><?= htmlspecialchars($tes['nombre'])?> <?= htmlspecialchars($tes['apellido_paterno']) ?></h5>
-
-                        <div class="valoracion">
-                            <?php
-                            $valoracion = isset($tes['valoracion']) ? (int)$tes['valoracion'] : 0;
-                            for ($i = 1; $i <= 5; $i++):
-                                if ($i <= $valoracion):
-                                    echo '<span class="estrella">&#9733;</span>'; // estrella llena
-                                else:
-                                    echo '<span class="estrella vacia">&#9734;</span>'; // estrella vacía
-                                endif;
-                            endfor;
-                            ?>
+                            <ul class="list-group list-group-flush" >
+                                <li class="list-group-item" style="background-color: transparent;font-size: 0.8rem;">
+                                    <?= date("d/m/Y", strtotime($tes['fecha'])) ?>
+                                </li>
+                            </ul>        
                         </div>
-
-                        <p class="cardCommentOpinion"><?= htmlspecialchars($tes['opinion']) ?></p>
-                    
-                        <ul class="list-group list-group-flush" >
-                            <li class="list-group-item" style="background-color: transparent;font-size: 0.8rem;">
-                                <?= date("d/m/Y", strtotime($tes['fecha'])) ?>
-                            </li>
-                        </ul>        
-                    </div>
-                <?php endforeach; ?>
-            <?php else: ?>
-                <p> Aú no hay testimonios de los clientes</p>
-            <?php endif ?>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <p> Aú no hay testimonios de los clientes</p>
+                <?php endif ?>
+            </div>            
         </section>      
     </section>
 
@@ -129,6 +131,53 @@ $opiniones = obtenerOpiniones($bd);
 
     <!--carrusel destacado-->                
     <script src='./src/js/carruselDestacado.js'></script>
+    
+    <!--animación iconos del index-->   
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const elementos = document.querySelectorAll(".CategoryIcon1");
+
+            const opciones = {
+                root: null,
+                threshold: 0.5 // 50% del elemento visible
+            };
+
+            const observer = new IntersectionObserver((entradas) => {
+                entradas.forEach(entrada => {
+                    if (entrada.isIntersecting) {
+                        entrada.target.classList.add("animate");
+                        // Si no quieres que se repita la animación al hacer scroll:
+                        observer.unobserve(entrada.target);
+                    }
+                });
+            }, opciones);
+
+            elementos.forEach(el => observer.observe(el));
+        });
+    </script>
+
+    <!--animación del review-->   
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const elementos = document.querySelectorAll(".textReview")
+            const opciones = {root: null, threshold: 0.5};
+
+            const observer = new IntersectionObserver((entradas) => {
+                entradas.forEach(entrada => {
+                    if (entrada.isIntersecting) {
+                        entrada.target.classList.add("animate2");
+                        
+                        observer.unobserve(entrada.target);
+                    }
+                });
+            }, opciones);
+
+            elementos.forEach(el => observer.observe(el));
+
+        });
+
+    </script>
+
 
 </script>
 

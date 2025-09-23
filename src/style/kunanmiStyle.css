@@ -99,7 +99,7 @@ header{
     }
 }
 .divSearch{
-    border: 1px solid var(--oscuroK);
+    border: 1px solid var(--verdeK);
     border-radius: 20px;
     overflow: hidden;
     margin: 0px 0px 0px 20px;
@@ -125,18 +125,25 @@ header{
 }
 .divLogo{
     text-align: center;
-    margin: 30px 0px;
+    margin: 30px 0px 10px;
     font-size: 2.rem;
+    width: 250px;
+    height: auto;
 
     @media (width < 450px) {
         grid-column: span 4 / span 4;
         grid-column-start: 3;
         grid-row-start: 2;
         margin: 0;
+        width: 100%;
     }
 }
 .divLogo a{
-    font-size: 2.3rem;
+    font-size: 1rem;
+}
+.divLogo img{
+    width: 100%;
+    height: auto;
 }
 .div4 {
     @media (width < 450px) {
@@ -155,6 +162,9 @@ header{
         grid-column-start: 6;
         grid-row-start: 1;
     }
+}
+.divIcon i{
+    color: var(--verdeK);
 }
 .iconNav{
     margin: 0px 30px 0px 0px;
@@ -196,6 +206,7 @@ header{
     display: flex;
     justify-content: space-around;
     position: relative;
+    margin: 20px 0px 0px;
 }
 .containermenutext{
     width: 60%;
@@ -283,7 +294,7 @@ header{
 
 .bodyCover{
     width: 100%;
-    height: 500px;
+    height: 600px;
     font-size: 14px;
     position: relative;
     display: flex;
@@ -295,6 +306,7 @@ header{
         height: 400px;
     }
 }
+
 .bodyCover::before {
     content: "";
     position: absolute;
@@ -304,8 +316,8 @@ header{
     height: 100%;
     background: linear-gradient(
         to top,
-        rgba(245, 235, 220, 0.85) 0%,
-        rgba(245, 235, 220, 0.85) 50%,
+        rgba(0, 0, 0, 0.85) 0%,
+        rgba(42, 42, 42, 0.85) 10%,
         transparent 100%
     );
     z-index: 1;
@@ -313,6 +325,7 @@ header{
     @media (width <450px) {
     }
 }
+
 .bodyCover img{
     width: 100%;
     height: 100%;
@@ -325,9 +338,15 @@ header{
 }
 .bodyCoverText{
     position: absolute;
-    bottom: 20%;
+    bottom: 10%;
     text-align: center;
     z-index: 2;
+    height: 50%;
+    
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
 
     @media (width <990px) {
         font-size: 3rem;
@@ -341,10 +360,13 @@ header{
     }
 }
 .bodyCoverTextSlogan{
-    font-size: 4rem;
-    color: var(--oscuroK);
-    padding: 10px 0px 30px;
+    font-size: 3.5rem;
+    color: var(--blancoK);
+    padding: 10px 0px 10px;
     font-weight: 600;
+    width: 80%;
+    line-height: 1;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 
     font-family: "Tenor Sans", sans-serif;
     font-weight: 500;
@@ -369,6 +391,7 @@ header{
     border-radius: 30px;
     text-decoration: none;
     transition: background-color 0.3s ease;
+    box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
 
     font-family: "Questrial", sans-serif;
     font-weight: 500;
@@ -410,7 +433,7 @@ header{
     font-size: 3rem;
     color: var(--oscuroK);
     margin: 0px 0px 10px;
-    text-align: center;
+    text-align: left;
     width: 100%;
 
     font-family: "Tenor Sans", sans-serif;
@@ -494,6 +517,7 @@ header{
     text-align: center;
     color: var(--rosaK);
     margin: 0px 50px;
+    opacity: 0;
 
     @media (width < 990px) {
         margin: 0px 40px;
@@ -505,6 +529,20 @@ header{
         margin: 0px 10px;
     }
 }
+.CategoryIcon1.animate {
+    animation: zoom1 2s forwards;
+}
+@keyframes zoom1 {
+    from {
+        transform: scale(0.5);
+        opacity: 0;
+    }
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
 .CategoryIcon1 i{
     font-size: 9rem;
     height: 80%;
@@ -558,7 +596,7 @@ header{
     object-fit: cover;
     margin: 30px 0px;
 }
-.containerReview div{
+.textReview{
     position: absolute;
     background-color: var(--verdeK);
     padding: 20px;
@@ -568,6 +606,8 @@ header{
     left: 90%;
     top:50%;
     transform: translate(0%,-50%);
+    opacity: 0; /* inicialmente invisible */
+    transition: opacity 0.5s ease-out;
 
     @media (width < 990px) {
         font-size: 10px;
@@ -576,8 +616,25 @@ header{
         left: 90%;
         top:50%;
         transform: translate(00%,-50%);
+    }    
+}
+/* Animación izquierda → derecha */
+@keyframes slideInLeft {
+    from {
+        transform: translateX(-120%) translateY(-50%);
+        opacity: 0;
     }
-    @media (width < 750px) {
+    to {
+        transform: translateX(0) translateY(-50%);
+        opacity: 1;
+    }
+}
+/* Se activa con la clase que pone IntersectionObserver */
+.textReview.animate2 {
+    animation: slideInLeft 1.2s ease-out forwards;
+}
+@media (width < 750px) {
+    .textReview{
         font-size: 10px;
         padding: 5px;
         width: 300px;
@@ -586,7 +643,19 @@ header{
         transform: translate(-50%,-50%);
         opacity: 0.8;
     }
+    @keyframes slideInLeft {
+        from {
+            transform: translateX(-120%) translateY(-50%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(-50) translateY(-50%);
+            opacity: 1;
+        }
+    }
 }
+
+
 .containerReview div h2{
     font-size: 2rem;
     padding: 50px 0px 20px;
@@ -626,10 +695,8 @@ header{
     width: 100%;
     padding: 100px 0px 50px;
     display: flex;
-    flex-direction: column;
     justify-content:center;
     align-items: center;
-    margin: auto;
     background-color: var(--rosabbK);
 
     @media (width < 450px) {
@@ -637,12 +704,17 @@ header{
         height: auto;
     }
 }
-.containerComment>div{
+.containerCommentInner{
+    max-width: 1500px;
     width: 100%;
-    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+.commentTitle{
+    width: 100%;
+    text-align: left;
     font-size:  3rem;
     margin: 0px 0px 10px;
-    font-weight: 500;
     color: var(--oscuroK);
 
     font-family: "Tenor Sans", sans-serif;
@@ -653,11 +725,11 @@ header{
         font-size: 1.5rem;
     }
 }
-.containerCommentInner{
+.commentBox{
     max-width: 1500px;
-    width: 80%;
+    width: 100%;
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     margin: 20px auto;
 
     @media (width < 450px) {
@@ -1240,6 +1312,7 @@ DETALLE PRODUCTO
 .imgDetProd{
     object-fit:cover;;
     aspect-ratio: 4/3;
+    width: 100%;
 }
 .infoProduct{
     margin: 0px 0px 0px 50px;
@@ -1706,6 +1779,35 @@ body {
         display: none;
     }
 }
+.containerFormAt{
+    padding: 2px 5px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+}
+.containerFormAt form{
+    display: flex;
+    align-items: center;
+}
+.containerFormAt form div{
+    margin: 0px 5px;
+}
+.containerFormAt form button{
+    background-color: var(--rosaK);
+}
+.containerTabAt{
+    max-height: 300px;
+    overflow-y: auto;
+    margin: 0px 0px 50px;
+}
+.containerTabAt thead {
+  background-color: #f2f2f2;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+
 .adminSearchForm{
     display: flex;
     align-items: center;
@@ -1885,7 +1987,6 @@ body {
 .listAtributos div{
     margin:0px 30px 30px 10px;
 }
-
 .containerbSecond{
     height: 100px;
     width: 100%;

@@ -109,20 +109,34 @@ $destacados = obtenerProductosDestacados($bd);
             
                 <div class="tabsdetailsProducts">
                     <ul class="nav nav-tabs" id="infoTab" role="tablist">
-                        <li class="nav-item">
-                            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#beneficios">Beneficios</button>
-                        </li>
-                        <li class="nav-item">
-                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#uso">Modo de empleo</button>
-                        </li>
-                        <li class="nav-item">
-                            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#ingredientes">Ingredientes</button>
-                        </li>
+                        <?php if (!empty($producto['beneficios']) || !empty($producto['modo_empleo']) || !empty($producto['ingredientes'])): ?>
+                            <?php if (!empty($producto['beneficios'])): ?>
+                                <li class="nav-item">
+                                    <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#beneficios">Beneficios</button>
+                                </li>
+                            <?php endif; ?>
+
+                            <?php if (!empty($producto['modo_empleo'])): ?>
+                                <li class="nav-item">
+                                    <button class="nav-link <?= empty($producto['beneficios']) ? 'active' : '' ?>" data-bs-toggle="tab" data-bs-target="#uso">Modo de empleo</button>
+                                </li>
+                            <?php endif; ?>
+
+                            <?php if (!empty($producto['ingredientes'])): ?>
+                                <li class="nav-item">
+                                    <button class="nav-link <?= (empty($producto['beneficios']) && empty($producto['modo_empleo'])) ? 'active' : '' ?>" data-bs-toggle="tab" data-bs-target="#ingredientes">Ingredientes</button>
+                                </li>
+                            <?php endif; ?>
+                        <?php else: ?>
+                            <li class="nav-item">
+                                <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#noinfo">Datos no encontrados</button>
+                            </li>
+                        <?php endif; ?>
                     </ul>
                     <div class="tab-content p-3 border">
                         <div class="tab-pane fade show active" id="beneficios"><?= htmlspecialchars($producto['beneficios']) ?></div>
                         <div class="tab-pane fade" id="uso"><?= htmlspecialchars($producto['modo_empleo']) ?></div>
-                        <div class="tab-pane fade" id="ingredientes"><?= htmlspecialchars($producto['ingredientes']) ?></div>
+                        <div class="tab-pane fade" id="ingredientes">Descubre cada ingrediente que hace especial a este producto: <?= htmlspecialchars($producto['ingredientes']) ?></div>
                     </div>
                 </div>
 

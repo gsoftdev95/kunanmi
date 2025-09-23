@@ -76,8 +76,7 @@ if (isset($_SESSION['id'])) {
                         <?php $_SESSION['total_carrito'] = $total; ?>
                     </tbody>
                 </table>
-            </div>
-                              
+            </div>                              
             <?php if ($cliente): ?>
                 <form action="checkout.php" method="POST">
                     <input type="hidden" name="amount" value="<?= intval($total * 100) ?>"> <!-- 60.00 soles = 6000 -->
@@ -100,7 +99,7 @@ if (isset($_SESSION['id'])) {
                 <div class="alert alert-warning mt-4 text-center">
                     Debes iniciar sesión para proceder al pago.
                 </div>
-            <?php endif; ?>            
+            <?php endif; ?>
         <?php endif; ?>
     </section>
 

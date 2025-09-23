@@ -136,13 +136,13 @@ if ($_POST) {
                     </div>
 
                     <label for="beneficiosProducto">Beneficios del producto</label>
-                    <input type="text" class="form-control" name="beneficiosProducto" value="<?= htmlspecialchars($productos['beneficios']) ?>" required>
+                    <input type="text" class="form-control" name="beneficiosProducto" value="<?= htmlspecialchars($productos['beneficios']) ?>" >
 
                     <label for="modoEmpleo">Modo de empleo</label>
-                    <input type="text" class="form-control" name="modoEmpleo" value="<?= htmlspecialchars($productos['modo_empleo']) ?>" required>
+                    <input type="text" class="form-control" name="modoEmpleo" value="<?= htmlspecialchars($productos['modo_empleo']) ?>" >
 
                     <label for="ingredProducto">Ingredientes</label>
-                    <input type="text" class="form-control" name="ingredProducto" value="<?= htmlspecialchars($productos['ingredientes']) ?>" required>
+                    <input type="text" class="form-control" name="ingredProducto" value="<?= htmlspecialchars($productos['ingredientes']) ?>" >
 
                     <label for="destacadoProducto">Destacado</label>
                     <select name="destacadoProducto" class="form-control" required>
@@ -155,7 +155,7 @@ if ($_POST) {
                     <input type="file" class="form-control" name="avatar[]" multiple >
 
                     <label for="estadoProducto">Estado</label>
-                    <select name="estadoProducto" class="form-control" required>
+                    <select name="estadoProducto" class="form-control mb-2" required>
                         <option value="">Seleccione estado</option>
                         <option value="activo" <?= isset($productos['estado']) && $productos['estado'] === 'activo' ? 'selected' : '' ?>>activo</option>
                         <option value="inactivo" <?= isset($productos['estado']) && $productos['estado'] === 'inactivo' ? 'selected' : '' ?>>inactivo</option>
