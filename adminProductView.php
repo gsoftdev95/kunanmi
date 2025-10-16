@@ -40,7 +40,24 @@ $productos = detProdForAdmin($bd, $id, 'productos');
                         <hr>
 
                         <h5>Descripción:</h5>
-                        <p class="ms-5"><?= $productos['descripcion'] ?></p>
+                        <ul class="ms-5">
+                            <?php
+                                if (!empty($productos['descripcion'])) {
+                                    // Decodificar JSON a array
+                                    $descripcionArray = json_decode($productos['descripcion'], true);
+
+                                    if (is_array($descripcionArray)) {
+                                        foreach ($descripcionArray as $descripcion) {
+                                            echo "<li>" . htmlspecialchars(trim($descripcion)) . "</li>";
+                                        }
+                                    } else {
+                                        echo "<p>Error al leer las descripcion.</p>";
+                                    }
+                                } else {        
+                                    echo "<p>No hay descripcion del producto.</p>";
+                                }
+                            ?>
+                        </ul>                        
                         <hr>
 
                         <h5>Precio:</h5>

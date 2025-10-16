@@ -91,7 +91,11 @@ if ($_POST) {
                         </div>
                         <div class="form-group">
                             <label for="descripcionProducto">Descripción</label>
+                            <!--
                             <input type="text" class="form-control" name="descripcionProducto" placeholder="Descripcion" value="<?= isset($descripcionProducto) ? $descripcionProducto:''; ?>">
+                        -->
+
+                            <textarea class="form-control" name="descripcionProducto" id="" value="<?= isset($descripcionProducto) ? $descripcionProducto:''; ?>"></textarea>
                         </div>
                         <div class="form-group">
                             <label for="precioProducto">Precio</label>

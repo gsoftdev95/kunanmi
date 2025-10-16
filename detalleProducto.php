@@ -20,6 +20,7 @@ $opiniones = obtenerOpiniones($bd);
 
 $imagenes = !empty($producto['imagen']) ? json_decode($producto['imagen'],true) : [];
 $destacados = obtenerProductosDestacados($bd);
+$descripciones = !empty($producto['descripcion']) ?json_decode($producto['descripcion'],true) : [];
 ?>
 
 <!doctype html>
@@ -87,7 +88,13 @@ $destacados = obtenerProductosDestacados($bd);
                         <h4>S/. <?= htmlspecialchars($producto['precio']) ?></h4>
                         <hr>
                         <div class="beneficios">Descripción</div>
-                        <div class="beneficiosP"><?= htmlspecialchars($producto['descripcion']) ?></div>
+                        <div class="beneficiosP">
+                            <ul>
+                                <?php foreach($descripciones as $descrip): ?>
+                                    <li style="list-style-type: none;"><?= htmlspecialchars($descrip) ?></li>
+                                <?php endforeach ?>
+                            </ul>
+                        </div>
                         <div class="contador">
                             <button type="button" class="btn-decrementar">−</button>
                             <input type="text" class="input-cantidad" value="1" readonly>

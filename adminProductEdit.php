@@ -14,6 +14,9 @@ $supracategorias = obtenerSupracategorias($bd);
 $imagenes = is_string($productos['imagen']) ? json_decode($productos['imagen'], true) : $productos['imagen'];
 $atributos = obtenerAtributosConValores($bd);
 
+$descripciones = isset($productos['descripcion']) && !empty($productos['descripcion']) ? implode("\n", json_decode($productos['descripcion'], true) ?? []) : '';
+$usos = isset($productos['descripcion']) && !empty($productos['descripcion']) ? implode("\n", json_decode($productos['descripcion'], true) ?? []) : '';
+
 if ($_POST) {
     $valoresAtributos = [];
     if (isset($_POST['atributos'])) {
@@ -90,7 +93,8 @@ if ($_POST) {
                     <input type="text" class="form-control" name="nombreProducto" value="<?= htmlspecialchars($productos['nombre']) ?>" required>
 
                     <label for="descripcionProducto">Descripción del producto</label>
-                    <input type="text" class="form-control" name="descripcionProducto" value="<?= htmlspecialchars($productos['descripcion']) ?>" required>
+                    <!--<input type="text" class="form-control" name="descripcionProducto" value="<?= htmlspecialchars($productos['descripcion']) ?>" required>-->
+                    <textarea class="form-control" name="descripcionProducto" id="" rows="5" ><?= htmlspecialchars($descripciones) ?></textarea>
 
                     <label for="precioProducto">Precio del producto</label>
                     <input type="text" class="form-control" name="precioProducto" value="<?= htmlspecialchars($productos['precio']) ?>" required>

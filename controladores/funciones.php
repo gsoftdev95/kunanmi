@@ -484,6 +484,7 @@ function modificarProducto($bd, $tabla, $datos, $avatar)
     $id = intval($datos['id']);
     $nombreProducto = $datos['nombreProducto'];
     $descripcionProducto = $datos['descripcionProducto'];
+    $descripcionProducto = json_encode(explode("\n", $datos['descripcionProducto']));
     $precioProducto = $datos['precioProducto'];    
     $stockProducto = $datos['stockProducto'];
     $categoriaProducto = $datos['categoriaProducto'];

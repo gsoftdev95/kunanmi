@@ -12,15 +12,14 @@
     <section class="nosotros container py-5">
         <div class="row align-items-center">
             <div class=" col-md-6 mb-4 mb-md-0">
-                <img src="./src/img/equipo.png" alt="Equipo de trabajo artesanal" class="imgNosotros img-fluid rounded">
+                <img src="./src/img/nosotros.jpg" alt="Equipo de trabajo artesanal" class="imgNosotros img-fluid rounded">
             </div>
             <div class="col-md-6">
                 <h2 class="TitleNosotros mb-3">Sobre Nosotros</h2>
                 <p>
-                    En <strong>Kunanmi</strong>, creemos en el poder de lo natural. Nuestra pasión por el cuidado personal y el respeto por el medio ambiente nos llevó a crear una línea de productos artesanales, elaborados a mano con ingredientes conscientes y de alta calidad.
-                </p>
+                    Hola, mi nombre es Verónica. Siempre me ha gustado llevar un estilo de vida saludable, cuidar de mi piel, correr, y vivir en contacto con la naturaleza. Estudié Ingeniería Electrónica en la UNMSM y trabaje varios años en la industria. A mitad de mi doctorado y en plena pandemia, una amiga me presentó el mundo de la cosmética artesanal. Es así que en julio del 2021 decidí crear Kunanmi. Empecé vendiendo una amplia variedad de jabones de glicerina, pero decidí apostar por productos de cosmética natural para toda la rutina. Al mismo tiempo, aprendí a hacer velas aromáticas. Todo bajo el concepto de vivir el presente, y siempre reservar un momento del día para cuidar de uno mismo.
                 <p>
-                    Cada vela, jabón o crema que producimos es el resultado de un proceso cuidadoso, ético y lleno de propósito. Nos inspira el bienestar real: ese que se logra cuando cuidamos de nuestro cuerpo, nuestro hogar y nuestro entorno.
+                    Elaboro cada uno de mis productos con fórmulas compuestas de insumos certificados 100% naturales, entre extractos vegetales, aceites y mantecas, vitaminas y aceites esenciales enfocados en proveer beneficios a nuestros clientes.
                 </p>
             </div>
         </div>

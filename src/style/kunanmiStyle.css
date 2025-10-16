@@ -12,12 +12,13 @@
     --blancoK:#ffffff;
 }
 * {
-  box-sizing: border-box;
+    
 }
 html, body {
-  margin: 0;
-  padding: 0;
-  width: 100%;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    list-style-type: none;
 }
 
 header{
@@ -1502,8 +1503,7 @@ NOSOTROS NOSOTROS
 .TitleNosotros{
     color: var(--rosaK);
 }
-.imgNosotros{
-    aspect-ratio: 4/3;
+.imgNosotros{    
     object-fit: cover;
 }
 .containerFilosofia{
