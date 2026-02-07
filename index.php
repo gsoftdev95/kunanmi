@@ -55,7 +55,7 @@ $opiniones = obtenerOpiniones($bd);
 
     <section class="review">
         <div class=containerReview>
-            <img src="./src/img/reseña.jpg" alt="">
+            <img src="./src/img/reseña.png" alt="">
             <div class="textReview">
                 <h2>KUNANMI</h2>
                 <p>En <strong>Kunanmi</strong>, creemos en el poder de lo natural. Nuestra pasión por el cuidado personal y el respeto por el medio ambiente nos llevó a crear una línea de productos artesanales, elaborados a mano con ingredientes conscientes y de alta calidad. Cada vela, jabón o crema que producimos es el resultado de un proceso cuidadoso, ético y lleno de propósito. Nos inspira el bienestar real: ese que se logra cuando cuidamos de nuestro cuerpo, nuestro hogar y nuestro entorno.</p>

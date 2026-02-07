@@ -24,6 +24,7 @@ if ($_POST) {
     $ingredientesProducto = $_POST['ingredientesProducto'];
     $estadoProducto = $_POST['estadoProducto'];
     $valoresAtributos = [];
+
     if (isset($_POST['atributos'])) {
         if (is_array(reset($_POST['atributos']))) {
             // Es un array de arrays → aplanar con array_merge
@@ -34,12 +35,19 @@ if ($_POST) {
         }
     }
 
+    // Convertir la descripción y modo de empleo en un array por líneas
+    $descripcionArray = array_filter(array_map('trim', explode("\n", $descripcionProducto)));
+    $modoEmpleoArray = array_filter(array_map('trim', explode("\n", $modoEmpleoProducto)));
+    // Convertir a JSON
+    $_POST['descripcionProducto'] = json_encode($descripcionArray, JSON_UNESCAPED_UNICODE);
+    $_POST['modoEmpleoProducto'] = json_encode($modoEmpleoArray, JSON_UNESCAPED_UNICODE);
 
     $errores = array_merge($errores, validarProducto($_POST, $_FILES));
 
     if (count($errores) === 0) {
         $avatar = armarLaImagenProducto($_FILES);
         require_once('src/partials/conexionBD.php');
+
         $idProducto = guardarProducto($bd, 'productos', $_POST, $avatar);
 
         foreach ($valoresAtributos as $idValor) {
@@ -90,11 +98,7 @@ if ($_POST) {
                             <input type="text" class="form-control" name="nombreProducto" placeholder="Nombre del producto" value="<?= isset($nombreProducto) ? $nombreProducto:''; ?>">
                         </div>
                         <div class="form-group">
-                            <label for="descripcionProducto">Descripción</label>
-                            <!--
-                            <input type="text" class="form-control" name="descripcionProducto" placeholder="Descripcion" value="<?= isset($descripcionProducto) ? $descripcionProducto:''; ?>">
-                        -->
-
+                            <label for="descripcionProducto">Descripción</label>    
                             <textarea class="form-control" name="descripcionProducto" id="" value="<?= isset($descripcionProducto) ? $descripcionProducto:''; ?>"></textarea>
                         </div>
                         <div class="form-group">
@@ -144,7 +148,8 @@ if ($_POST) {
                         </div>
                         <div class="form-group">
                             <label for="modoEmpleoProducto">Modo de empleo</label>
-                            <input type="text" class="form-control" name="modoEmpleoProducto" placeholder="Modo de empleo" value="<?= isset($modoEmpleoProducto) ? $modoEmpleoProducto:''; ?>">
+                            <textarea class="form-control" name="modoEmpleoProducto" placeholder="Modo de empleo" value="<?= isset($modoEmpleoProducto) ? $modoEmpleoProducto:''; ?>"></textarea>
+                            
                         </div>
                         <div class="form-group">
                             <label for="ingredientesProducto">Ingredientes</label>
@@ -172,13 +177,16 @@ if ($_POST) {
                                 <?php foreach ($atributos as $nombreAtributo => $valores): ?>
                                     <div>
                                         <strong><?= htmlspecialchars($nombreAtributo) ?></strong><br>
-                                        <?php foreach ($valores as $valor): ?>
-                                            <label>
-                                                <input type="checkbox" name="atributos[]" value="<?= $valor['id'] ?>">
-                                                <?= htmlspecialchars($valor['valor']) ?>
-                                            </label><br>
-                                        <?php endforeach; ?>
+                                        <div>
+                                            <?php foreach ($valores as $valor): ?>
+                                                <label>
+                                                    <input type="checkbox" name="atributos[]" value="<?= $valor['id'] ?>">
+                                                    <?= htmlspecialchars($valor['valor']) ?>
+                                                </label><br>
+                                            <?php endforeach; ?>
+                                        </div>
                                     </div>
+                                    
                                     <hr>
                                 <?php endforeach; ?>
                             </div>                            

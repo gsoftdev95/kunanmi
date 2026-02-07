@@ -1760,7 +1760,7 @@ body {
 
 .ContainerCardsDashboard {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 1rem;
 }
 
@@ -1772,12 +1772,38 @@ body {
     text-align: center;
     font-weight: bold;
     font-size: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; 
 }
+.cardDashboard p{
+    text-align: left;
 
+    font-family: "Roboto", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-style: normal;
+    font-variation-settings:
+        "wdth" 100;
+}
 @media (max-width: 768px) {
     .sidebar {
         display: none;
     }
+}
+
+.sector>p{
+    font-size: .8rem;
+    color: #444;
+}
+
+.showSelectAdmin{
+    background-color: #ffffff;
+    padding: 5px;
+}
+.selectAdmin{
+    text-decoration: none;
+    color: black;
 }
 .containerFormAt{
     padding: 2px 5px;
@@ -1785,26 +1811,26 @@ body {
     display: flex;
     align-items: center;
 }
-.containerFormAt form{
+.formAttributeAdmin{
     display: flex;
-    align-items: center;
+    align-items: self-end;
 }
-.containerFormAt form div{
+.formAttributeAdmin div{
     margin: 0px 5px;
 }
-.containerFormAt form button{
+.formAttributeAdmin button{
     background-color: var(--rosaK);
 }
 .containerTabAt{
     max-height: 300px;
     overflow-y: auto;
     margin: 0px 0px 50px;
+    width: 50%;
 }
 .containerTabAt thead {
-  background-color: #f2f2f2;
-  position: sticky;
-  top: 0;
-  z-index: 2;
+    position: sticky;
+    top: 0;
+    z-index: 2;
 }
 
 
@@ -1920,6 +1946,7 @@ body {
     height: 100%;
     display: flex;
     justify-content: center;
+    background-color: var(--blancoHumo);
 }
 .bodyManupulationInner{
     width: 80%;
@@ -1927,6 +1954,10 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    
+    @media (width < 1200px) {        
+        width: 90%;
+    }
 }
 .bodyManupulationInner h2{
     margin: 0px 0px 20px 0px;
@@ -1953,20 +1984,26 @@ body {
 .containerAddInner{
     width: 80%;
     margin: 30px 0px;
+
+    @media (width < 1200px) {        
+        width: 90%;
+    }
 }
 .containerAddInner input, .containerAddInner div{
     margin: 0px 0px 20px 0px;
 }
 .containerView{
-    display: flex;
-    justify-content: center;
-    align-items: center;
     width: 100%;
-    background-color: white;
+    padding: 10px 30px;
+    border-radius: 15px;
+    background-color: var(--blancoK);
+    column-count:2;
+    column-gap:2em;
+    column-rule:1px solid rgb(229, 231, 233);
 }
 .containerViewInner{
-    width: 80%;
-    margin: 30px 0px;
+    width: 90%;
+    margin: 0px 0px;
 }
 .btnEliminateP{
     background-color: rgb(253, 35, 35);
@@ -1984,9 +2021,19 @@ body {
     display: flex;
     flex-wrap: wrap;
 }
-.listAtributos div{
-    margin:0px 30px 30px 10px;
+.listAtributos>div{
+    margin: 10px;
+    padding: 10px;
+    background-color: var(--blancoHumo);
+    border: 1px solid var(--blancoHumo);
 }
+.listAtributos div div{
+    padding: 0px 10px 0px 0px;
+    margin:0px 0px 10px 10px;
+    height: 400px;
+    overflow-y: scroll;
+}
+
 .containerbSecond{
     height: 100px;
     width: 100%;

@@ -76,27 +76,39 @@ $pedidos = listarPedidos($bd);
 
         <!-- Contenido principal -->
         <section class="admin-content">
-            <section id="dashboard">
+            <section id="dashboard" class="dashboard">
                 <h1>Dashboard</h1>
                 <div class="ContainerCardsDashboard">
                     <div class="cardDashboard">
-                        <p class="m-0">🧴 Productos:</p>
+                        <p class="m-0">Total productos:</p>
                         <p class="m-0" style="font-size:3rem"><?= $totalProductos ?></p>
                     </div>
                     <div class="cardDashboard">
-                        <p class="m-0">🧑‍🤝‍🧑 Clientes:</p>
+                        <p class="m-0">Productos activos*:</p>
+                        <p class="m-0" style="font-size:3rem">210</p>
+                    </div>
+                    <div class="cardDashboard">
+                        <p class="m-0">Productos Destacados*:</p>
+                        <p class="m-0" style="font-size:3rem">15</p>
+                    </div>
+                    <div class="cardDashboard">
+                        <p class="m-0">Productos con bajo stock*:</p>
+                        <p class="m-0" style="font-size:3rem">7</p>
+                    </div>
+                    <div class="cardDashboard">
+                        <p class="m-0">Clientes:</p>
                         <p class="m-0" style="font-size:3rem"><?= $totalClientes ?></p>
                     </div>
                     <div class="cardDashboard">
-                        <p class="m-0">📦 Pedidos pendientes:</p>
+                        <p class="m-0">Pedidos pendientes*:</p>
                         <p class="m-0" style="font-size:3rem">5</p>
                     </div>
                     <div class="cardDashboard">
-                        <p class="m-0">💰 Ventas Mayo(S/):</p>
+                        <p class="m-0">Ventas mes anterior(S/)*:</p>
                         <p class="m-0" style="font-size:3rem">10,580</p>
                     </div>
                     <div class="cardDashboard">
-                        <p class="m-0">💰 Ventas Junio(S/):</p>
+                        <p class="m-0">Ventas mes actual(S/)*:</p>
                         <p class="m-0" style="font-size:3rem">10,580</p>
                     </div>
                 </div>
@@ -104,20 +116,19 @@ $pedidos = listarPedidos($bd);
 
             <hr>
 
-            <section id="productos">
-                <h2>Gestión de Productos</h2>
+            <section id="productos" class="sector">
+                <h2>Gestión de productos</h2>
                 <p>Aquí puedes registrar, editar o eliminar productos.</p>
 
-                <section>
-                    Atributos
-
-                    <button class="btn btn-link" data-bs-toggle="collapse" data-bs-target="#verAtributos" aria-expanded="false" aria-controls="verAtributos">
+                <section class="sectionProductAdmin">
+                    <button class="btn btn-link selectAdmin" data-bs-toggle="collapse" data-bs-target="#verAtributos" aria-expanded="false" aria-controls="verAtributos">
+                        <span>Atributos</span>
                         <span id="flechaAtributos"><i class="bi bi-caret-down-fill"></i></span>
                     </button>
 
-                    <section id="verAtributos" class="collapse <?= $busquedaActivaAtributos ? 'show' : '' ?>">
+                    <section id="verAtributos" class="collapse <?= $busquedaActivaAtributos ? 'show' : '' ?> showSelectAdmin">
                         <div class="containerFormAt">
-                            <form action="" method="POST" enctype="multipart/form-data" class="">
+                            <form action="" method="POST" enctype="multipart/form-data" class="formAttributeAdmin">
                                 <div>
                                     <label for="añadirAtributo">Atributo</label>
                                     <select id="añadirAtributo" name="atributo_id" class="form-control">
@@ -138,7 +149,7 @@ $pedidos = listarPedidos($bd);
                         </div>
 
                         <div class="containerTabAt">
-                            <table class="table">
+                            <table class="table table-light">
                                 <thead>
                                     <th>Atributo</th>
                                     <th>Valor</th>
@@ -158,14 +169,14 @@ $pedidos = listarPedidos($bd);
                     </section>
                 </section>
 
-                <section>
-                    Ver productos
+                <section>                    
 
-                    <button class="btn btn-link" data-bs-toggle="collapse" data-bs-target="#verProductos" aria-expanded="false" aria-controls="verProductos">
+                    <button class="btn btn-link selectAdmin" data-bs-toggle="collapse" data-bs-target="#verProductos" aria-expanded="false" aria-controls="verProductos">
+                        <span>Ver productos</span>
                         <span id="flechaProductos"><i class="bi bi-caret-down-fill"></i></span>
                     </button>
 
-                    <section id="verProductos" class="collapse <?= $busquedaActivaProductos ? 'show' : '' ?>">
+                    <section id="verProductos" class="collapse <?= $busquedaActivaProductos ? 'show' : '' ?> showSelectAdmin">
                         <section class="container-fluid d-flex justify-content-between">
                             <form class="adminSearchForm mt-3 mb-4" role="search" action="#" method="GET">
                                 <input class="form-control me-2" type="search" placeholder="Buscador..." aria-label="Search" name="busquedaProducto">
@@ -183,7 +194,7 @@ $pedidos = listarPedidos($bd);
                         </section>
 
                         <section class="table-responsive-custom tableAdminProductCont">
-                            <table class="tableAdminProduct table ">
+                            <table class="tableAdminProduct table table-light">
                                 <thead>
                                     <tr>
                                         <th class="text-center">Id</th>
@@ -228,18 +239,17 @@ $pedidos = listarPedidos($bd);
 
             <hr>
 
-            <section id="clientes">
-                <h2>Clientes</h2>
+            <section id="clientes" class="sector">
+                <h2>Gestión de clientes</h2>
                 <p>Lista de usuarios registrados y su actividad.</p>
 
                 <section>
-                    Ver clientes
-
-                    <button class="btn btn-link" data-bs-toggle="collapse" data-bs-target="#verClientes" aria-expanded="false" aria-controls="verClientes">
+                    <button class="btn btn-link selectAdmin" data-bs-toggle="collapse" data-bs-target="#verClientes" aria-expanded="false" aria-controls="verClientes">
+                        <span>Ver clientes</span>
                         <span id="flechaProductos"><i class="bi bi-caret-down-fill"></i></span>
                     </button>
 
-                    <section id="verClientes" class="collapse <?= $busquedaActivaClientes ? 'show' : '' ?>">
+                    <section id="verClientes" class="collapse <?= $busquedaActivaClientes ? 'show' : '' ?> showSelectAdmin">
                         <section class="container-fluid d-flex justify-content-between">
                             <form class="adminSearchForm mt-3 mb-4" role="search" action="#" method="GET">
                                 <input class="form-control me-2" type="search" placeholder="Buscador..." aria-label="Search" name="busquedaUsuario">
@@ -254,7 +264,7 @@ $pedidos = listarPedidos($bd);
                         </section>
 
                         <section class="table-responsive-custom">
-                            <table class="tableAdminUser table ">
+                            <table class="tableAdminUser table table-light">
                                 <thead>
                                     <tr>
                                         <th class="text-center">Nombre</th>
@@ -292,12 +302,12 @@ $pedidos = listarPedidos($bd);
 
             <hr>
 
-            <section id="pedidos">
-                <h2>Pedidos</h2>
+            <section id="pedidos"  class="sector">
+                <h2>Gestión de pedidos</h2>
                 <p>Controla y actualiza el estado de los pedidos.</p>
 
                 <section class="table-responsive-custom">
-                    <table class="tableAdminPedidos table">
+                    <table class="tableAdminPedidos table table-light">
                         <thead>
                             <tr>
                                 <th class="text-center">Cliente</th>
@@ -347,17 +357,11 @@ $pedidos = listarPedidos($bd);
 
             <hr>
 
-            <section id="estadisticas">
+            <section id="estadisticas"  class="sector">
                 <h2>Estadísticas</h2>
                 <p>Visualiza ventas, productos más vendidos y más.</p>
             </section>
 
-            <hr>
-
-            <section id="perfil">
-                <h2>Mi Perfil</h2>
-                <p>Actualiza tus datos de administrador.</p>
-            </section>
         </section>
     </main>
 

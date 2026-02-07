@@ -210,7 +210,7 @@ function obtenerCategorias($bd) {
 }
 //funcion para obtener las sub-categorias
 function obtenerSubcategorias($bd) {
-    $sql = "SELECT id, nombre, categoria_id FROM subcategorias WHERE estado = 'activo'";
+    $sql = "SELECT id, nombre, categoria_id FROM subcategorias WHERE estado = 'activo' order by nombre ASC";
     $stmt = $bd->prepare($sql);
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -269,10 +269,11 @@ function validarProducto($datos, $archivos) {
     if (trim($datos['modoEmpleoProducto']) === '') {
         $errores['modoEmpleoProducto'] = 'coloque el modo de empleo';
     }
-    // modo de empleo
+    // ingredientes de Producto
     if (trim($datos['ingredientesProducto']) === '') {
         $errores['ingredientesProducto'] = 'coloque los ingredientes de su producto';
-    }*/
+    }
+         */
     // Precio
     if (!is_numeric($datos['precioProducto']) || $datos['precioProducto'] <= 0) {
         $errores['precioProducto'] = 'El precio debe ser un número positivo';
@@ -337,13 +338,11 @@ function guardarProducto($bd, $tabla, $datos, $imagen) {
                 nombre, descripcion, precio, stock, categoria_id,
                 subcategoria_id, supracategoria_id, imagen,
                 destacado, fecha_creacion, beneficios, modo_empleo,
-                ingredientes, estado
-              ) VALUES (
+                ingredientes, estado) VALUES (
                 :nombre, :descripcion, :precio, :stock, :categoria,
                 :subcategoria, :supracategoria, :imagen,
                 :destacado, :fecha, :beneficios, :modoEmpleo,
-                :ingredientes, :estado
-              )";
+                :ingredientes, :estado)";
 
     $stmt = $bd->prepare($query);
     $stmt->bindValue(':nombre', $datos['nombreProducto']);
@@ -491,7 +490,7 @@ function modificarProducto($bd, $tabla, $datos, $avatar)
     $subcategoriaProducto = $datos['subcategoriaProducto'];
     $supracategoriaProducto = $datos['supracategoriaProducto'];
     $beneficiosProducto = $datos['beneficiosProducto'];
-    $modoEmpleo = $datos['modoEmpleo'];
+    $modoEmpleo = json_encode(explode("\n", $datos['modoEmpleo']));
     $ingredProducto = $datos['ingredProducto'];
     $destacadoProducto = $datos['destacadoProducto'];
     $estadoProducto = $datos['estadoProducto'];

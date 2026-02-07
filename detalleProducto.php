@@ -21,6 +21,8 @@ $opiniones = obtenerOpiniones($bd);
 $imagenes = !empty($producto['imagen']) ? json_decode($producto['imagen'],true) : [];
 $destacados = obtenerProductosDestacados($bd);
 $descripciones = !empty($producto['descripcion']) ?json_decode($producto['descripcion'],true) : [];
+$modoEmpleo = !empty($producto['modo_empleo']) ? json_decode($producto['modo_empleo'], true) : [];
+
 ?>
 
 <!doctype html>
@@ -142,7 +144,17 @@ $descripciones = !empty($producto['descripcion']) ?json_decode($producto['descri
                     </ul>
                     <div class="tab-content p-3 border">
                         <div class="tab-pane fade show active" id="beneficios"><?= htmlspecialchars($producto['beneficios']) ?></div>
-                        <div class="tab-pane fade" id="uso"><?= htmlspecialchars($producto['modo_empleo']) ?></div>
+                        
+                        <div class="tab-pane fade" id="uso">
+                            <ul>
+                                <?php foreach($modoEmpleo as $paso): ?>
+                                    <li style="list-style-type: none;">
+                                        <?= htmlspecialchars($paso) ?>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
+                        </div>
+
                         <div class="tab-pane fade" id="ingredientes">Descubre cada ingrediente que hace especial a este producto: <?= htmlspecialchars($producto['ingredientes']) ?></div>
                     </div>
                 </div>

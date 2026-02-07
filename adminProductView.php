@@ -57,7 +57,7 @@ $productos = detProdForAdmin($bd, $id, 'productos');
                                     echo "<p>No hay descripcion del producto.</p>";
                                 }
                             ?>
-                        </ul>                        
+                        </ul>
                         <hr>
 
                         <h5>Precio:</h5>
@@ -89,7 +89,24 @@ $productos = detProdForAdmin($bd, $id, 'productos');
                         <hr>
 
                         <h5>Modo de empleo:</h5>
-                        <p class="ms-5"><?= $productos['modo_empleo'] ?></p>
+                        <ul class="ms-5">
+                            <?php
+                                if (!empty($productos['modo_empleo'])) {
+                                    // Decodificar JSON a array
+                                    $modoEmpleoArray = json_decode($productos['modo_empleo'], true);
+
+                                    if (is_array($modoEmpleoArray)) {
+                                        foreach ($modoEmpleoArray as $empleo) {
+                                            echo "<li>" . htmlspecialchars(trim($empleo)) . "</li>";
+                                        }
+                                    } else {
+                                        echo "<p>Error al leer el modo de empleo .</p>";
+                                    }
+                                } else {        
+                                    echo "<p>No hay modo de empleo del producto.</p>";
+                                }
+                            ?>
+                        </ul>
                         <hr>
 
                         <h5>Ingredientes:</h5>
@@ -132,9 +149,6 @@ $productos = detProdForAdmin($bd, $id, 'productos');
                         <div clas="containerbSecond">
                             <a href="adminProductAdd.php"  class="bSecond">Agregar otro producto</a>
                         </div>
-
-
-
                     </section>
                 </section>
 

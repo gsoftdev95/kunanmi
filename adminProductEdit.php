@@ -15,7 +15,9 @@ $imagenes = is_string($productos['imagen']) ? json_decode($productos['imagen'], 
 $atributos = obtenerAtributosConValores($bd);
 
 $descripciones = isset($productos['descripcion']) && !empty($productos['descripcion']) ? implode("\n", json_decode($productos['descripcion'], true) ?? []) : '';
-$usos = isset($productos['descripcion']) && !empty($productos['descripcion']) ? implode("\n", json_decode($productos['descripcion'], true) ?? []) : '';
+$modoEmpleoVarios = isset($productos['modo_empleo']) && !empty($productos['modo_empleo']) ? implode("\n", json_decode($productos['modo_empleo'], true) ?? []) : '';
+//$usos = isset($productos['descripcion']) && !empty($productos['descripcion']) ? implode("\n", json_decode($productos['descripcion'], true) ?? []) : '';
+
 
 if ($_POST) {
     $valoresAtributos = [];
@@ -93,7 +95,7 @@ if ($_POST) {
                     <input type="text" class="form-control" name="nombreProducto" value="<?= htmlspecialchars($productos['nombre']) ?>" required>
 
                     <label for="descripcionProducto">Descripción del producto</label>
-                    <!--<input type="text" class="form-control" name="descripcionProducto" value="<?= htmlspecialchars($productos['descripcion']) ?>" required>-->
+                    
                     <textarea class="form-control" name="descripcionProducto" id="" rows="5" ><?= htmlspecialchars($descripciones) ?></textarea>
 
                     <label for="precioProducto">Precio del producto</label>
@@ -143,7 +145,7 @@ if ($_POST) {
                     <input type="text" class="form-control" name="beneficiosProducto" value="<?= htmlspecialchars($productos['beneficios']) ?>" >
 
                     <label for="modoEmpleo">Modo de empleo</label>
-                    <input type="text" class="form-control" name="modoEmpleo" value="<?= htmlspecialchars($productos['modo_empleo']) ?>" >
+                    <textarea class="form-control" name="modoEmpleo" id="" rows="5" ><?= htmlspecialchars($modoEmpleoVarios) ?></textarea>
 
                     <label for="ingredProducto">Ingredientes</label>
                     <input type="text" class="form-control" name="ingredProducto" value="<?= htmlspecialchars($productos['ingredientes']) ?>" >
@@ -183,12 +185,15 @@ if ($_POST) {
                             <?php foreach ($atributos as $nombreAtributo => $valores): ?>
                                 <div>
                                     <strong><?= htmlspecialchars($nombreAtributo) ?></strong><br>
-                                    <?php foreach ($valores as $valor): ?>
-                                        <label>
-                                            <input type="checkbox" name="atributos[]" value="<?= $valor['id'] ?>" <?= in_array($valor['id'], array_column($productos['atributosPlano'], 'id')) ? 'checked' : '' ?>>
-                                            <?= htmlspecialchars($valor['valor']) ?>
-                                        </label><br>
-                                    <?php endforeach; ?>
+                                    <div>
+                                        <?php foreach ($valores as $valor): ?>
+                                            <label>
+                                                <input type="checkbox" name="atributos[]" value="<?= $valor['id'] ?>" <?= in_array($valor['id'], array_column($productos['atributosPlano'], 'id')) ? 'checked' : '' ?>>
+                                                <?= htmlspecialchars($valor['valor']) ?>
+                                            </label><br>
+                                        <?php endforeach; ?>
+                                    </div>
+                                    
                                 </div>
                                 <hr>
                             <?php endforeach; ?>
