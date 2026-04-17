@@ -74,13 +74,13 @@ if (isset($_SESSION['carrito'])) {
                     <?php else: ?>
                         <div class="li_enc1 nav-item">
                             <a href="perfilCliente.php" class="iconNav text-dark fs-5"><i class="bi bi-person-hearts"></i></a>
-                             <a href="carrito.php" class="iconNav text-dark cart-icon">
+                            <a href="carrito.php" class="iconNav text-dark cart-icon">
                                 <i class="bi bi-cart"></i>
                                 <span class="cart-count <?= $totalItems === 0 ? 'd-none' : '' ?>"><?= $totalItems ?></span>
                             </a>
                         </div>
                     <?php endif; ?>
-                   
+                    
                     <a class="nav-link" href="logout.php"><i class="iconNav bi bi-box-arrow-right"></i></a>
                 <?php else: ?>
                     <a href="login.php" class="iconNav text-dark fs-5"><i class="bi bi-person"></i></a>

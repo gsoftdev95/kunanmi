@@ -143,8 +143,7 @@ $modoEmpleo = !empty($producto['modo_empleo']) ? json_decode($producto['modo_emp
                         <?php endif; ?>
                     </ul>
                     <div class="tab-content p-3 border">
-                        <div class="tab-pane fade show active" id="beneficios"><?= htmlspecialchars($producto['beneficios']) ?></div>
-                        
+                        <div class="tab-pane fade show active" id="beneficios"><?= htmlspecialchars($producto['beneficios']) ?></div>                        
                         <div class="tab-pane fade" id="uso">
                             <ul>
                                 <?php foreach($modoEmpleo as $paso): ?>
@@ -154,7 +153,6 @@ $modoEmpleo = !empty($producto['modo_empleo']) ? json_decode($producto['modo_emp
                                 <?php endforeach; ?>
                             </ul>
                         </div>
-
                         <div class="tab-pane fade" id="ingredientes">Descubre cada ingrediente que hace especial a este producto: <?= htmlspecialchars($producto['ingredientes']) ?></div>
                     </div>
                 </div>

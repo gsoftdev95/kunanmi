@@ -55,7 +55,7 @@ $opiniones = obtenerOpiniones($bd);
 
     <section class="review">
         <div class=containerReview>
-            <img src="./src/img/reseña.png" alt="">
+            <img src="./src/img/agrupados/reseña.png" alt="">
             <div class="textReview">
                 <h2>KUNANMI</h2>
                 <p>En <strong>Kunanmi</strong>, creemos en el poder de lo natural. Nuestra pasión por el cuidado personal y el respeto por el medio ambiente nos llevó a crear una línea de productos artesanales, elaborados a mano con ingredientes conscientes y de alta calidad. Cada vela, jabón o crema que producimos es el resultado de un proceso cuidadoso, ético y lleno de propósito. Nos inspira el bienestar real: ese que se logra cuando cuidamos de nuestro cuerpo, nuestro hogar y nuestro entorno.</p>
@@ -112,12 +112,12 @@ $opiniones = obtenerOpiniones($bd);
     <section class="containerGalery">
         <section class="containerGaleryInner">
             <section class="containerGaleryGrid">
-                <div class="imgkunanmi1">img1</div>
-                <div class="imgkunanmi2">img2</div>
-                <div class="imgkunanmi3">img3</div>
-                <div class="imgkunanmi4">img4</div>
-                <div class="imgkunanmi5">img5</div>
-                <div class="imgkunanmi6">img6</div>
+                <div class="imgkunanmi1"><img src="./src/img/agrupados/g1.png" alt=""></div>
+                <div class="imgkunanmi2"><img src="./src/img/agrupados/g2.png" alt=""></div>
+                <div class="imgkunanmi3"><img src="./src/img/agrupados/g3.png" alt=""></div>
+                <div class="imgkunanmi4"><img src="./src/img/agrupados/g4.png" alt=""></div>
+                <div class="imgkunanmi5"><img src="./src/img/agrupados/g5.png" alt=""></div>
+                <div class="imgkunanmi6"><img src="./src/img/agrupados/g6.png" alt=""></div>
             </section>   
         </section>         
     </section>
