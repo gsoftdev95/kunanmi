@@ -12,7 +12,7 @@
     <section class="nosotros container py-5">
         <div class="row align-items-center">
             <div class=" col-md-6 mb-4 mb-md-0">
-                <img src="./src/img/nosotros.jpg" alt="Equipo de trabajo artesanal" class="imgNosotros img-fluid rounded">
+                <img src="./src/img/agrupados/nosotros.jpg" alt="Equipo de trabajo artesanal" class="imgNosotros img-fluid rounded">
             </div>
             <div class="col-md-6">
                 <h2 class="TitleNosotros mb-3">Sobre Nosotros</h2>
