@@ -203,6 +203,7 @@ $pedidos = listarPedidos($bd);
                                         <th class="text-center">Categoria</th>
                                         <th class="text-center">Sub categoria</th>
                                         <th class="text-center">Stock</th>
+                                        <th class="text-center">Estado</th>
                                         <th class="text-center">Destacado</th>
                                         <th class="text-center">Ver</th>
                                         <th class="text-center">Editar</th>
@@ -218,6 +219,7 @@ $pedidos = listarPedidos($bd);
                                             <td class="text-center text-primary-emphasis"><?= $producto['categoria_nombre'] ?></td>
                                             <td class="text-center text-primary-emphasis"><?= $producto['subcategoria_nombre'] ?></td>
                                             <td class="text-center text-primary-emphasis"><?= $producto['stock'] ?></td>
+                                            <td class="text-center text-primary-emphasis"><?= $producto['estado'] ?></td>
                                             <td class="text-center text-primary-emphasis">
                                                 <?= $producto['destacado'] ? 'Sí' : 'No' ?>
                                             </td>
