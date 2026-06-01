@@ -4,10 +4,21 @@ require_once('controladores/funciones.php');
 require_once('./src/partials/conexionBD.php');
 require_once('controladores/controlAcceso.php');
 
-$errores = [];
+// Validar ID
+if (!isset($_GET['id']) || empty($_GET['id'])) {
+    header('Location: administrador.php');
+    exit;
+}
+
 $id = $_GET['id'];
 
-$productos = detProdForAdmin($bd, $id, 'productos');    
+$productos = detProdForAdmin($bd, $id, 'productos');
+
+// Validar producto existente
+if (!$productos) {
+    header('Location: administrador.php');
+    exit;
+} 
 $categorias = obtenerCategorias($bd);
 $subcategorias = obtenerSubcategorias($bd);
 $supracategorias = obtenerSupracategorias($bd);

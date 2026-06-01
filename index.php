@@ -104,8 +104,8 @@ $opiniones = obtenerOpiniones($bd);
 
     <section class="containerSolgan">
         <section class="containerSolganInner">
-            <div class="slg1">Lorem ipsum dolor sit amet..</div>
-            <div class="slg2">Lorem ipsum dolor sit amet.</div>
+            <div class="slg1">Bienestar que se siente.</div>
+            <div class="slg2">Naturalmente para ti.</div>
         </section>
     </section>
 

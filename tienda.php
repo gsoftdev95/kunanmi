@@ -173,29 +173,38 @@ else{
                     </section>
 
                     <section class="containerCards">
-                        <?php foreach ($productos as $id => $row) { ?>
-                            <div class="cardProduct">                                
-                                <div class="imgProdShopCont">
-                                    <?php 
-                                        $imagenes = json_decode($row['imagen'], true);
-                                        $primeraImagen = is_array($imagenes) && count($imagenes) > 0 ? htmlspecialchars($imagenes[0]) : 'default.jpg';
-                                    ?>
-                                    <img class="img-default" src="src/imgBD/Productos/<?= $primeraImagen ?>" alt="<?= htmlspecialchars($row['nombre']) ?>">                                        
-                                    <form action="agregarAlCarrito.php" method="POST" class="hoverShop form-agregar-carrito">
+                        <?php foreach ($productos as $index => $row) { ?>
+                            <div class="cardProduct <?= $index >= 20 ? 'hidden-product' : '' ?>">
+                                <div class="cardProduct">                                
+                                    <div class="imgProdShopCont">
+                                        <?php 
+                                            $imagenes = json_decode($row['imagen'], true);
+                                            $primeraImagen = is_array($imagenes) && count($imagenes) > 0 ? htmlspecialchars($imagenes[0]) : 'default.jpg';
+                                        ?>
+                                        <img class="img-default" src="src/imgBD/Productos/<?= $primeraImagen ?>" alt="<?= htmlspecialchars($row['nombre']) ?>">                                        
+                                        <form action="agregarAlCarrito.php" method="POST" class="hoverShop form-agregar-carrito">
 
-                                        <input type="hidden" name="id" value="<?= $row['id'] ?>">
-                                        <button type="submit" class="btn cardProductTextBut mb-2">añadir al carrito <i class="bi bi-cart"></i></button>
-                                        <a href="./detalleProducto.php?id=<?= $row['id'] ?>" class="btn cardProductTextBut">ver Producto</a>
-                                    </form>
-                                </div>
-                                
-                                <div class="card-body cardProductText">
-                                    <div class="card-title cardProductTextTitle"><?php echo $row['nombre']; ?></div>
-                                    <div class="card-text cardProductTextSub"><?php echo $row['subcategoria_nombre']; ?></div>
-                                    <div class="card-text cardProductTextPrice m-0">S/. <?php echo number_format($row['precio'], 2); ?></div>                                    
+                                            <input type="hidden" name="id" value="<?= $row['id'] ?>">
+                                            <button type="submit" class="btn cardProductTextBut mb-2">añadir al carrito <i class="bi bi-cart"></i></button>
+                                            <a href="./detalleProducto.php?id=<?= $row['id'] ?>" class="btn cardProductTextBut">ver Producto</a>
+                                        </form>
+                                    </div>
+                                    
+                                    <div class="card-body cardProductText">
+                                        <div class="card-title cardProductTextTitle"><?php echo $row['nombre']; ?></div>
+                                        <div class="card-text cardProductTextSub"><?php echo $row['subcategoria_nombre']; ?></div>
+                                        <div class="card-text cardProductTextPrice m-0">S/. <?php echo number_format($row['precio'], 2); ?></div>                                    
+                                    </div>
                                 </div>
                             </div>
+                            
                         <?php } ?>
+
+                        <div class="text-center mt-4">
+                            <button id="btnVerMas" class="btn btn-outline-primary">
+                                Ver más productos
+                            </button>
+                        </div>
                     </section>
                 </section>
             </div>
@@ -238,6 +247,34 @@ else{
         });
     });
     </script>
+
+
+
+
+<!-- vermas tienda -->
+ <script>
+    document.addEventListener("DOMContentLoaded", function(){
+
+    const boton = document.getElementById("btnVerMas");
+
+    if(!boton) return;
+
+    boton.addEventListener("click", function(){
+
+        const ocultos = document.querySelectorAll(".hidden-product");
+
+        for(let i = 0; i < 20 && i < ocultos.length; i++){
+            ocultos[i].classList.remove("hidden-product");
+        }
+
+        if(document.querySelectorAll(".hidden-product").length === 0){
+            boton.remove();
+        }
+
+    });
+
+});
+ </script>
 
 
   </body>

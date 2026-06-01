@@ -7,6 +7,10 @@ require_once('controladores/controlAcceso.php');
 $id = $_GET['id'];
 
 $productos = detProdForAdmin($bd, $id, 'productos');
+if (!$productos) {
+    header('Location: administrador.php');
+    exit;
+}
 //dd($productos);
 
 ?>
@@ -147,7 +151,8 @@ $productos = detProdForAdmin($bd, $id, 'productos');
                         </div>
 
                         <div clas="containerbSecond">
-                            <a href="adminProductAdd.php"  class="bSecond">Agregar otro producto</a>
+                            <a href="adminProductEdit.php?id=<?= $productos['id']; ?>"  class="bSecond">Editar producto</a>
+                            <a href="adminProductAdd.php"  class="bSecond2">Agregar otro producto</a>
                         </div>
                     </section>
                 </section>

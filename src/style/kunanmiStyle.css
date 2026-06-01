@@ -1173,7 +1173,9 @@ TIENDA TIENDA TIENDA
         padding: 0px 0px;
     }
 }
-
+.hidden-product{
+    display:none;
+}
 .cardProduct{
     flex-grow: 0;
     flex-basis: 250px;
@@ -2065,9 +2067,29 @@ body {
     border: 2px solid var(--verdeK);
     color: var(--verdeK);
     margin: 100px 0px 0px;
+    font-weight: 600;
     padding: 10px;
     text-decoration: none;
     border-radius: 10px;
+}
+.bSecond:hover{
+    border: 2px solid var(--verdeK);
+    color: var(--blancoK);
+    background-color: var(--verdeK);
+}
+.bSecond2{
+    border: 2px solid var(--grisK);
+    color: var(--grisK);
+    margin: 100px 0px 0px;
+    font-weight: 600;
+    padding: 10px;
+    text-decoration: none;
+    border-radius: 10px;
+}
+.bSecond2:hover{
+    border: 2px solid var(--grisK);
+    color: var(--blancoK);
+    background-color: var(--grisK);
 }
 
 
@@ -2106,3 +2128,15 @@ img {
 .alertCarrito{
     min-height: 700px;
 }
+
+
+
+
+
+
+
+
+
+
+
+
