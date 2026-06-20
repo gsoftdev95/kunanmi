@@ -200,12 +200,13 @@ else{
                             
                         <?php } ?>
 
-                        <div class="text-center mt-4">
-                            <button id="btnVerMas" class="btn btn-outline-primary">
+                        
+                    </section>
+                    <div class="text-center my-2">
+                            <button id="btnVerMas" class="MasProductos">
                                 Ver más productos
                             </button>
                         </div>
-                    </section>
                 </section>
             </div>
         </section>

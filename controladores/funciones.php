@@ -199,7 +199,26 @@ function contarProductos($bd, $tabla){
     $sql = "select count(id) from $tabla";
     $stmt = $bd->query($sql);
     return $stmt->fetchcolumn();
-
+}
+function contarProductosactivos($bd, $tabla){
+    $sql = "select count(id) from $tabla where estado='activo' ";
+    $stmt = $bd->query($sql);
+    return $stmt->fetchcolumn();
+}
+function contarDestacados($bd, $tabla){
+    $sql = "select count(id) from $tabla where destacado = 1 ";
+    $stmt = $bd->query($sql);
+    return $stmt->fetchcolumn();
+}
+function contarProductosSinStock($bd, $tabla){
+    $sql = "select count(id) from $tabla where stock <5 ";
+    $stmt = $bd->query($sql);
+    return $stmt->fetchcolumn();
+}
+function contarPedidosPendientes($bd, $tabla){
+    $sql = "select count(id) from $tabla where estado_id !=5";
+    $stmt = $bd->query($sql);
+    return $stmt->fetchcolumn();
 }
 //funcion para obtener las categorias
 function obtenerCategorias($bd) {
@@ -574,8 +593,34 @@ function obtenerNombreUsuario($bd, $usuario_id) {
         return 'Usuario no encontrado';
     }
 }
+function obtenerOpcionesEstado($estadoActual)
+{
+    $transiciones = [
+        1 => [1, 2, 6],       // pendiente → pendiente, en proceso, cancelado
+        2 => [2, 3, 6],       // en proceso → en proceso, enviado, cancelado
+        3 => [3, 4, 6],       // enviado → enviado, entregado, cancelado
+        4 => [4, 5, 6],       // entregado → entregado, completado (bloqueado)
+        5 => [5],             // cancelado → cancelado (bloqueado)
+    ];
 
+    return $transiciones[$estadoActual] ?? [$estadoActual];
+}
+function obtenerEstadosPorIds($bd, $ids)
+{
+    if (empty($ids)) return [];
 
+    $placeholders = implode(',', array_fill(0, count($ids), '?'));
+
+    $stmt = $bd->prepare("
+        SELECT id, estado 
+        FROM estados_pedido 
+        WHERE id IN ($placeholders)
+    ");
+
+    $stmt->execute($ids);
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 
 /****************** */
 /****************** */

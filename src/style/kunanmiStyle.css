@@ -11,9 +11,7 @@
     --rosabbK:#ffe4e4;
     --blancoK:#ffffff;
 }
-* {
-    
-}
+
 html, body {
     margin: 0;
     padding: 0;
@@ -207,7 +205,7 @@ header{
     display: flex;
     justify-content: space-around;
     position: relative;
-    margin: 20px 0px 0px;
+    margin: 15px 0px 0px;
 }
 .containermenutext{
     width: 60%;
@@ -1300,7 +1298,13 @@ TIENDA TIENDA TIENDA
     text-align: left;
 }
 
-
+.MasProductos{
+    border: 1px solid var(--rosaK);
+    border-radius: 10px;
+    color: var(--blancoHumo);
+    background-color: var(--rosaK);
+    padding: 3px 10px;
+}
 /********************************/
 /********************************/
 /********************************/
@@ -1870,69 +1874,65 @@ body {
     border-radius: 8px;
 }
 .tableAdminProductCont{
-  max-height: 500px;
-  overflow-y: auto;    
-}
-.table-responsive-custom {
-  max-width: 100%;
-  overflow-x: auto;
+    max-height: 500px;
+    overflow-y: auto;
 }
 
 .tableAdminProduct{
-    width: 100%;
-    table-layout: fixed;
+    table-layout: auto;
     width: 100%;
 }
+    
 .tableAdminProduct thead {
-  background-color: #f2f2f2;
-  position: sticky;
-  top: 0;
-  z-index: 2;
+    background-color: #f2f2f2;
+    position: sticky;
+    top: 0;
+    z-index: 2;
 }
-
-.tableAdminProduct tbody {
-  display:block;
-}
-
-.tableAdminProduct thead tr,
-.tableAdminProduct tbody tr {
-  display: table;
-  width: 100%;
-  table-layout: fixed;
-}
-.tableAdminProduct thead tr{
-  padding-right: 100px; 
-}
-
 .tableAdminProduct th,
 .tableAdminProduct td {
-  padding: 8px;
-  border: 1px solid #ddd;
-  text-align: left;
+    padding: 8px;
+    border: 1px solid #ddd;
+    text-align: left;
+
+    vertical-align: middle;
+
+    /* Permitir saltos de línea */
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
+.tableAdminProduct th{
+    background-color: #a3a3a3ed;
 }
 
-.tableAdminProduct th{
-    background-color: #a3a3a3;
-}
-.tableAdminProduct td:nth-child(1),
-.tableAdminProduct th:nth-child(1){
-    width: 50px;
+.tableAdminProduct td:nth-child(2),
+.tableAdminProduct th:nth-child(2),
+.tableAdminProduct td:nth-child(3),
+.tableAdminProduct th:nth-child(3),
+.tableAdminProduct td:nth-child(4),
+.tableAdminProduct th:nth-child(4),
+.tableAdminProduct td:nth-child(5),
+.tableAdminProduct th:nth-child(5),
+.tableAdminProduct td:nth-child(6),
+.tableAdminProduct th:nth-child(6){
+    max-width: 130px;
 }
 
 .tableAdminProduct td:nth-child(8),
-.tableAdminProduct th:nth-child(8),
-.tableAdminProduct td:nth-child(9),
-.tableAdminProduct th:nth-child(9),
-.tableAdminProduct td:nth-child(10),
-.tableAdminProduct th:nth-child(10) {
-    width: 80px;
+.tableAdminProduct th:nth-child(8) {
+    max-width: 60px;
 }
-
-.tableAdminProduct td:nth-child(8) a,
-.tableAdminProduct td:nth-child(9) a,
-.tableAdminProduct td:nth-child(10) a{
-    color: var(--rosaK);
-    font-size: 1rem;
+.tableAdminProduct th:nth-child(9),
+.tableAdminProduct td:nth-child(9) {
+    max-width: 130px;
+}
+.tableAdminProduct td:nth-child(9) a{
+    color: inherit;
+    text-decoration: none;
+    font-size: 1.1rem;
+    padding: 0px 3px;
+    margin: 0px 15px;
 }
 
 --------------------------
@@ -1958,6 +1958,48 @@ body {
 .tableAdminUser td:nth-child(7) a{
     color: var(--rosaK);
     font-size: 1rem;
+}
+
+
+.estado {
+    width: 100%;
+    max-width: 140px;
+    padding: 5px 12px;
+    border-radius: 5px;
+    border: none;
+    font-size: 1rem;
+    font-weight: 600;
+    display: inline-block;
+}
+
+.estado-1 {
+    background-color: rgba(169,169,169,.5);
+    border: 1px solid rgb(169,169,169);
+}
+
+.estado-2 {
+    background-color: rgba(255,255,44,.5);
+    border: 1px solid rgb(255,255,44);
+}
+
+.estado-3 {
+    background-color: rgba(251,146,60,.5);
+    border: 1px solid rgb(251,146,60);
+}
+
+.estado-4 {
+    background-color: rgba(91,192,222,.5);
+    border: 1px solid rgb(91,192,222);
+}
+
+.estado-5 {
+    background-color: rgba(34,197,94,.5);
+    border: 1px solid rgb(34,197,94);
+}
+
+.estado-6 {
+    background-color: rgba(239,68,68,.5);
+    border: 1px solid rgb(239,68,68);
 }
 
 

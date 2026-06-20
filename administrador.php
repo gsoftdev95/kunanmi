@@ -6,6 +6,10 @@ require_once('controladores/controlAcceso.php');
 
 $totalClientes = contarClientes($bd, 'usuarios');
 $totalProductos = contarProductos($bd, 'Productos');
+$totalProductosActivos = contarProductosactivos($bd, 'Productos');
+$totalDestacados = contarDestacados($bd, 'Productos');
+$ProductosSinStock = contarProductosSinStock($bd, 'Productos');
+$PedidosPendientes = contarPedidosPendientes($bd, 'pedidos');
 $atributos = obtenerAtributos($bd);
 $atributosValores = obtenerAtributosConValores($bd);
 
@@ -53,6 +57,24 @@ $busquedaActivaClientes = isset($_GET['busquedaUsuario']) && trim($_GET['busqued
 //logica para los pedidos
 $pedidos = listarPedidos($bd);
 
+//logica para actualizar estados de pedidos
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['accion'] === 'cambiar_estado_pedido') {
+
+    $pedido_id = $_POST['pedido_id'];
+    $nuevo_estado = $_POST['nuevo_estado'];
+
+    $stmt = $bd->prepare("UPDATE pedidos SET estado_id = :estado_id WHERE id = :id");
+    $stmt->bindValue(':estado_id', $nuevo_estado, PDO::PARAM_INT);
+    $stmt->bindValue(':id', $pedido_id, PDO::PARAM_INT);
+    $stmt->execute();
+
+    echo json_encode([
+        'success' => true,
+        'message' => 'Estado actualizado',
+        'nuevo_estado' => $nuevo_estado
+    ]);
+    exit;
+}
 
 ?>
 
@@ -84,16 +106,16 @@ $pedidos = listarPedidos($bd);
                         <p class="m-0" style="font-size:3rem"><?= $totalProductos ?></p>
                     </div>
                     <div class="cardDashboard">
-                        <p class="m-0">Productos activos*:</p>
-                        <p class="m-0" style="font-size:3rem">210</p>
+                        <p class="m-0">Productos activos:</p>
+                        <p class="m-0" style="font-size:3rem"> <?= $totalProductosActivos ?> </p>
                     </div>
                     <div class="cardDashboard">
-                        <p class="m-0">Productos Destacados*:</p>
-                        <p class="m-0" style="font-size:3rem">15</p>
+                        <p class="m-0">Productos Destacados:</p>
+                        <p class="m-0" style="font-size:3rem"> <?= $totalDestacados ?> </p>
                     </div>
                     <div class="cardDashboard">
-                        <p class="m-0">Productos con bajo stock*:</p>
-                        <p class="m-0" style="font-size:3rem">7</p>
+                        <p class="m-0">Productos con bajo stock:</p>
+                        <p class="m-0" style="font-size:3rem"> <?= $ProductosSinStock ?> </p>
                     </div>
                     <div class="cardDashboard">
                         <p class="m-0">Clientes:</p>
@@ -193,21 +215,19 @@ $pedidos = listarPedidos($bd);
                             </div>
                         </section>
 
-                        <section class="table-responsive-custom tableAdminProductCont">
-                            <table class="tableAdminProduct table table-light">
+                        <section class=" tableAdminProductCont">
+                            <table class="table table-responsive-sm table-light table-hover tableAdminProduct">
                                 <thead>
                                     <tr>
-                                        <th class="text-center">Id</th>
-                                        <th class="text-center">Nombre</th>
-                                        <th class="text-center">Precio</th>
-                                        <th class="text-center">Categoria</th>
-                                        <th class="text-center">Sub categoria</th>
-                                        <th class="text-center">Stock</th>
-                                        <th class="text-center">Estado</th>
-                                        <th class="text-center">Destacado</th>
-                                        <th class="text-center">Ver</th>
-                                        <th class="text-center">Editar</th>
-                                        <th class="text-center">Eliminar</th>
+                                        <th class="text-center">Id</th> <!--1-->
+                                        <th class="text-center">Nombre</th> <!--2-->
+                                        <th class="text-center">Precio</th> <!--3-->
+                                        <th class="text-center">Categoria</th> <!--4-->
+                                        <th class="text-center">Sub categoria</th> <!--5-->
+                                        <th class="text-center">Stock</th> <!--6-->
+                                        <th class="text-center">Estado</th> <!--7-->
+                                        <th class="text-center">Destacado</th> <!--8-->
+                                        <th class="text-center">Acciones</th> <!--9-->
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -224,11 +244,11 @@ $pedidos = listarPedidos($bd);
                                                 <?= $producto['destacado'] ? 'Sí' : 'No' ?>
                                             </td>
                                             <!-- Envío de ID por Query String -->
-                                            <td class="text-center text-primary-emphasis"><a href="AdminProductView.php?id=<?= $producto['id']; ?>"><i class="bi bi-eyeglasses"></i></a></td>
-                                            <!-- Envío de ID por Query String -->
-                                            <td class="text-center text-primary-emphasis"><a href="adminProductEdit.php?id=<?= $producto['id']; ?>"><i class="bi bi-pencil-fill"></i></a></td>
-                                            <!-- Envío de ID por Query String -->
-                                            <td class="text-center text-primary-emphasis"><a href="adminProductEliminate.php?id=<?= $producto['id']; ?>"><i class="bi bi-trash3"></i></a></td>
+                                            <td class="text-center text-primary-emphasis">
+                                                <a href="AdminProductView.php?id=<?= $producto['id']; ?>"><i class="bi bi-eyeglasses"></i></a>
+                                                <a href="adminProductEdit.php?id=<?= $producto['id']; ?>"><i class="bi bi-pencil-fill"></i></a>
+                                                <a href="adminProductEliminate.php?id=<?= $producto['id']; ?>"><i class="bi bi-trash3"></i></a>
+                                            </td>
                                         </tr>
                                     <?php endforeach ?>
                                 </tbody>
@@ -265,7 +285,7 @@ $pedidos = listarPedidos($bd);
                             </form>
                         </section>
 
-                        <section class="table-responsive-custom">
+                        <section class="">
                             <table class="tableAdminUser table table-light">
                                 <thead>
                                     <tr>
@@ -317,8 +337,7 @@ $pedidos = listarPedidos($bd);
                                 <th class="text-center">Estado</th>
                                 <th class="text-center">Monto total</th>
                                 <th class="text-center">Dirección</th>
-                                <th class="text-center">Actualizar estado</th>
-                                <th class="text-center">Ver detalle</th>
+                                <th class="text-center">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -327,28 +346,57 @@ $pedidos = listarPedidos($bd);
                                     <td class="text-center text-primary-emphasis">
                                         <?= obtenerNombreUsuario($bd, $pedido['usuario_id']) ?>
                                     </td>
-                                    <td class="text-center text-primary-emphasis"><?= $pedido['fecha_pedido'] ?></td>
+
                                     <td class="text-center text-primary-emphasis">
-                                        <form action="actualizarEstadoPedido.php" method="POST" class="d-flex justify-content-center align-items-center">
-                                            <input type="hidden" name="id_pedido" value="<?= $pedido['id'] ?>">
-                                            <select name="estado" class="form-select form-select-sm w-auto">
-                                                <?php
-                                                $estados = ['pendiente', 'en proceso', 'enviado', 'entregado', 'completado'];
-                                                foreach ($estados as $estado) {
-                                                    $selected = $pedido['estado'] === $estado ? 'selected' : '';
-                                                    echo "<option value=\"$estado\" $selected>$estado</option>";
-                                                }
-                                                ?>
-                                            </select>
+                                        <?= $pedido['fecha_pedido'] ?>
                                     </td>
-                                    <td class="text-center text-primary-emphasis">S/ <?= number_format($pedido['monto_total'], 2) ?></td>
-                                    <td class="text-center text-primary-emphasis"><?= $pedido['direccion_envio'] ?></td>
+
                                     <td class="text-center text-primary-emphasis">
-                                        <button type="submit" class="btn btn-sm btn-primary">Actualizar</button>
+                                        <form action="./administrador.php#pedidos" method="POST" class="form-estado d-flex justify-content-center align-items-center gap-2">
+
+                                            <input type="hidden" name="accion" value="cambiar_estado_pedido">
+                                            <input type="hidden" name="pedido_id" value="<?= $pedido['id'] ?>">
+
+                                            <?php
+                                                $estadoActual = $pedido['estado_id'];
+                                                $opciones = obtenerOpcionesEstado($estadoActual);
+                                                $estadosDisponibles = obtenerEstadosPorIds($bd, $opciones);
+                                                $soloEstadoActual = count($opciones) === 1;
+                                            ?>
+
+                                            <?php if ($soloEstadoActual): ?>
+                                                <span class="estado estado-<?= $pedido['estado_id'] ?>">
+                                                    <?= htmlspecialchars($estadosDisponibles[0]['estado'] ?? '') ?>
+                                                </span>
+                                            <?php else: ?>
+                                                <select name="nuevo_estado" class="estado estado-<?= $pedido['estado_id'] ?>">
+                                                    <?php foreach ($estadosDisponibles as $estado): ?>
+                                                        <option value="<?= $estado['id'] ?>"
+                                                            <?= ($estado['id'] == $estadoActual) ? 'selected' : '' ?>>
+                                                            <?= htmlspecialchars($estado['estado']) ?>
+                                                        </option>
+                                                    <?php endforeach; ?>
+                                                </select>
+
+                                                <button type="submit" class="btn btn-sm btn-primary">
+                                                    Actualizar
+                                                </button>
+                                            <?php endif; ?>
                                         </form>
                                     </td>
+
                                     <td class="text-center text-primary-emphasis">
-                                        <a href="detallePedido.php?id=<?= $pedido['id'] ?>"><i class="bi bi-eyeglasses"></i></a>
+                                        S/ <?= number_format($pedido['monto_total'], 2) ?>
+                                    </td>
+
+                                    <td class="text-center text-primary-emphasis">
+                                        <?= $pedido['direccion_envio'] ?>
+                                    </td>
+
+                                    <td class="text-center text-primary-emphasis">
+                                        <a href="detallePedido.php?id=<?= $pedido['id'] ?>">
+                                            <i class="bi bi-eyeglasses"></i>
+                                        </a>
                                     </td>
                                 </tr>
                             <?php endforeach ?>
@@ -374,6 +422,47 @@ $pedidos = listarPedidos($bd);
     <!--Boostrap-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
 
+    
+    <!-- script de ajax para actualizar estado de pedido -->
+    <script>
+    document.querySelectorAll('.form-estado').forEach(form => {
+
+    form.addEventListener('submit', function (e) {
+
+        e.preventDefault();
+
+        let formData = new FormData(this);
+        let selectEstado = this.querySelector('select[name="nuevo_estado"]');
+
+        fetch('./administrador.php', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.text())
+        .then(() => {
+
+            // Obtener el nuevo estado seleccionado
+            let nuevoEstado = selectEstado.value;
+
+            // Eliminar todas las clases de color
+            selectEstado.classList.remove(
+                'estado-1',
+                'estado-2',
+                'estado-3',
+                'estado-4',
+                'estado-5',
+                'estado-6'
+            );
+
+            // Agregar la nueva clase
+            selectEstado.classList.add('estado-' + nuevoEstado);
+
+        });
+
+    });
+
+});
+    </script>
 
 </body>
 
