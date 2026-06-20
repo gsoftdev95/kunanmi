@@ -115,10 +115,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['accion'] === 'cambiar_estad
                         <p class="m-0">Productos Destacados:</p>
                         <p class="m-0" style="font-size:3rem"> <?= $totalDestacados ?> </p>
                     </div>
-                    <div class="cardDashboard">
+                    
+                    <div class="cardDashboard cardDashboardStock" id="cardDashboardStock">
                         <p class="m-0">Productos con bajo stock:</p>
-                        <p class="m-0" style="font-size:3rem"> <?= $ProductosSinStock ?> </p>
+                        <p class="m-0" style="font-size:3rem">
+                            <?= $ProductosSinStock ?>
+                        </p>
+
+                        <div class="tooltipStock" id="tooltipStock">
+                            Aquí irá cualquier texto que desees mostrar.
+                        </div>
                     </div>
+
                     <div class="cardDashboard">
                         <p class="m-0">Clientes:</p>
                         <p class="m-0" style="font-size:3rem"><?= $totalClientes ?></p>
@@ -429,41 +437,61 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['accion'] === 'cambiar_estad
     <script>
     document.querySelectorAll('.form-estado').forEach(form => {
 
-    form.addEventListener('submit', function (e) {
+        form.addEventListener('submit', function (e) {
 
-        e.preventDefault();
+            e.preventDefault();
 
-        let formData = new FormData(this);
-        let selectEstado = this.querySelector('select[name="nuevo_estado"]');
+            let formData = new FormData(this);
+            let selectEstado = this.querySelector('select[name="nuevo_estado"]');
 
-        fetch('./administrador.php', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.text())
-        .then(() => {
+            fetch('./administrador.php', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.text())
+            .then(() => {
 
-            // Obtener el nuevo estado seleccionado
-            let nuevoEstado = selectEstado.value;
+                // Obtener el nuevo estado seleccionado
+                let nuevoEstado = selectEstado.value;
 
-            // Eliminar todas las clases de color
-            selectEstado.classList.remove(
-                'estado-1',
-                'estado-2',
-                'estado-3',
-                'estado-4',
-                'estado-5',
-                'estado-6'
-            );
+                // Eliminar todas las clases de color
+                selectEstado.classList.remove(
+                    'estado-1',
+                    'estado-2',
+                    'estado-3',
+                    'estado-4',
+                    'estado-5',
+                    'estado-6'
+                );
 
-            // Agregar la nueva clase
-            selectEstado.classList.add('estado-' + nuevoEstado);
+                // Agregar la nueva clase
+                selectEstado.classList.add('estado-' + nuevoEstado);
+
+            });
 
         });
 
     });
+    </script>
 
-});
+    <script>
+    document.addEventListener("DOMContentLoaded", ()=>{
+
+        const cardStock = document.getElementById("cardDashboardStock");
+        const tooltip = document.getElementById("tooltipStock");
+
+        cardStock.addEventListener("click", ()=>{
+
+            if(tooltip.style.display === "block"){
+                tooltip.style.display = "none";
+            }
+            else{
+                tooltip.style.display = "block";
+            }
+
+        });
+
+    });
     </script>
 
 </body>
