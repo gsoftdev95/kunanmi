@@ -10,6 +10,8 @@ $totalProductosActivos = contarProductosactivos($bd, 'Productos');
 $totalDestacados = contarDestacados($bd, 'Productos');
 $ProductosSinStock = contarProductosSinStock($bd, 'Productos');
 $PedidosPendientes = contarPedidosPendientes($bd, 'pedidos');
+$ventasMesAnterior = obtenerVentasMesAnterior($bd);
+$ventasMesActual = obtenerVentasMesActual($bd);
 $atributos = obtenerAtributos($bd);
 $atributosValores = obtenerAtributosConValores($bd);
 
@@ -122,16 +124,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['accion'] === 'cambiar_estad
                         <p class="m-0" style="font-size:3rem"><?= $totalClientes ?></p>
                     </div>
                     <div class="cardDashboard">
-                        <p class="m-0">Pedidos pendientes*:</p>
-                        <p class="m-0" style="font-size:3rem">5</p>
+                        <p class="m-0">Pedidos pendientes:</p>
+                        <p class="m-0" style="font-size:3rem"><?= $PedidosPendientes ?></p>
                     </div>
                     <div class="cardDashboard">
-                        <p class="m-0">Ventas mes anterior(S/)*:</p>
-                        <p class="m-0" style="font-size:3rem">10,580</p>
+                        <p class="m-0">Ventas mes anterior(S/):</p>
+                        <p class="m-0" style="font-size:3rem"><?= $ventasMesAnterior ?></p>
                     </div>
                     <div class="cardDashboard">
-                        <p class="m-0">Ventas mes actual(S/)*:</p>
-                        <p class="m-0" style="font-size:3rem">10,580</p>
+                        <p class="m-0">Ventas mes actual(S/):</p>
+                        <p class="m-0" style="font-size:3rem"><?= $ventasMesActual ?></p>
                     </div>
                 </div>
             </section>

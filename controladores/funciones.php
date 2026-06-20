@@ -220,6 +220,31 @@ function contarPedidosPendientes($bd, $tabla){
     $stmt = $bd->query($sql);
     return $stmt->fetchcolumn();
 }
+function obtenerVentasMesAnterior($bd)
+{
+    $sql = "SELECT SUM(monto_total) AS total
+            FROM pedidos
+            WHERE YEAR(fecha_pedido) = YEAR(DATE_SUB(CURDATE(), INTERVAL 1 MONTH))
+            AND MONTH(fecha_pedido) = MONTH(DATE_SUB(CURDATE(), INTERVAL 1 MONTH))";
+
+    $stmt = $bd->prepare($sql);
+    $stmt->execute();
+
+    return $stmt->fetch(PDO::FETCH_ASSOC)['total'] ?? 0;
+}
+function obtenerVentasMesActual($bd)
+{
+    $sql = "SELECT SUM(monto_total) AS total
+            FROM pedidos
+            WHERE YEAR(fecha_pedido) = YEAR(CURDATE())
+            AND MONTH(fecha_pedido) = MONTH(CURDATE())";
+
+    $stmt = $bd->prepare($sql);
+    $stmt->execute();
+
+    return $stmt->fetch(PDO::FETCH_ASSOC)['total'] ?? 0;
+}
+
 //funcion para obtener las categorias
 function obtenerCategorias($bd) {
     $sql = "SELECT id, nombre FROM categorias where estado='activo' ";
