@@ -1832,7 +1832,7 @@ body {
     transform: translateX(-50%);
 
     min-width: 250px;
-    padding: 15px;
+    padding: 10px;
 
     background: white;
     color: black;
@@ -1841,6 +1841,10 @@ body {
     box-shadow: 0 5px 15px rgba(0,0,0,.2);
 
     z-index: 1000;
+}
+.tooltipStock ul li{
+    text-align: left;
+    font-size: 12px;
 }
 
 

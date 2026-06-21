@@ -215,6 +215,11 @@ function contarProductosSinStock($bd, $tabla){
     $stmt = $bd->query($sql);
     return $stmt->fetchcolumn();
 }
+function ListarProductosSinStock($bd){
+    $sql = "SELECT * from productos where stock <5 ";
+    $stmt = $bd->query($sql);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 function contarPedidosPendientes($bd, $tabla){
     $sql = "select count(id) from $tabla where estado_id !=5";
     $stmt = $bd->query($sql);

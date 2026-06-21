@@ -9,6 +9,7 @@ $totalProductos = contarProductos($bd, 'Productos');
 $totalProductosActivos = contarProductosactivos($bd, 'Productos');
 $totalDestacados = contarDestacados($bd, 'Productos');
 $ProductosSinStock = contarProductosSinStock($bd, 'Productos');
+$mostrarProductosSinStock = ListarProductosSinStock($bd);
 $PedidosPendientes = contarPedidosPendientes($bd, 'pedidos');
 $ventasMesAnterior = obtenerVentasMesAnterior($bd);
 $ventasMesActual = obtenerVentasMesActual($bd);
@@ -123,7 +124,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['accion'] === 'cambiar_estad
                         </p>
 
                         <div class="tooltipStock" id="tooltipStock">
-                            Aquí irá cualquier texto que desees mostrar.
+                            <strong>Productos con bajo stock</strong>
+                            <?php if (!empty($mostrarProductosSinStock)): ?>
+                                <ul>
+                                    <?php foreach ($mostrarProductosSinStock as $producto): ?>
+                                        <li>
+                                            <?= htmlspecialchars($producto['nombre']) ?>
+                                            (<?= $producto['stock'] ?>)
+                                        </li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            <?php else: ?>
+                                <p>No hay productos con bajo stock.</p>
+                            <?php endif; ?>
                         </div>
                     </div>
 
