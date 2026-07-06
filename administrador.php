@@ -239,9 +239,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['accion'] === 'cambiar_estad
                         </section>
 
                         <section class=" tableAdminProductCont">
-                            <table class="table table-responsive-sm table-light table-hover tableAdminProduct">
+                            <table class="table table-responsive-sm table-hover tableAdminProduct">
                                 <thead>
-                                    <tr>
+                                    <tr class="table-secondary">
                                         <th class="text-center">Id</th> <!--1-->
                                         <th class="text-center">Nombre</th> <!--2-->
                                         <th class="text-center">Precio</th> <!--3-->
@@ -352,9 +352,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['accion'] === 'cambiar_estad
                 <p>Controla y actualiza el estado de los pedidos.</p>
 
                 <section class="table-responsive-custom">
-                    <table class="tableAdminPedidos table table-light">
+                    <table class="tableAdminPedidos table table-hover">
                         <thead>
-                            <tr>
+                            <tr class="table-secondary">
                                 <th class="text-center">Cliente</th>
                                 <th class="text-center">Fecha</th>
                                 <th class="text-center">Estado</th>
@@ -365,7 +365,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['accion'] === 'cambiar_estad
                         </thead>
                         <tbody>
                             <?php foreach ($pedidos as $pedido): ?>
-                                <tr>
+                                <tr class="table-light">
                                     <td class="text-center text-primary-emphasis">
                                         <?= obtenerNombreUsuario($bd, $pedido['usuario_id']) ?>
                                     </td>

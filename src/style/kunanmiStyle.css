@@ -1126,16 +1126,27 @@ TIENDA TIENDA TIENDA
     overflow: auto; 
     min-height: 100vh; 
     background-color: #f8f9fa;
+    padding: 10px 10px;
 
     @media (width < 770px) {
         min-height: 50vh;
         position:relative;
+        border-right: 0px;
+        padding: 5px;
+        height: auto;
+        min-height:auto;
     }
+
     @media (width < 450px) {
-        min-height: 50vh;
         position:relative;
     }
 }
+.accordion-button{
+    @media (width < 770px) {
+        padding: 5px 10px;
+    }
+}
+
 .productFilters form{
     color: var(--oscuroK);  
 }
@@ -1211,12 +1222,14 @@ TIENDA TIENDA TIENDA
 }
 .imgProdShopCont:hover .img-default {
     opacity: 1; /* Oculta la imagen principal al hacer hover */
+    
+
 }
 .hoverShop{
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 2; /* Asegura que esté por encima de la imagen */
+    z-index: 2;
     width: 100%;
     height: 100%;
     background-color: rgb(255, 201, 194, 0.3);
@@ -1227,10 +1240,20 @@ TIENDA TIENDA TIENDA
     flex-direction: column;
     align-items: center;
     justify-content: center;
+
+    @media (width < 990px) {
+        opacity: 1;
+        justify-content: center;
+        align-items: flex-end;
+        height: auto;
+        top: 0;
+        right: 0;
+        padding: 1px;
+        background-color: transparent;
+    }
 }
 .imgProdShopCont:hover .hoverShop {
     opacity: 1;
-    
 }
 .cardProductTextBut{
     background-color: white;
@@ -1238,22 +1261,49 @@ TIENDA TIENDA TIENDA
     padding: 8px 16px;
     border-radius: 5px;
     text-transform: uppercase;
+    text-align: center;
     transition: background-color 0.2s ease;
+    margin: 5px 0px;
+    border: none;
+    text-decoration: none;
 
     font-family: "Questrial", sans-serif;
     font-weight: 500;
     font-style: normal;
-}
 
-.cardProductText i{
-    padding: 0px 5px;
-    font-weight: bold;
+    @media (width < 990px) {
+        font-size: 12px;
+        padding: 5px;
+        margin: 3px 5px;
+        background-color: var(--rosaK);
+        color: white;
+        text-transform:none;
+        height: auto;
+    }
+    @media (width < 450px) {
+        padding: 5px;
+    }
 }
 .cardProductTextBut:hover {
     background-color: var(--rosaK);
     color: white;
 }
-
+@media (hover: hover) {
+    .cardProductTextBut:hover {
+        background-color: var(--rosaK);
+        color: white;
+    }
+}
+.cardProductTextBut span{
+    @media (width < 990px) {
+        display: none;
+    }
+}
+.cardProductTextBut i{
+    @media (width < 990px) {
+        font-size: 1rem;
+    }
+}
 
 .cardProductText{
     display: flex;
@@ -1274,7 +1324,6 @@ TIENDA TIENDA TIENDA
 
     @media (width < 450px) {
         font-size: 0.8rem;
-        font-weight: 600;
         margin: 5px 0px 0px;
         min-height: 60px;
     }
@@ -1929,9 +1978,7 @@ body {
     overflow-wrap: break-word;
     word-wrap: break-word;
 }
-.tableAdminProduct th{
-    background-color: #a3a3a3ed;
-}
+
 
 .tableAdminProduct td:nth-child(2),
 .tableAdminProduct th:nth-child(2),

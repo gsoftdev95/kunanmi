@@ -108,7 +108,7 @@ else{
         <section class="container-fluid ContainerMainProductInner">
             <div class="row">
                 <!-- Sidebar izquierdo -->
-                <aside class="productFilters col-12 col-md-3 col-lg-2 p-3">
+                <aside class="productFilters col-12 col-md-3 col-lg-2">
                     <h5 class="mb-3">Filtros</h5>
                     <!-- ATRIBUTOS DINÁMICOS EN ACORDEÓN -->
                     <form id="formFiltros" data-categoria="<?= isset($_GET['categoria']) ? $_GET['categoria'] : '' ?>" data-subcategoria="<?= isset($_GET['subcategoria']) ? $_GET['subcategoria'] : '' ?>">
@@ -185,8 +185,8 @@ else{
                                         <form action="agregarAlCarrito.php" method="POST" class="hoverShop form-agregar-carrito">
 
                                             <input type="hidden" name="id" value="<?= $row['id'] ?>">
-                                            <button type="submit" class="btn cardProductTextBut mb-2">añadir al carrito <i class="bi bi-cart"></i></button>
-                                            <a href="./detalleProducto.php?id=<?= $row['id'] ?>" class="btn cardProductTextBut">ver Producto</a>
+                                            <button type="submit" class="cardProductTextBut"> <span>Añadir al carrito</span>  <i class="bi bi-cart"></i></button>
+                                            <a href="./detalleProducto.php?id=<?= $row['id'] ?>" class="cardProductTextBut" > <span>Ver producto</span> <i class="bi bi-card-text"></i> </a>
                                         </form>
                                     </div>
                                     
@@ -196,12 +196,10 @@ else{
                                         <div class="card-text cardProductTextPrice m-0">S/. <?php echo number_format($row['precio'], 2); ?></div>                                    
                                     </div>
                                 </div>
-                            </div>
-                            
-                        <?php } ?>
-
-                        
+                            </div>                            
+                        <?php } ?>                        
                     </section>
+
                     <div class="text-center my-2">
                             <button id="btnVerMas" class="MasProductos">
                                 Ver más productos
@@ -253,8 +251,8 @@ else{
 
 
 <!-- vermas tienda -->
- <script>
-    document.addEventListener("DOMContentLoaded", function(){
+<script>
+document.addEventListener("DOMContentLoaded", function(){
 
     const boton = document.getElementById("btnVerMas");
 
@@ -275,8 +273,8 @@ else{
     });
 
 });
- </script>
+</script>
 
 
-  </body>
+</body>
 </html>
