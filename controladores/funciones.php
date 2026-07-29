@@ -828,10 +828,45 @@ function obtenerPedidosPorUsuario(PDO $bd, int $idUsuario): array {
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+function obtenerDetallePedido(PDO $bd, int $pedidoId): array {
 
+    $stmt = $bd->prepare("
+        SELECT
+            p.nombre,
+            dp.precio_unitario,
+            dp.cantidad,
+            dp.subtotal
+        FROM detalle_pedido dp
+        INNER JOIN productos p
+            ON dp.producto_id = p.id
+        WHERE dp.pedido_id = :pedido
+    ");
 
+    $stmt->bindValue(':pedido', $pedidoId, PDO::PARAM_INT);
+    $stmt->execute();
 
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+function obtenerPedido(PDO $bd, int $pedidoId): array {
 
+    $stmt = $bd->prepare("
+        SELECT
+            p.id,
+            p.fecha_pedido,
+            p.direccion_envio,
+            p.monto_total,
+            e.descripcion_cliente
+        FROM pedidos p
+        INNER JOIN estados_pedido e
+            ON p.estado_id = e.id
+        WHERE p.id = :id
+    ");
+
+    $stmt->bindValue(':id',$pedidoId,PDO::PARAM_INT);
+    $stmt->execute();
+
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
 
 
 
@@ -897,7 +932,74 @@ function estadoVisibleCliente($estado) {
 
 
 
-function enviarCorreo($usuario) {    
+
+/**************************** */
+/**************************** */
+/*******envio de correos **** */
+/**************************** */
+/**************************** */
+/*
+function crearTokenRecuperacion($bd, $usuario){
+    $token = bin2hex(random_bytes(32));
+    $expira = date('Y-m-d H:i:s', strtotime('+1 hour'));
+
+    $sql = "INSERT INTO password_resets (usuario_id, token, expira_en, usado)
+            VALUES (:usuario_id, :token, :expira, 0)";
+
+    $query = $bd->prepare($sql);
+    $query->execute([
+        ':usuario_id' => $usuario['id'],
+        ':token' => $token,
+        ':expira' => $expira
+    ]);
+
+    enviarCorreoRecuperacion($usuario['correo'], $token);
+}
+
+
+function enviarCorreoRecuperacion($correo, $token){
+    
+    require_once 'librerias/PHPMailer/src/PHPMailer.php';
+    require_once 'librerias/PHPMailer/src/SMTP.php';
+    require_once 'librerias/PHPMailer/src/Exception.php';
+
+    $mail = new PHPMailer(true);
+
+    try {
+        $mail->isSMTP();
+        $mail->Host       = 'smtp.gmail.com';
+        $mail->SMTPAuth   = true;
+        $mail->Username   = 'ratsprotection@gmail.com'; //'gesoftdev@gmail.com'
+        $mail->Password   = 'zpod sqtc eshe vmjz';  //'wncl tsrg bxkg fuic';
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port       = 587;
+
+        $mail->setFrom('no-reply@tudominio.com', 'Rats Protection');
+        $mail->addAddress($correo);
+
+        $link = "https://https://ratsprotectionperu.com/resetear.php?token=$token";
+        //$link = "http://localhost/Paginas_web/Rats_Protection/RatsProtection_v6_seguridad/resetear.php?token=$token";
+
+        $mail->isHTML(true);
+        $mail->Subject = 'Recuperación de contraseña';
+        $mail->Body    = "
+            <p>Sobrino!, ¿como te vas a olvidar tu contraseña?.</p>
+            <p>Te ayudare a restablecer tu contrasena.</p>
+            <p><a href='$link'>Haz clic aqui para cambiarla</a></p>
+            <p>Este enlace expira en 1 hora.</p>
+        ";
+
+        $mail->send();
+        return true;
+
+    } catch (Exception $e) {
+        return false;
+    }
+}
+
+
+
+function enviarCorreoConfirmacionRegistro($usuario) {    
     //Importar PHPMailer
     require_once 'librerias/PHPMailer/src/PHPMailer.php';
     require_once 'librerias/PHPMailer/src/SMTP.php';
@@ -945,6 +1047,108 @@ function enviarCorreo($usuario) {
         echo "Ha ocurrido un error: {$mail->ErrorInfo}";
     }
 }
+*/
 
+function enviarCorreoCompra($usuario, $pedido, $productos)
+{
+    require_once 'librerias/PHPMailer/src/PHPMailer.php';
+    require_once 'librerias/PHPMailer/src/SMTP.php';
+    require_once 'librerias/PHPMailer/src/Exception.php';
+
+    $mail = new PHPMailer(true);
+
+    try {
+
+        // Configuración SMTP
+        $mail->SMTPDebug = SMTP::DEBUG_OFF;
+        $mail->isSMTP();
+        $mail->Host       = 'smtp.gmail.com';
+        $mail->SMTPAuth   = true;
+        $mail->Username   = 'ratsprotection@gmail.com';
+        $mail->Password   = 'zpod sqtc eshe vmjz';
+        $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
+        $mail->Port       = 587;
+
+        // Destinatarios
+        $mail->setFrom('ratsprotection@gmail.com', 'Kunanmi');
+        $mail->addAddress(
+            $usuario['correo'],
+            $usuario['nombre'].' '.$usuario['apellidos']
+        );
+
+        // Opcional: copia para ti
+        //$mail->addCC('gesoftdev@gmail.com');
+
+        $mail->isHTML(true);
+        $mail->Subject = 'Confirmación de compra - Kunanmi';
+
+        // Crear listado de productos
+        $listaProductos = '';
+
+        foreach ($productos as $producto) {
+
+            $listaProductos .= "
+                <tr>
+                    <td>{$producto['nombre']}</td>
+                    <td align='center'>{$producto['cantidad']}</td>
+                    <td align='right'>S/ ".number_format($producto['precio'],2)."</td>
+                </tr>
+            ";
+        }
+
+        $body = "
+
+        <h2>¡Gracias por tu compra!</h2>
+
+        <p>Hola <strong>{$usuario['nombre']}</strong>, hemos recibido correctamente tu pedido.</p>
+
+        <hr>
+
+        <p><strong>Pedido:</strong> {$pedido['id']}</p>
+
+        <p><strong>Fecha:</strong> {$pedido['fecha']}</p>
+
+        <p><strong>Dirección:</strong> {$pedido['direccion']}</p>
+
+        <table border='1' cellpadding='8' cellspacing='0' width='100%'>
+
+            <thead>
+
+                <tr>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Precio</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {$listaProductos}
+
+            </tbody>
+
+        </table>
+
+        <h3>Total: S/ ".number_format($pedido['total'],2)."</h3>
+
+        <p>Puedes revisar el estado de tu pedido iniciando sesión en Kunanmi.</p>
+
+        <hr>
+
+        <small>Gracias por confiar en nosotros.</small>
+
+        ";
+
+        $mail->Body = $body;
+
+        $mail->send();
+
+    } catch (Exception $e) {
+
+        error_log($mail->ErrorInfo);
+
+    }
+}
 
 ?>

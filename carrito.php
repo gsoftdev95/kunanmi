@@ -25,7 +25,7 @@ if (isset($_SESSION['id'])) {
     <?php include_once('./src/partials/head.php')?>
 </head>
 <body>    
-   <header>
+    <header>
         <?php include_once('./src/partials/navbar.php'); ?>
     </header>
 
@@ -78,7 +78,7 @@ if (isset($_SESSION['id'])) {
                 </table>
             </div>                              
             <?php if ($cliente): ?>
-                <form action="checkout.php" method="POST">
+                <form action="checkout.php"  class="formCarrito" method="POST">
                     <input type="hidden" name="amount" value="<?= intval($total * 100) ?>"> <!-- 60.00 soles = 6000 -->
                     <input type="hidden" name="currency" value="PEN">
                     <input type="hidden" name="orderId" value="<?= uniqid('ORD_') ?>">
@@ -93,7 +93,7 @@ if (isset($_SESSION['id'])) {
                     <input type="hidden" name="city" value="Lima">
                     <input type="hidden" name="state" value="Lima">
                     <input type="hidden" name="zipCode" value="15001">
-                    <button type="submit" class="btn btn-primary mt-2">Proceder al pago</button>
+                    <button type="submit" class="btn mt-2">Proceder al pago</button>
                 </form>
             <?php else: ?>
                 <div class="alert alert-warning mt-4 text-center">

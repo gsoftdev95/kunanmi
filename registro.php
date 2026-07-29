@@ -21,7 +21,7 @@ if ($_POST) {
         
         // Guardar al usuario
         guardarUsuario($bd, 'usuarios', $_POST);
-        //enviarCorreo($_POST);
+        //enviarCorreoConfirmacionRegistro($_POST);
         header('location: login.php');
         exit();
     }

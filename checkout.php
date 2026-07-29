@@ -52,12 +52,14 @@ $productos = isset($_SESSION['carrito']) ? $_SESSION['carrito'] : [];
       <div class="col-md-3"></div>
       <div class="center-column col-md-6">
         <section class="payment-form">
-          <div class="row">
-            <li>Pago con tarjeta de crédito/débito</li>
-            <img src="https://github.com/izipay-pe/Imagenes/blob/main/logo_tarjetas_aceptadas/logo-tarjetas-aceptadas-351x42.png?raw=true" alt="Tarjetas aceptadas" style="width: 200px;">
+          <div class="row card-header">
+            <li class="list-group-item w-100">
+              Pago con tarjeta de crédito/débito
+              <img src="https://github.com/izipay-pe/Imagenes/blob/main/logo_tarjetas_aceptadas/logo-tarjetas-aceptadas-351x42.png?raw=true" alt="Tarjetas aceptadas" style="width: 200px;">
+            </li>            
           </div>
-          <hr>
-          <div id="micuentawebstd_rest_wrapper">
+
+          <div id="micuentawebstd_rest_wrapper" class="mt-3">
             <div class="card mb-4">
               <div class="card-header">
                 <strong>Resumen de tu compra</strong>

@@ -65,7 +65,12 @@ $pedidos = obtenerPedidosPorUsuario($bd, $idUsuario);
                         <td><?= date('d/m/Y', strtotime($pedido['fecha_pedido'])) ?></td>
                         <td><?= ucfirst($pedido['descripcion_cliente']) ?></td>
                         <td>S/ <?= number_format($pedido['monto_total'], 2) ?></td>
-                        <td><a href="detallePedido.php?id=<?= $pedido['id'] ?>" class="btn btn-sm btn-outline-primary">Ver</a></td>
+                        <td><button
+                                class="btn btn-sm btn-outline-primary btnDetalle"
+                                data-id="<?= $pedido['id'] ?>">
+                                Ver
+                            </button>
+                        </td>
                         </tr>
                     <?php endforeach; ?>
                     </tbody>
@@ -84,7 +89,6 @@ $pedidos = obtenerPedidosPorUsuario($bd, $idUsuario);
         </div>
 
     </main>
-  
 
     
 
@@ -93,11 +97,48 @@ $pedidos = obtenerPedidosPorUsuario($bd, $idUsuario);
     </footer>
 
 
-
+    <!-- modal del detalle de pedido -->
+    <div id="modalPedido" class="modalPedido">
+        <div class="modalPedidoContenido">
+            <span class="cerrarModal">&times;</span>
+            <div id="contenidoPedido">
+                <!-- aquí llegará el pedido -->
+            </div>
+        </div>
+    </div>
 
 
     <!--Boostrap-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
+
+    <!-- script para cerrar el modal de detalle -->
+    <script>
+        const modal = document.getElementById("modalPedido");
+        const cerrar = document.querySelector(".cerrarModal");
+        cerrar.onclick = function(){
+            modal.style.display = "none";
+        }
+        window.onclick = function(e){
+            if(e.target == modal){
+                modal.style.display = "none";
+            }
+        }
+    </script>
+
+    <!-- script para abrir el modal de detalle-->
+    <script>
+        const botonesDetalle = document.querySelectorAll(".btnDetalle");
+        botonesDetalle.forEach(boton => {
+            boton.addEventListener("click", function(){
+                modal.style.display = "flex";
+                document.getElementById("contenidoPedido").innerHTML = `
+                    <h3>Pedido #${this.dataset.id}</h3>
+                    <hr>
+                    <p>Aquí irá el detalle del pedido.</p>
+                `;
+            });
+        });
+    </script>
 
 </body>
 </html>
