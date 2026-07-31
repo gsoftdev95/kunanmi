@@ -51,7 +51,6 @@ $pedidos = obtenerPedidosPorUsuario($bd, $idUsuario);
                 <table class="table table-striped text-center">
                     <thead>
                     <tr>
-                        <th>ID Pedido</th>
                         <th>Fecha</th>
                         <th>Estado</th>
                         <th>Monto Total</th>
@@ -61,12 +60,11 @@ $pedidos = obtenerPedidosPorUsuario($bd, $idUsuario);
                     <tbody>
                     <?php foreach ($pedidos as $pedido): ?>
                         <tr>
-                        <td><?= $pedido['id'] ?></td>
                         <td><?= date('d/m/Y', strtotime($pedido['fecha_pedido'])) ?></td>
                         <td><?= ucfirst($pedido['descripcion_cliente']) ?></td>
                         <td>S/ <?= number_format($pedido['monto_total'], 2) ?></td>
                         <td><button
-                                class="btn btn-sm btn-outline-primary btnDetalle"
+                                class="btnDetallePerfilCliente"
                                 data-id="<?= $pedido['id'] ?>">
                                 Ver
                             </button>
@@ -127,7 +125,7 @@ $pedidos = obtenerPedidosPorUsuario($bd, $idUsuario);
 
     <!-- script para abrir el modal de detalle-->
     <script>
-        const botonesDetalle = document.querySelectorAll(".btnDetalle");
+        const botonesDetalle = document.querySelectorAll(".btnDetallePerfilCliente");
         botonesDetalle.forEach(boton => {
             boton.addEventListener("click", function(){
                 modal.style.display = "flex";

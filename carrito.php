@@ -79,6 +79,57 @@ if (isset($_SESSION['id'])) {
             </div>                              
             <?php if ($cliente): ?>
                 <form action="checkout.php"  class="formCarrito" method="POST">
+                    <h4>Datos de entrega</h4>
+                    <div class="mb-3">
+                        <label>Nombre del destinatario</label>
+                        <input
+                            type="text"
+                            name="destinatario"
+                            class="form-control"
+                            value="<?= htmlspecialchars($cliente['nombre'] . ' ' . $cliente['apellido_paterno']) ?>"
+                            required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Teléfono</label>
+                        <input
+                            type="text"
+                            name="telefono"
+                            class="form-control"
+                            value="<?= htmlspecialchars($cliente['celular']) ?>"
+                            required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Dirección</label>
+                        <input
+                            type="text"
+                            name="direccion"
+                            class="form-control"
+                            value="<?= htmlspecialchars($cliente['direccion']) ?>"
+                            required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Distrito</label>
+                        <input
+                            type="text"
+                            name="distrito"
+                            class="form-control"
+                            placeholder="Ej. San Isidro"
+                            required>
+                    </div>
+
+                    <div class="mb-3">
+                        <label>Referencia (opcional)</label>
+                        <textarea
+                            name="referencia"
+                            class="form-control"
+                            rows="2"
+                            placeholder="Casa color blanco, frente al parque..."></textarea>
+                    </div>
+
+
                     <input type="hidden" name="amount" value="<?= intval($total * 100) ?>"> <!-- 60.00 soles = 6000 -->
                     <input type="hidden" name="currency" value="PEN">
                     <input type="hidden" name="orderId" value="<?= uniqid('ORD_') ?>">
@@ -88,11 +139,11 @@ if (isset($_SESSION['id'])) {
                     <input type="hidden" name="phoneNumber" value="<?= htmlspecialchars($cliente['celular']) ?>">
                     <input type="hidden" name="identityType" value="DNI">
                     <input type="hidden" name="identityCode" value="12345678"> <!-- Puedes reemplazar si lo tienes -->
-                    <input type="hidden" name="address" value="<?= htmlspecialchars($cliente['direccion']) ?>">
                     <input type="hidden" name="country" value="PE">
                     <input type="hidden" name="city" value="Lima">
                     <input type="hidden" name="state" value="Lima">
                     <input type="hidden" name="zipCode" value="15001">
+                    
                     <button type="submit" class="btn mt-2">Proceder al pago</button>
                 </form>
             <?php else: ?>

@@ -28,19 +28,22 @@ function formToken(){
         "currency" => $_POST["currency"],
         "orderId" => $_POST["orderId"],
         "customer" => [
-          "email" => $_POST["email"],
-          "billingDetails" => [
-            "firstName"=>  $_POST["firstName"],
-            "lastName"=>  $_POST["lastName"],
-            "phoneNumber"=>  $_POST["phoneNumber"],
-            "identityType"=>  $_POST["identityType"],
-            "identityCode"=>  $_POST["identityCode"],
-            "address"=>  $_POST["address"],
-            "country"=>  $_POST["country"],
-            "city"=>  $_POST["city"],
-            "state"=>  $_POST["state"],
-            "zipCode"=>  $_POST["zipCode"],
-          ]
+            "email" => $_POST["email"],
+            "billingDetails" => [
+                "firstName"=>  $_POST["firstName"],
+                "lastName"=>  $_POST["lastName"],
+                "phoneNumber"=>  $_POST["phoneNumber"],
+                "identityType"=>  $_POST["identityType"],
+                "identityCode"=>  $_POST["identityCode"],
+                "address" => $_SESSION['direccion_envio']
+                    . (!empty($_SESSION['distrito_envio']) ? ', ' . $_SESSION['distrito_envio'] : '')
+                    . (!empty($_SESSION['referencia_envio']) ? ' - Ref: ' . $_SESSION['referencia_envio'] : ''),
+
+                "country" => $_POST["country"],
+                "city" => $_POST["city"],
+                "state" => $_POST["state"],
+                "zipCode" => $_POST["zipCode"],
+            ]
         ],
     ];
 

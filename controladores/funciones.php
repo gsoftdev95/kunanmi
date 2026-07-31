@@ -1064,16 +1064,18 @@ function enviarCorreoCompra($usuario, $pedido, $productos)
         $mail->isSMTP();
         $mail->Host       = 'smtp.gmail.com';
         $mail->SMTPAuth   = true;
-        $mail->Username   = 'ratsprotection@gmail.com';
+        $mail->Username   = 'gesoftdev@gmail.com';
         $mail->Password   = 'zpod sqtc eshe vmjz';
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port       = 587;
 
         // Destinatarios
-        $mail->setFrom('ratsprotection@gmail.com', 'Kunanmi');
+        $mail->setFrom('gesoftdev@gmail.com', 'Kunanmi');
         $mail->addAddress(
-            $usuario['correo'],
-            $usuario['nombre'].' '.$usuario['apellidos']
+            $usuario['email'],
+            $usuario['nombre'] . ' ' .
+            $usuario['apellido_paterno'] . ' ' .
+            $usuario['apellido_materno']
         );
 
         // Opcional: copia para ti

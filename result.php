@@ -5,6 +5,16 @@ require_once('./src/partials/conexionBD.php');
 
 require_once "keys.example.php";
 
+/*
+echo "<pre>";
+echo "SESSION ID: " . session_id() . "\n\n";
+print_r($_SESSION);
+echo "\nPOST:\n";
+print_r($_POST);
+echo "</pre>";
+*/
+
+
 
 if (empty($_POST)) {
     throw new Exception("No post data received!");
@@ -62,12 +72,27 @@ $monto = $answer['orderDetails']["orderTotalAmount"] / 100;
 $fecha = date("Y-m-d H:i:s");
 
 // Validar monto recibido
+
 $totalEsperado = floatval($_SESSION['total_carrito']);
 $montoRecibido = floatval($answer['orderDetails']['orderTotalAmount']) / 100;
+
+/*
+echo "<pre>";
+echo "Total esperado: ";
+var_dump($totalEsperado);
+
+echo "Monto recibido: ";
+var_dump($montoRecibido);
+echo "</pre>";
+exit;
+*/
+
 
 if (abs($montoRecibido - $totalEsperado) > 0.01) {
     die("Error: el monto del pago no coincide con el total del carrito.");
 }
+
+$montoRecibido = floatval($answer['orderDetails']['orderTotalAmount']) / 100; //temporal
 
 // Datos para la vista
 $mensaje = "Pago procesado correctamente";
@@ -80,12 +105,22 @@ $usuario_id = $_SESSION['id'] ?? null;
 if (!$usuario_id) {
     die("No hay sesión de usuario activa.");
 }
-if (empty($_SESSION['direccion_envio'])) {
-    die("No se encontró la dirección de envío.");
+if (
+    empty($_SESSION['destinatario']) ||
+    empty($_SESSION['telefono_contacto']) ||
+    empty($_SESSION['direccion_envio']) ||
+    empty($_SESSION['distrito_envio'])
+) {
+    die("No se encontraron los datos de entrega.");
 }
-$direccion_envio = $_SESSION['direccion_envio'];
-$productos = $_SESSION['carrito'] ?? [];
 
+$destinatario = $_SESSION['destinatario'];
+$telefono = $_SESSION['telefono_contacto'];
+$direccion_envio = $_SESSION['direccion_envio'];
+$distrito = $_SESSION['distrito_envio'];
+$referencia = $_SESSION['referencia_envio'] ?? '';
+
+$productos = $_SESSION['carrito'] ?? [];
 if (empty($productos)) {
     die("El carrito está vacío.");
 }
@@ -109,14 +144,30 @@ try {
 
     // Insertar pedido
     $stmt = $bd->prepare("
-        INSERT INTO pedidos (usuario_id, fecha_pedido, monto_total, direccion_envio, estado_id, order_id)
-            VALUES (?, ?, ?, ?, ?, ?) ");
+        INSERT INTO pedidos
+            (
+                usuario_id,
+                fecha_pedido,
+                monto_total,
+                destinatario,
+                telefono_contacto,
+                direccion_envio,
+                distrito,
+                referencia,
+                estado_id,
+                order_id
+            )
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?) ");
 
     $stmt->execute([
         $usuario_id,
         $fecha,
         $monto,
+        $destinatario,
+        $telefono,
         $direccion_envio,
+        $distrito,
+        $referencia,
         1,
         $orderId
     ]);
@@ -182,12 +233,16 @@ try {
     unset($_SESSION['carrito']);
     unset($_SESSION['total_carrito']);
     unset($_SESSION['direccion_envio']);
+    unset($_SESSION['destinatario']);
+    unset($_SESSION['telefono_contacto']);
+    unset($_SESSION['distrito_envio']);
+    unset($_SESSION['referencia_envio']);
 
     // Confirmar cambios
     $bd->commit();
 
     // Obtener datos del usuario
-    $stmt = $bd->prepare("SELECT nombre, apellidos, correo FROM usuarios WHERE id = ? ");
+    $stmt = $bd->prepare("SELECT nombre, apellido_paterno, apellido_materno, email FROM usuarios WHERE id = ? ");
     $stmt->execute([$usuario_id]);
     $usuario = $stmt->fetch(PDO::FETCH_ASSOC);
 

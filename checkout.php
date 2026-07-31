@@ -4,11 +4,33 @@ require_once('./controladores/funciones.php');
 
 require_once "keys.example.php";
 
+// Guardar datos de entrega en sesión
+$_SESSION['destinatario'] = trim($_POST['destinatario'] ?? '');
+$_SESSION['telefono_contacto'] = trim($_POST['telefono'] ?? '');
+$_SESSION['direccion_envio'] = trim($_POST['direccion'] ?? '');
+$_SESSION['distrito_envio'] = trim($_POST['distrito'] ?? '');
+$_SESSION['referencia_envio'] = trim($_POST['referencia'] ?? '');
+
 $total = isset($_SESSION['total_carrito']) ? floatval($_SESSION['total_carrito']) : 0;
 $amountInCents = intval($total * 100);
 
 
-$formToken = formToken();
+// Construir dirección completa para el pago
+$direccionCompleta = $_SESSION['direccion_envio'];
+if (!empty($_SESSION['distrito_envio'])) {
+    $direccionCompleta .= ', ' . $_SESSION['distrito_envio'];
+}
+if (!empty($_SESSION['referencia_envio'])) {
+    $direccionCompleta .= ' - Ref: ' . $_SESSION['referencia_envio'];
+}
+
+// Generar el Form Token
+$formToken = formToken([
+    'customer' => [
+        'address' => $direccionCompleta
+    ]
+]);
+
 
 $productos = isset($_SESSION['carrito']) ? $_SESSION['carrito'] : [];
 ?>
