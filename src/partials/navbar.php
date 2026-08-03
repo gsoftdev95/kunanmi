@@ -60,7 +60,9 @@ if (isset($_SESSION['carrito'])) {
             <div class="divhead div2"></div>
 
             <div class="divhead divLogo">
-                <a class="navbar-brand" href="index.php"><img src="./src/img/logokunanmi.png" alt=""></a>
+                <a class="" href="index.php">
+                    <img src="./src/img/logokunanmi.png" alt="Logo Kunanmi">
+                </a>
             </div>
 
             <div class="divhead div4"></div>

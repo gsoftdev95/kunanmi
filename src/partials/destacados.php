@@ -14,8 +14,8 @@
                     
                     <form action="agregarAlCarrito.php" method="POST" class="hoverShop form-agregar-carrito">
                         <input type="hidden" name="id" value="<?= $row['id'] ?>">
-                        <button type="submit" class="btn cardProductTextBut mb-2">añadir al carrito <i class="bi bi-cart"></i></button>
-                        <a href="./detalleProducto.php?id=<?= $row['id'] ?>" class="btn cardProductTextBut">ver Producto</a>
+                        <button type="submit" class="cardProductTextBut"> <span>Añadir al carrito</span>  <i class="bi bi-cart"></i></button>
+                        <a href="./detalleProducto.php?id=<?= $row['id'] ?>" class="cardProductTextBut" > <span>Ver producto</span> <i class="bi bi-card-text"></i> </a>
                     </form>
                 </div>                                    
                 

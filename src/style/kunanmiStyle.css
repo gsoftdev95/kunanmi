@@ -76,25 +76,25 @@ header{
         grid-template-columns: 200px auto auto auto 200px;
     }
     @media (width < 600px) {
-        grid-template-columns: 150px auto auto auto 150px;
-    }
-    @media (width < 450px) {
         display: grid;
         grid-template-columns: repeat(8, 1fr);
         grid-template-rows: repeat(2, 1fr);
+        grid-template-rows: 50px auto;
         gap: 1px;
+        padding: 5px 1px;
     }
 }
-.divhead{
-    @media (width < 450px) {
+.div1{
+    @media (width < 600px) {
         gap: 1px;
         grid-column: span 3 / span 3;
     }
 }
 .div2 {
     
-    @media (width < 450px) {
+    @media (width < 600px) {
         grid-column-start: 4;
+        width: 10px;
     }
 }
 .divSearch{
@@ -109,7 +109,7 @@ header{
 }
 .divSearch input{
     border: none;
-    @media (width < 450px) {
+    @media (width < 600px) {
     }
 }
 .divSearch input:focus {
@@ -118,18 +118,18 @@ header{
 }
 .divSearch button{
     border: none;
-    @media (width < 450px) {
+    @media (width < 600px) {
         width: auto;
     }
 }
 .divLogo{
     text-align: center;
     margin: 30px 0px 10px;
-    font-size: 2.rem;
-    width: 250px;
+    padding: 0;
+    width: 100%;
     height: auto;
 
-    @media (width < 450px) {
+    @media (width < 600px) {
         grid-column: span 4 / span 4;
         grid-column-start: 3;
         grid-row-start: 2;
@@ -138,16 +138,19 @@ header{
     }
 }
 .divLogo a{
-    font-size: 1rem;
+    height: 100%;
+    width: 100%;
 }
 .divLogo img{
+    max-width: 300px;
     width: 100%;
     height: auto;
 }
 .div4 {
-    @media (width < 450px) {
-    grid-column-start: 5;
-    grid-row-start: 1;
+    @media (width < 600px) {
+        grid-column-start: 5;
+        grid-row-start: 1;
+        width: 10px;
     }
 }
 .divIcon{
@@ -156,7 +159,7 @@ header{
     display: flex;
     justify-content: end;
 
-    @media (width < 450px) {
+    @media (width < 600px) {
         grid-column: span 3 / span 3;
         grid-column-start: 6;
         grid-row-start: 1;
@@ -767,7 +770,17 @@ header{
 .valoracion{
     text-align: left;
 }
+.cardCommentOpinion{
+    min-height: 72px;
+    line-height: 1.5;
+    overflow: hidden;
 
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+
+    text-overflow: ellipsis;
+}
 .containerSolgan{
     width: 100%;
     display: flex;   
@@ -945,6 +958,10 @@ footer{
     height: auto;
     max-width: 1500px;
     width: 100%;
+
+    @media (width < 990px) {
+        padding: 10px;
+    }
 
     @media (width < 450px) {
         padding-bottom: 50px;
@@ -1391,10 +1408,23 @@ DETALLE PRODUCTO
 .containerProducto{
     display: flex;
     width: 100%;
+    justify-content: space-between;
+
+    @media (width<990px) {
+        flex-direction: column;
+        align-items: center;
+    }
 }
 .containerImg{
-    width: 50%;
+    max-width: 50%;
     height: auto;
+
+    @media (width<1200px) {
+        max-width: 65%;
+    }
+    @media (width<990px) {
+        max-width: 100%;
+    }
 }
 .imgDetProd{
     object-fit:cover;;
@@ -1404,6 +1434,17 @@ DETALLE PRODUCTO
 .infoProduct{
     margin: 0px 0px 0px 50px;
     padding: 0px 20px;
+    max-width: 800px;
+
+    @media (width<1200px) {
+        max-width: 400px;
+    }
+    @media (width<990px) {
+        padding: 20px;
+        max-width: 800px;
+        margin: 0px;
+    }
+    
 }
 .infoProduct h2{
     font-weight: 600;
@@ -1425,36 +1466,41 @@ DETALLE PRODUCTO
     font-family: "Tenor Sans", sans-serif;
     font-weight: 400;
     font-style: normal;
+
+    @media (width<990px) {
+        margin: 15px 0px 0px;
+    }
 }
 .beneficiosP{
     font-family: "Questrial", sans-serif;
     font-weight: 400;
     font-style: normal;
+
 }
 
 .contador {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  margin: 15px 0;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 15px 0;
 }
 
 .btn-decrementar,
 .btn-incrementar {
-  padding: 5px 10px;
-  font-size: 1.2rem;
-  cursor: pointer;
-  background-color: var(--rosaK);
-  color: white;
-  border: none;
-  border-radius: 4px;
+    padding: 5px 10px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    background-color: var(--rosaK);
+    color: white;
+    border: none;
+    border-radius: 4px;
 }
 .input-cantidad {
-  width: 50px;
-  text-align: center;
-  font-size: 1rem;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+    width: 50px;
+    text-align: center;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
 }
 .btn-agregar-carrito{
     background-color: var(--verdeK);
@@ -1462,6 +1508,10 @@ DETALLE PRODUCTO
     border: none;
     margin-top: 50px;
     border-radius: 8px;
+
+    @media (width<1200px) {
+        margin-top: 30px;        
+    }
 }
 .btn-agregar-carrito:hover{
     border: 2px solid var(--verdeK);
@@ -1489,6 +1539,10 @@ DETALLE PRODUCTO
     margin: auto;
     text-align: left;
     padding: 1px 5px;
+
+    @media (width <990px) {
+        width: 100%;
+    }
 }
 
 .OpinionProducto{
@@ -1508,14 +1562,24 @@ DETALLE PRODUCTO
     font-weight: 400;
     font-style: normal;
 }
-.opinion{
-    margin: 30px 0px 0px 0px;
+.opinionCard{
+    margin: 20px 0px 0px 0px;
+    padding: 5px;
 }
 .formOpinion{
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+.valoracion {
+    color: gold;
+    font-size: 1.2rem;
+    margin-bottom: 0.3rem;
+}
+
+.valoracion .estrella.vacia {
+    color: #939393;
 }
 .formOpinionInner{    
     max-width: 1500px;
@@ -1526,26 +1590,11 @@ DETALLE PRODUCTO
     font-weight: 400;
     font-style: normal;
 }
-
-.valoracion {
-    color: gold;
-    font-size: 1.2rem;
-    margin-bottom: 0.3rem;
-}
-
-.valoracion .estrella.vacia {
-    color: #939393;
-}
-
-
-
-
 .rating {
     direction: rtl; /* Estrellas de derecha a izquierda */
     unicode-bidi: bidi-override;
     display: inline-flex;
 }
-
 .rating input {
     display: none;
 }

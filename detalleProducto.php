@@ -106,7 +106,7 @@ $modoEmpleo = !empty($producto['modo_empleo']) ? json_decode($producto['modo_emp
                         <form id="form-agregar-carrito" action="agregarAlCarrito.php" method="POST" class="hoverShopdetail">
                             <input type="hidden" name="id" value="<?= $producto['id'] ?>">
                             <input type="hidden" name="cantidad" class="input-cantidad-hidden" value="1">
-                            <button type="submit" class="btn btn-agregar-carrito mb-2">añadir al carrito <i class="bi bi-cart"></i></button>                            
+                            <button type="submit" class="btn btn-agregar-carrito">añadir al carrito <i class="bi bi-cart"></i></button>                            
                         </form>
 
                         <!-- Mensaje de éxito oculto -->
@@ -143,17 +143,24 @@ $modoEmpleo = !empty($producto['modo_empleo']) ? json_decode($producto['modo_emp
                         <?php endif; ?>
                     </ul>
                     <div class="tab-content p-3 border">
-                        <div class="tab-pane fade show active" id="beneficios"><?= htmlspecialchars($producto['beneficios']) ?></div>                        
-                        <div class="tab-pane fade" id="uso">
+                        <div class="tab-pane fade <?= !empty($producto['beneficios']) ? 'show active' : '' ?>" id="beneficios">
+                            <?= htmlspecialchars($producto['beneficios']) ?>
+                        </div>
+                        <div class="tab-pane fade <?= (empty($producto['beneficios']) && !empty($producto['modo_empleo'])) ? 'show active' : '' ?>" id="uso">
                             <ul>
-                                <?php foreach($modoEmpleo as $paso): ?>
-                                    <li style="list-style-type: none;">
-                                        <?= htmlspecialchars($paso) ?>
-                                    </li>
-                                <?php endforeach; ?>
+                                <?php if (!empty($modoEmpleo)): ?>
+                                    <?php foreach ($modoEmpleo as $paso): ?>
+                                        <li style="list-style-type:none;">
+                                            <?= htmlspecialchars($paso) ?>
+                                        </li>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
                             </ul>
                         </div>
-                        <div class="tab-pane fade" id="ingredientes">Descubre cada ingrediente que hace especial a este producto: <?= htmlspecialchars($producto['ingredientes']) ?></div>
+                        <div class="tab-pane fade <?= (empty($producto['beneficios']) && empty($producto['modo_empleo']) && !empty($producto['ingredientes'])) ? 'show active' : '' ?>" id="ingredientes">
+                            Descubre cada ingrediente que hace especial a este producto:
+                            <?= htmlspecialchars($producto['ingredientes']) ?>
+                        </div>
                     </div>
                 </div>
 
@@ -165,7 +172,7 @@ $modoEmpleo = !empty($producto['modo_empleo']) ? json_decode($producto['modo_emp
                 <h4>Opiniones de clientes</h4>
                 <?php if (count($opiniones) > 0): ?>                    
                     <?php foreach ($opiniones as $op): ?>
-                        <div class="opinion">
+                        <div class="opinionCard">
                             <strong><?= htmlspecialchars($op['nombre']) ?> <?= htmlspecialchars($op['apellido_paterno']) ?></strong>
                             
                             <!-- Mostramos estrellas -->
