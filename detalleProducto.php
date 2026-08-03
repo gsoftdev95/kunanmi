@@ -271,6 +271,22 @@ $modoEmpleo = !empty($producto['modo_empleo']) ? json_decode($producto['modo_emp
                     .then(() => {
                         mensaje.style.display = 'block';
                         setTimeout(() => mensaje.style.display = 'none', 2500);
+
+                        // Actualizar contador del carrito
+                        fetch('contadorCarrito.php')
+                            .then(res => res.text())
+                            .then(total => {
+                                const contador = document.querySelector('.cart-count');
+
+                                if (contador) {
+                                    if (parseInt(total) > 0) {
+                                        contador.textContent = total;
+                                        contador.classList.remove('d-none');
+                                    } else {
+                                        contador.classList.add('d-none');
+                                    }
+                                }
+                            });
                     })
                     .catch(() => alert('Error al agregar al carrito'));
                 });
@@ -318,6 +334,8 @@ $modoEmpleo = !empty($producto['modo_empleo']) ? json_decode($producto['modo_emp
                 popup.style.display = 'block';
                 setTimeout(() => popup.style.display = 'none', 3000);
                 document.getElementById('form-opinion').reset();
+
+                
             })
             .catch(() => alert('Error al enviar tu opinión'));
         });
