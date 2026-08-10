@@ -249,6 +249,33 @@ function obtenerVentasMesActual($bd)
 
     return $stmt->fetch(PDO::FETCH_ASSOC)['total'] ?? 0;
 }
+function obtenerIngresosMesAnterior($bd)
+{
+    $sql = "SELECT SUM(monto_total) AS total
+            FROM pedidos
+            WHERE estado_id = 5
+            AND YEAR(fecha_pedido) = YEAR(DATE_SUB(CURDATE(), INTERVAL 1 MONTH))
+            AND MONTH(fecha_pedido) = MONTH(DATE_SUB(CURDATE(), INTERVAL 1 MONTH))";
+
+    $stmt = $bd->prepare($sql);
+    $stmt->execute();
+
+    return $stmt->fetch(PDO::FETCH_ASSOC)['total'] ?? 0;
+}
+function obtenerIngresosMesActual($bd)
+{
+    $sql = "SELECT SUM(monto_total) AS total
+            FROM pedidos
+            WHERE estado_id = 5
+            AND YEAR(fecha_pedido) = YEAR(CURDATE())
+            AND MONTH(fecha_pedido) = MONTH(CURDATE())";
+
+    $stmt = $bd->prepare($sql);
+    $stmt->execute();
+
+    return $stmt->fetch(PDO::FETCH_ASSOC)['total'] ?? 0;
+}
+
 
 //funcion para obtener las categorias
 function obtenerCategorias($bd) {
@@ -630,7 +657,8 @@ function obtenerOpcionesEstado($estadoActual)
         2 => [2, 3, 6],       // en proceso → en proceso, enviado, cancelado
         3 => [3, 4, 6],       // enviado → enviado, entregado, cancelado
         4 => [4, 5, 6],       // entregado → entregado, completado (bloqueado)
-        5 => [5],             // cancelado → cancelado (bloqueado)
+        5 => [5],             // completado → (bloqueado)
+        6 => [6],             // cancelado → (bloqueado)
     ];
 
     return $transiciones[$estadoActual] ?? [$estadoActual];
@@ -901,7 +929,8 @@ function obtenerPedidosPorUsuario(PDO $bd, int $idUsuario): array {
             p.id, 
             p.fecha_pedido, 
             e.estado, 
-            p.monto_total, 
+            p.monto_total,
+            p.order_id,
             e.descripcion_cliente
         FROM pedidos p
         JOIN estados_pedido e ON p.estado_id = e.id
@@ -920,7 +949,8 @@ function obtenerDetallePedido(PDO $bd, int $pedidoId, int $usuarioId): array
             p.imagen,   
             dp.precio_unitario,
             dp.cantidad,
-            dp.subtotal
+            dp.subtotal,
+            pe.order_id
         FROM detalle_pedido dp
 
         INNER JOIN productos p

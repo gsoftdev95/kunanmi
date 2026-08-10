@@ -51,6 +51,7 @@ $pedidos = obtenerPedidosPorUsuario($bd, $idUsuario);
                 <table class="table text-center table-hover">
                     <thead class="table-secondary">
                         <tr>
+                            <th>Id del pedido</th>
                             <th>Fecha</th>
                             <th>Estado</th>
                             <th>Monto Total</th>
@@ -60,15 +61,17 @@ $pedidos = obtenerPedidosPorUsuario($bd, $idUsuario);
                     <tbody >
                         <?php foreach ($pedidos as $pedido): ?>
                             <tr>
-                            <td><?= date('d/m/Y', strtotime($pedido['fecha_pedido'])) ?></td>
-                            <td><?= ucfirst($pedido['descripcion_cliente']) ?></td>
-                            <td>S/ <?= number_format($pedido['monto_total'], 2) ?></td>
-                            <td><button
-                                    class="btnDetallePerfilCliente"
-                                    data-id="<?= $pedido['id'] ?>">
-                                    Ver
-                                </button>
-                            </td>
+                                <td><?= ($pedido['order_id']) ?></td>
+                                <td><?= date('d/m/Y', strtotime($pedido['fecha_pedido'])) ?></td>
+                                <td><?= ucfirst($pedido['descripcion_cliente']) ?></td>
+                                <td>S/ <?= number_format($pedido['monto_total'], 2) ?></td>
+                                <td>
+                                    <button
+                                        class="btnDetallePerfilCliente"
+                                        data-id="<?= $pedido['id'] ?>">
+                                        Ver
+                                    </button>
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                     </tbody>
@@ -107,7 +110,7 @@ $pedidos = obtenerPedidosPorUsuario($bd, $idUsuario);
     <!--Boostrap-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
 
-    <!-- script para cerrar el modal de detalle -->
+    <!-- script para modal de detalle -->
     <script>
         document.addEventListener("DOMContentLoaded", () => {
 

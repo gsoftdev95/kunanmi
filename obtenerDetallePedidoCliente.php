@@ -28,6 +28,12 @@ $total = 0;
 ?>
 
 <h3>Detalle del pedido</h3>
+<?php
+$orderId = $detalle[0]['order_id'] ?? null;
+?>
+<div class="orderIdPedido">
+    <?= htmlspecialchars($orderId) ?>
+</div>
 <hr>
 
 <div >    

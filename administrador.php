@@ -13,6 +13,8 @@ $mostrarProductosSinStock = ListarProductosSinStock($bd);
 $PedidosPendientes = contarPedidosPendientes($bd, 'pedidos');
 $ventasMesAnterior = obtenerVentasMesAnterior($bd);
 $ventasMesActual = obtenerVentasMesActual($bd);
+$ingresosMesAnterior = obtenerIngresosMesAnterior($bd);
+$ingresosMesActual = obtenerIngresosMesActual($bd);
 $atributos = obtenerAtributos($bd);
 $atributosValores = obtenerAtributosConValores($bd);
 
@@ -63,19 +65,32 @@ $pedidos = listarPedidos($bd);
 //logica para actualizar estados de pedidos
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['accion'] === 'cambiar_estado_pedido') {
 
-    $pedido_id = $_POST['pedido_id'];
-    $nuevo_estado = $_POST['nuevo_estado'];
+    $pedido_id = (int) $_POST['pedido_id'];
+    $nuevo_estado = (int) $_POST['nuevo_estado'];
 
-    $stmt = $bd->prepare("UPDATE pedidos SET estado_id = :estado_id WHERE id = :id");
+    $stmt = $bd->prepare("
+        UPDATE pedidos
+        SET estado_id = :estado_id
+        WHERE id = :id
+    ");
+
     $stmt->bindValue(':estado_id', $nuevo_estado, PDO::PARAM_INT);
     $stmt->bindValue(':id', $pedido_id, PDO::PARAM_INT);
     $stmt->execute();
 
+    // Obtener las nuevas opciones según el nuevo estado
+    $opciones = obtenerOpcionesEstado($nuevo_estado);
+
+    // Obtener los nombres de esos estados
+    $estadosDisponibles = obtenerEstadosPorIds($bd, $opciones);
+
     echo json_encode([
         'success' => true,
         'message' => 'Estado actualizado',
-        'nuevo_estado' => $nuevo_estado
+        'nuevo_estado' => $nuevo_estado,
+        'estados' => $estadosDisponibles
     ]);
+
     exit;
 }
 
@@ -155,6 +170,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['accion'] === 'cambiar_estad
                     <div class="cardDashboard">
                         <p class="m-0">Ventas mes actual(S/):</p>
                         <p class="m-0" style="font-size:3rem"><?= $ventasMesActual ?></p>
+                    </div>
+                    <div class="cardDashboard">
+                        <p class="m-0">Ingresos mes anterior(S/):</p>
+                        <p class="m-0" style="font-size:3rem"><?= $ingresosMesAnterior ?></p>
+                    </div>
+                    <div class="cardDashboard">
+                        <p class="m-0">Ingresos mes actual(S/):</p>
+                        <p class="m-0" style="font-size:3rem"><?= $ingresosMesActual ?></p>
                     </div>
                 </div>
             </section>
@@ -355,6 +378,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['accion'] === 'cambiar_estad
                     <table class="tableAdminPedidos table table-hover">
                         <thead>
                             <tr class="table-secondary">
+                                <th class="text-center">ID orden</th>
                                 <th class="text-center">Cliente</th>
                                 <th class="text-center">Fecha</th>
                                 <th class="text-center">Estado</th>
@@ -366,6 +390,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['accion'] === 'cambiar_estad
                         <tbody>
                             <?php foreach ($pedidos as $pedido): ?>
                                 <tr class="table-light">
+                                    <td class="text-center text-primary-emphasis">
+                                        <?= $pedido['order_id'] ?>
+                                    </td>
+
                                     <td class="text-center text-primary-emphasis">
                                         <?= obtenerNombreUsuario($bd, $pedido['usuario_id']) ?>
                                     </td>
@@ -481,25 +509,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['accion'] === 'cambiar_estad
     <!-- script de ajax para actualizar estado de pedido -->
     <script>
     document.querySelectorAll('.form-estado').forEach(form => {
-
         form.addEventListener('submit', function (e) {
-
             e.preventDefault();
 
             let formData = new FormData(this);
             let selectEstado = this.querySelector('select[name="nuevo_estado"]');
+            let botonActualizar = this.querySelector('.btnUpdtAdmin');
 
             fetch('./administrador.php', {
                 method: 'POST',
                 body: formData
             })
-            .then(response => response.text())
-            .then(() => {
+            .then(response => response.json())
+            .then(data => {
 
-                // Obtener el nuevo estado seleccionado
-                let nuevoEstado = selectEstado.value;
+                if (!data.success) {
+                    alert('No se pudo actualizar el estado.');
+                    return;
+                }
+                const nuevoEstado = data.nuevo_estado;
 
-                // Eliminar todas las clases de color
+                // Actualizar clase visual
                 selectEstado.classList.remove(
                     'estado-1',
                     'estado-2',
@@ -508,14 +538,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['accion'] === 'cambiar_estad
                     'estado-5',
                     'estado-6'
                 );
-
-                // Agregar la nueva clase
                 selectEstado.classList.add('estado-' + nuevoEstado);
 
+                // Eliminar las opciones actuales
+                selectEstado.innerHTML = '';
+
+                // Agregar las nuevas opciones
+                data.estados.forEach(estado => {
+                    const option = document.createElement('option');
+
+                    option.value = estado.id;
+                    option.textContent = estado.estado;
+
+                    if (parseInt(estado.id) === parseInt(nuevoEstado)) {
+                        option.selected = true;
+                    }
+                    selectEstado.appendChild(option);
+                });
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Ocurrió un error al actualizar el estado.');
             });
-
         });
-
     });
     </script>
 
