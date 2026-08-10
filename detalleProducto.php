@@ -38,7 +38,7 @@ $modoEmpleo = !empty($producto['modo_empleo']) ? json_decode($producto['modo_emp
 
         <section class="navegacion">
             <section class="navegacionInner">
-                <a href="./index.php">Inicio</a> / <a href="./tienda.php">Tienda</a>/Producto
+                <a href="./index.php">Inicio</a> / <a href="./tienda.php">Tienda</a> / Producto
             </section>
         </section>
 

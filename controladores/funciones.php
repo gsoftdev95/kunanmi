@@ -651,6 +651,90 @@ function obtenerEstadosPorIds($bd, $ids)
 
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+function obtenerDetallePedidoAdmin(PDO $bd, int $pedidoId): array
+{
+    $stmt = $bd->prepare("
+        SELECT
+            p.nombre,
+            p.imagen,
+            dp.precio_unitario,
+            dp.cantidad,
+            dp.subtotal
+        FROM detalle_pedido dp
+        INNER JOIN productos p
+            ON dp.producto_id = p.id
+        WHERE dp.pedido_id = :pedido
+    ");
+
+    $stmt->bindValue(':pedido', $pedidoId, PDO::PARAM_INT);
+    $stmt->execute();
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+function obtenerPedidoPorId(PDO $bd, int $pedidoId): ?array
+{
+    $stmt = $bd->prepare("
+        SELECT
+            p.id,
+            p.fecha_pedido,
+            p.monto_total,
+            p.direccion_envio,
+            p.telefono_contacto,
+            p.estado_id,
+
+            u.nombre,
+            u.apellido_paterno,
+            u.apellido_materno,
+            u.email,
+
+            ep.estado AS estado
+
+        FROM pedidos p
+        INNER JOIN usuarios u ON p.usuario_id = u.id
+        INNER JOIN estados_pedido ep ON p.estado_id = ep.id
+
+        WHERE p.id = :pedido
+        LIMIT 1
+    ");
+
+    $stmt->bindValue(':pedido', $pedidoId, PDO::PARAM_INT);
+    $stmt->execute();
+
+    $pedido = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    return $pedido ?: null;
+}
+
+function obtenerEstadosPedido(PDO $bd): array
+{
+    $stmt = $bd->query("
+        SELECT
+            id,
+            estado
+        FROM estados_pedido
+        ORDER BY id
+    ");
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+// Función para actualizar los datos editables de un pedido
+function actualizarPedidoAdmin($bd, $pedidoId, $telefonoContacto, $direccionEnvio) {
+    $sql = "UPDATE pedidos
+            SET telefono_contacto = :telefono,
+                direccion_envio = :direccion
+            WHERE id = :pedido";
+
+    $query = $bd->prepare($sql);
+
+    $query->bindParam(':telefono', $telefonoContacto);
+    $query->bindParam(':direccion', $direccionEnvio);
+    $query->bindParam(':pedido', $pedidoId, PDO::PARAM_INT);
+
+    return $query->execute();
+}
+
 
 /****************** */
 /****************** */
@@ -661,8 +745,8 @@ function obtenerEstadosPorIds($bd, $ids)
 //Función para listar los datos del producto
 function obtenerProdTienda($bd, $tabla) {
     $sql = "SELECT p.*, 
-                   c.nombre AS categoria_nombre, 
-                   s.nombre AS subcategoria_nombre 
+                    c.nombre AS categoria_nombre, 
+                    s.nombre AS subcategoria_nombre 
             FROM $tabla p
             LEFT JOIN categorias c 
                 ON p.categoria_id = c.id
@@ -828,21 +912,30 @@ function obtenerPedidosPorUsuario(PDO $bd, int $idUsuario): array {
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
-function obtenerDetallePedido(PDO $bd, int $pedidoId): array {
-
+function obtenerDetallePedido(PDO $bd, int $pedidoId, int $usuarioId): array
+{
     $stmt = $bd->prepare("
         SELECT
             p.nombre,
+            p.imagen,   
             dp.precio_unitario,
             dp.cantidad,
             dp.subtotal
         FROM detalle_pedido dp
+
         INNER JOIN productos p
             ON dp.producto_id = p.id
-        WHERE dp.pedido_id = :pedido
+
+        INNER JOIN pedidos pe
+            ON dp.pedido_id = pe.id
+
+        WHERE pe.id = :pedido
+        AND pe.usuario_id = :usuario
     ");
 
     $stmt->bindValue(':pedido', $pedidoId, PDO::PARAM_INT);
+    $stmt->bindValue(':usuario', $usuarioId, PDO::PARAM_INT);
+
     $stmt->execute();
 
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -928,7 +1021,6 @@ function estadoVisibleCliente($estado) {
             return ucfirst($estado);
     }
 }
-
 
 
 

@@ -351,7 +351,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['accion'] === 'cambiar_estad
                 <h2>Gestión de pedidos</h2>
                 <p>Controla y actualiza el estado de los pedidos.</p>
 
-                <section class="table-responsive-custom">
+                <section class="table-responsive-custom containerTabPedidosAdmin">
                     <table class="tableAdminPedidos table table-hover">
                         <thead>
                             <tr class="table-secondary">
@@ -401,8 +401,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['accion'] === 'cambiar_estad
                                                     <?php endforeach; ?>
                                                 </select>
 
-                                                <button type="submit" class="btn btn-sm btn-primary">
-                                                    Actualizar
+                                                <button type="submit" class="btn btnUpdtAdmin">
+                                                    <i class="bi bi-arrow-repeat"></i>
                                                 </button>
                                             <?php endif; ?>
                                         </form>
@@ -417,9 +417,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['accion'] === 'cambiar_estad
                                     </td>
 
                                     <td class="text-center text-primary-emphasis">
-                                        <a href="detallePedido.php?id=<?= $pedido['id'] ?>">
+                                        <button class="openModalVerPedidoAdmin"
+                                                data-id="<?= $pedido['id']?>">
                                             <i class="bi bi-eyeglasses"></i>
-                                        </a>
+                                        </button>
+                                        <button class="openModalActPedidoAdmin"
+                                                data-id="<?= $pedido['id']?>">
+                                            <i class="bi bi-pencil-fill"></i>
+                                        </button>
                                     </td>
                                 </tr>
                             <?php endforeach ?>
@@ -437,6 +442,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['accion'] === 'cambiar_estad
 
         </section>
     </main>
+
+    <!-- modal ver detalle de pedido perfil admin -->
+    <div class="modalVerPedidoAdmin" id="idmodalVerPedidoAdmin">
+        <div class="modalContentVerPedidoAdmin">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <button type="button" class="btn-close closeModalViewPed"></button>
+            </div>
+
+            <div id="contenidoVerPedidoAdmin">
+                Cargando...
+            </div>
+        </div>
+    </div>
+
+    <!-- modal editar pedido perfil admin -->
+    <div class="modalActPedidoAdmin" id="idmodalActPedidoAdmin">
+        <div class="modalContentActPedidoAdmin">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <button type="button" class="btn-close closeModalActPed"></button>
+            </div>
+
+            <div id="contenidoActPedidoAdmin">
+                Cargando...
+            </div>
+        </div>
+    </div>
+
 
     <footer>
         <?php include_once('./src/partials/footer.php') ?>
@@ -487,6 +519,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['accion'] === 'cambiar_estad
     });
     </script>
 
+    <!-- scrip para ver el stock -->
     <script>
     document.addEventListener("DOMContentLoaded", ()=>{
 
@@ -501,10 +534,122 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['accion'] === 'cambiar_estad
             else{
                 tooltip.style.display = "block";
             }
-
         });
-
     });
+    </script>
+
+
+    <!-- script para modal de detalle pedido -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () =>{
+            const modal = document.getElementById("idmodalVerPedidoAdmin");
+            const closeBtn = document.querySelector(".closeModalViewPed");
+            const botones = document.querySelectorAll(".openModalVerPedidoAdmin");
+            
+            botones.forEach(btn => {
+                btn.addEventListener("click", function() {
+                    // Abrir modal
+                    modal.style.display = "flex";
+
+                    // Mensaje mientras carga
+                    document.getElementById("contenidoVerPedidoAdmin").innerHTML = "Cargando...";
+
+                    fetch("obtenerDetallePedidoAdmin.php", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded"
+                        },
+                        body: "pedido_id=" + this.dataset.id
+                    })
+                    .then(res => res.text())
+                    .then(html => {
+                        document.getElementById("contenidoVerPedidoAdmin").innerHTML = html;
+                    })
+                    .catch(() => {
+                        document.getElementById("contenidoVerPedidoAdmin").innerHTML =
+                            "<p>Error al cargar el pedido.</p>";
+                    });
+                });
+            });
+
+            closeBtn.addEventListener("click", () => {
+                modal.style.display = "none";
+            });
+
+            window.addEventListener("click", (e) => {
+                if (e.target === modal) {
+                    modal.style.display = "none";
+                }
+            });
+        })        
+    </script>
+
+    <!-- script para modal de editar pedido -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () =>{
+            const modal = document.getElementById("idmodalActPedidoAdmin");
+            const closeBtn = document.querySelector(".closeModalActPed");
+            const botones = document.querySelectorAll(".openModalActPedidoAdmin");
+            
+            botones.forEach(btn => {
+                btn.addEventListener("click", function () {
+                    modal.style.display = "flex";
+
+                    document.getElementById("contenidoActPedidoAdmin").innerHTML = "Cargando...";
+
+                    fetch("obtenerEditarPedidoAdmin.php", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded"
+                        },
+                        body: "pedido_id=" + this.dataset.id
+                    })
+                    .then(res => res.text())
+                    .then(html => {
+                        document.getElementById("contenidoActPedidoAdmin").innerHTML = html;
+
+                        const form = document.getElementById("formEditarPedidoAdmin");
+                        if (!form) return;
+
+                        form.addEventListener("submit", function(e){
+                            e.preventDefault();
+                            const datos = new FormData(form);
+                            fetch("actualizarPedidoAdmin.php", {
+                                method: "POST",
+                                body: datos
+                            })
+                            .then(res => res.json())
+                            .then(data => {
+                                if(data.success){
+                                    alert("Pedido actualizado correctamente.");
+                                    modal.style.display = "none";
+                                }else{
+                                    alert("No se pudo actualizar el pedido.");
+                                }
+                            })
+                            .catch(() => {
+                                alert("Error al actualizar el pedido.");
+                            });
+                        });
+                    })
+                    .catch(() => {
+                        document.getElementById("contenidoActPedidoAdmin").innerHTML =
+                            "<p>Error al cargar el pedido.</p>";
+                    });
+                });
+            });
+
+            closeBtn.addEventListener("click", () => {
+                modal.style.display = "none";
+            });
+
+            window.addEventListener("click", (e) => {
+                if (e.target === modal) {
+                    modal.style.display = "none";
+                }
+            });
+        })
+        
     </script>
 
 </body>

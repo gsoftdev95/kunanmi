@@ -48,29 +48,29 @@ $pedidos = obtenerPedidosPorUsuario($bd, $idUsuario);
             <h5 class="card-title">Mis Pedidos</h5>
             <?php if (count($pedidos) > 0): ?>
                 <div class="table-responsive">
-                <table class="table table-striped text-center">
-                    <thead>
-                    <tr>
-                        <th>Fecha</th>
-                        <th>Estado</th>
-                        <th>Monto Total</th>
-                        <th>Ver Detalle</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <?php foreach ($pedidos as $pedido): ?>
+                <table class="table text-center table-hover">
+                    <thead class="table-secondary">
                         <tr>
-                        <td><?= date('d/m/Y', strtotime($pedido['fecha_pedido'])) ?></td>
-                        <td><?= ucfirst($pedido['descripcion_cliente']) ?></td>
-                        <td>S/ <?= number_format($pedido['monto_total'], 2) ?></td>
-                        <td><button
-                                class="btnDetallePerfilCliente"
-                                data-id="<?= $pedido['id'] ?>">
-                                Ver
-                            </button>
-                        </td>
+                            <th>Fecha</th>
+                            <th>Estado</th>
+                            <th>Monto Total</th>
+                            <th>Ver Detalle</th>
                         </tr>
-                    <?php endforeach; ?>
+                    </thead>
+                    <tbody >
+                        <?php foreach ($pedidos as $pedido): ?>
+                            <tr>
+                            <td><?= date('d/m/Y', strtotime($pedido['fecha_pedido'])) ?></td>
+                            <td><?= ucfirst($pedido['descripcion_cliente']) ?></td>
+                            <td>S/ <?= number_format($pedido['monto_total'], 2) ?></td>
+                            <td><button
+                                    class="btnDetallePerfilCliente"
+                                    data-id="<?= $pedido['id'] ?>">
+                                    Ver
+                                </button>
+                            </td>
+                            </tr>
+                        <?php endforeach; ?>
                     </tbody>
                 </table>
                 </div>
@@ -85,15 +85,7 @@ $pedidos = obtenerPedidosPorUsuario($bd, $idUsuario);
                 <p>Para actualización de datos comunicarse al correo correo@gmail.com</p>            </div>
             </div>
         </div>
-
     </main>
-
-    
-
-    <footer>
-        <?php include_once('./src/partials/footer.php')?>
-    </footer>
-
 
     <!-- modal del detalle de pedido -->
     <div id="modalPedido" class="modalPedido">
@@ -105,36 +97,65 @@ $pedidos = obtenerPedidosPorUsuario($bd, $idUsuario);
         </div>
     </div>
 
+    <footer>
+        <?php include_once('./src/partials/footer.php')?>
+    </footer>
+
+
+
 
     <!--Boostrap-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
 
     <!-- script para cerrar el modal de detalle -->
     <script>
-        const modal = document.getElementById("modalPedido");
-        const cerrar = document.querySelector(".cerrarModal");
-        cerrar.onclick = function(){
-            modal.style.display = "none";
-        }
-        window.onclick = function(e){
-            if(e.target == modal){
-                modal.style.display = "none";
-            }
-        }
-    </script>
+        document.addEventListener("DOMContentLoaded", () => {
 
-    <!-- script para abrir el modal de detalle-->
-    <script>
-        const botonesDetalle = document.querySelectorAll(".btnDetallePerfilCliente");
-        botonesDetalle.forEach(boton => {
-            boton.addEventListener("click", function(){
-                modal.style.display = "flex";
-                document.getElementById("contenidoPedido").innerHTML = `
-                    <h3>Pedido #${this.dataset.id}</h3>
-                    <hr>
-                    <p>Aquí irá el detalle del pedido.</p>
-                `;
+            const modal = document.getElementById("modalPedido");
+            const contenidoPedido = document.getElementById("contenidoPedido");
+            const cerrar = document.querySelector(".cerrarModal");
+            const botonesDetalle = document.querySelectorAll(".btnDetallePerfilCliente");
+
+            // Abrir modal y cargar el detalle
+            botonesDetalle.forEach(boton => {
+
+                boton.addEventListener("click", function () {
+
+                    modal.style.display = "flex";
+
+                    fetch("obtenerDetallePedidoCliente.php", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded"
+                        },
+                        body: "pedido_id=" + this.dataset.id
+                    })
+                    .then(res => res.text())
+                    .then(html => {
+                        contenidoPedido.innerHTML = html;
+                    })
+                    .catch(() => {
+                        contenidoPedido.innerHTML = "<p>Error al cargar el detalle del pedido.</p>";
+                    });
+
+                });
+
             });
+
+            // Cerrar con la X
+            cerrar.addEventListener("click", () => {
+                modal.style.display = "none";
+                contenidoPedido.innerHTML = "";
+            });
+
+            // Cerrar haciendo clic fuera del modal
+            window.addEventListener("click", (e) => {
+                if (e.target === modal) {
+                    modal.style.display = "none";
+                    contenidoPedido.innerHTML = "";
+                }
+            });
+
         });
     </script>
 
