@@ -261,9 +261,27 @@ try {
     } catch (Throwable $e) {
         $correoEnviado = false;
     }
+    
+    //temporal
+    /*
+    try {
+
+        enviarCorreoCompra($usuario, $pedido, $productos);
+
+        $correoEnviado = true;
+
+    } catch (Throwable $e) {
+
+        $correoEnviado = false;
+
+        error_log(
+            "Kunanmi - Error enviando correo: " .
+            $e->getMessage()
+        );
+    }
+    */
 
 } catch (Throwable $e) {
-
     // Deshacer todos los cambios
     if ($bd->inTransaction()) {
         $bd->rollBack();

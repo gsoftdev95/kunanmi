@@ -1120,7 +1120,6 @@ function enviarCorreoRecuperacion($correo, $token){
 }
 
 
-
 function enviarCorreoConfirmacionRegistro($usuario) {    
     //Importar PHPMailer
     require_once 'librerias/PHPMailer/src/PHPMailer.php';
@@ -1173,26 +1172,37 @@ function enviarCorreoConfirmacionRegistro($usuario) {
 
 function enviarCorreoCompra($usuario, $pedido, $productos)
 {
-    require_once 'librerias/PHPMailer/src/PHPMailer.php';
-    require_once 'librerias/PHPMailer/src/SMTP.php';
-    require_once 'librerias/PHPMailer/src/Exception.php';
+    require_once __DIR__ . '/../librerias/PHPMailer/src/PHPMailer.php';
+    require_once __DIR__ . '/../librerias/PHPMailer/src/SMTP.php';
+    require_once __DIR__ . '/../librerias/PHPMailer/src/Exception.php';
 
     $mail = new PHPMailer(true);
 
     try {
 
         // Configuración SMTP
-        $mail->SMTPDebug = SMTP::DEBUG_OFF;
         $mail->isSMTP();
-        $mail->Host       = 'smtp.gmail.com';
-        $mail->SMTPAuth   = true;
-        $mail->Username   = 'gesoftdev@gmail.com';
-        $mail->Password   = 'zpod sqtc eshe vmjz';
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = 'gesoftdev@gmail.com';
+        $mail->Password = 'wncl tsrg bxkg fuic';
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
-        $mail->Port       = 587;
+        $mail->Port = 587;
 
-        // Destinatarios
-        $mail->setFrom('gesoftdev@gmail.com', 'Kunanmi');
+        // Codificación
+        $mail->CharSet = 'UTF-8';
+
+        // DEBUG TEMPORAL
+        //$mail->SMTPDebug = SMTP::DEBUG_SERVER;
+        $mail->SMTPDebug = SMTP::DEBUG_OFF;
+
+        // Remitente
+        $mail->setFrom(
+            'gesoftdev@gmail.com',
+            'Kunanmi'
+        );
+
+        // Destinatario
         $mail->addAddress(
             $usuario['email'],
             $usuario['nombre'] . ' ' .
@@ -1200,13 +1210,12 @@ function enviarCorreoCompra($usuario, $pedido, $productos)
             $usuario['apellido_materno']
         );
 
-        // Opcional: copia para ti
-        //$mail->addCC('gesoftdev@gmail.com');
-
+        // Correo HTML
         $mail->isHTML(true);
+
         $mail->Subject = 'Confirmación de compra - Kunanmi';
 
-        // Crear listado de productos
+        // Productos
         $listaProductos = '';
 
         foreach ($productos as $producto) {
@@ -1214,64 +1223,90 @@ function enviarCorreoCompra($usuario, $pedido, $productos)
             $listaProductos .= "
                 <tr>
                     <td>{$producto['nombre']}</td>
-                    <td align='center'>{$producto['cantidad']}</td>
-                    <td align='right'>S/ ".number_format($producto['precio'],2)."</td>
+
+                    <td align='center'>
+                        {$producto['cantidad']}
+                    </td>
+
+                    <td align='right'>
+                        S/ " . number_format($producto['precio'], 2) . "
+                    </td>
                 </tr>
             ";
         }
 
-        $body = "
+        // Cuerpo
+        $mail->Body = "
 
-        <h2>¡Gracias por tu compra!</h2>
+            <h2>¡Gracias por tu compra!</h2>
 
-        <p>Hola <strong>{$usuario['nombre']}</strong>, hemos recibido correctamente tu pedido.</p>
+            <p>
+                Hola <strong>{$usuario['nombre']}</strong>,
+                hemos recibido correctamente tu pedido.
+            </p>
 
-        <hr>
+            <hr>
 
-        <p><strong>Pedido:</strong> {$pedido['id']}</p>
+            <p>
+                <strong>Pedido:</strong> {$pedido['id']}
+            </p>
 
-        <p><strong>Fecha:</strong> {$pedido['fecha']}</p>
+            <p>
+                <strong>Fecha:</strong> {$pedido['fecha']}
+            </p>
 
-        <p><strong>Dirección:</strong> {$pedido['direccion']}</p>
+            <p>
+                <strong>Dirección:</strong> {$pedido['direccion']}
+            </p>
 
-        <table border='1' cellpadding='8' cellspacing='0' width='100%'>
+            <table
+                border='1'
+                cellpadding='8'
+                cellspacing='0'
+                width='100%'
+            >
+                <thead>
+                    <tr>
+                        <th>Producto</th>
+                        <th>Cantidad</th>
+                        <th>Precio</th>
+                    </tr>
+                </thead>
 
-            <thead>
+                <tbody>
+                    {$listaProductos}
+                </tbody>
+            </table>
 
-                <tr>
-                    <th>Producto</th>
-                    <th>Cantidad</th>
-                    <th>Precio</th>
-                </tr>
+            <h3>
+                Total: S/ " . number_format($pedido['total'], 2) . "
+            </h3>
 
-            </thead>
+            <p>
+                Puedes revisar el estado de tu pedido
+                iniciando sesión en Kunanmi.
+            </p>
 
-            <tbody>
+            <hr>
 
-                {$listaProductos}
-
-            </tbody>
-
-        </table>
-
-        <h3>Total: S/ ".number_format($pedido['total'],2)."</h3>
-
-        <p>Puedes revisar el estado de tu pedido iniciando sesión en Kunanmi.</p>
-
-        <hr>
-
-        <small>Gracias por confiar en nosotros.</small>
-
+            <small>
+                Gracias por confiar en nosotros.
+            </small>
         ";
 
-        $mail->Body = $body;
-
+        // Enviar
         $mail->send();
+
+        return true;
 
     } catch (Exception $e) {
 
-        error_log($mail->ErrorInfo);
+        error_log(
+            "Error enviando correo Kunanmi: " .
+            $mail->ErrorInfo
+        );
 
+        throw $e;
     }
 }
 
