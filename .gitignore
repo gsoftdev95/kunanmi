@@ -14,3 +14,4 @@ src/imgborrador/
 # Ignorar archivos de configuración locales
 config.php
 .env
+.zip

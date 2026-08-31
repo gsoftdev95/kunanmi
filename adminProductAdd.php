@@ -192,7 +192,8 @@ if ($_POST) {
                             </div>                            
                         </div>
 
-                        <button type="submit" class="btn btn-primary">Guardar producto</button>
+                        <button type="submit" class="btn btn-success">Guardar producto</button>
+                        <a href="administrador.php"  class="btn bSecond2">Regresar</a>
 
                     </form>
                 </section>                    

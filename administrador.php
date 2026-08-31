@@ -17,6 +17,9 @@ $ingresosMesAnterior = obtenerIngresosMesAnterior($bd);
 $ingresosMesActual = obtenerIngresosMesActual($bd);
 $atributos = obtenerAtributos($bd);
 $atributosValores = obtenerAtributosConValores($bd);
+// Reclamos del Libro de Reclamaciones
+$reclamos = obtenerReclamos($bd);
+$totalReclamosPendientes = contarReclamosPendientes($bd);
 
 //logica para agregar los atributos
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['guardar_atributo'])) {
@@ -121,20 +124,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['accion'] === 'cambiar_estad
                 <div class="ContainerCardsDashboard">
                     <div class="cardDashboard">
                         <p class="m-0">Total productos:</p>
-                        <p class="m-0" style="font-size:3rem"><?= $totalProductos ?></p>
+                        <p class="m-0"><?= $totalProductos ?></p>
                     </div>
                     <div class="cardDashboard">
                         <p class="m-0">Productos activos:</p>
-                        <p class="m-0" style="font-size:3rem"> <?= $totalProductosActivos ?> </p>
+                        <p class="m-0"> <?= $totalProductosActivos ?> </p>
                     </div>
                     <div class="cardDashboard">
                         <p class="m-0">Productos Destacados:</p>
-                        <p class="m-0" style="font-size:3rem"> <?= $totalDestacados ?> </p>
+                        <p class="m-0"> <?= $totalDestacados ?> </p>
                     </div>
-                    
+                    <div class="cardDashboard">
+                        <p class="m-0">Clientes:</p>
+                        <p class="m-0"><?= $totalClientes ?></p>
+                    </div>
+                    <div class="cardDashboard">
+                        <p class="m-0">Pedidos pendientes:</p>
+                        <p class="m-0"><?= $PedidosPendientes ?></p>
+                    </div>
+                    <div class="cardDashboard">
+                        <p class="m-0">Ventas mes anterior(S/):</p>
+                        <p class="m-0"><?= $ventasMesAnterior ?></p>
+                    </div>
+                    <div class="cardDashboard">
+                        <p class="m-0">Ventas mes actual(S/):</p>
+                        <p class="m-0"><?= $ventasMesActual ?></p>
+                    </div>
+                    <div class="cardDashboard">
+                        <p class="m-0">Ingresos mes anterior(S/):</p>
+                        <p class="m-0"><?= $ingresosMesAnterior ?></p>
+                    </div>
+                    <div class="cardDashboard">
+                        <p class="m-0">Ingresos mes actual(S/):</p>
+                        <p class="m-0"><?= $ingresosMesActual ?></p>
+                    </div>
+                    <div class="cardDashboard cardReclamo">
+                        <p class="m-0">reclamo(s) pendiente(s) de atención.</p>
+                        <p class="m-0"><?= $totalReclamosPendientes ?></p>                        
+                    </div>
                     <div class="cardDashboard cardDashboardStock" id="cardDashboardStock">
-                        <p class="m-0">Productos con bajo stock:</p>
-                        <p class="m-0" style="font-size:3rem">
+                        <p class="m-0">Productos con bajo stock (&lt;6 unds.)</p>
+                        <p class="m-0">
                             <?= $ProductosSinStock ?>
                         </p>
 
@@ -153,31 +183,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['accion'] === 'cambiar_estad
                                 <p>No hay productos con bajo stock.</p>
                             <?php endif; ?>
                         </div>
-                    </div>
-
-                    <div class="cardDashboard">
-                        <p class="m-0">Clientes:</p>
-                        <p class="m-0" style="font-size:3rem"><?= $totalClientes ?></p>
-                    </div>
-                    <div class="cardDashboard">
-                        <p class="m-0">Pedidos pendientes:</p>
-                        <p class="m-0" style="font-size:3rem"><?= $PedidosPendientes ?></p>
-                    </div>
-                    <div class="cardDashboard">
-                        <p class="m-0">Ventas mes anterior(S/):</p>
-                        <p class="m-0" style="font-size:3rem"><?= $ventasMesAnterior ?></p>
-                    </div>
-                    <div class="cardDashboard">
-                        <p class="m-0">Ventas mes actual(S/):</p>
-                        <p class="m-0" style="font-size:3rem"><?= $ventasMesActual ?></p>
-                    </div>
-                    <div class="cardDashboard">
-                        <p class="m-0">Ingresos mes anterior(S/):</p>
-                        <p class="m-0" style="font-size:3rem"><?= $ingresosMesAnterior ?></p>
-                    </div>
-                    <div class="cardDashboard">
-                        <p class="m-0">Ingresos mes actual(S/):</p>
-                        <p class="m-0" style="font-size:3rem"><?= $ingresosMesActual ?></p>
                     </div>
                 </div>
             </section>
@@ -237,16 +242,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['accion'] === 'cambiar_estad
                     </section>
                 </section>
 
-                <section>                    
-
+                <section>
                     <button class="btn btn-link selectAdmin" data-bs-toggle="collapse" data-bs-target="#verProductos" aria-expanded="false" aria-controls="verProductos">
                         <span>Ver productos</span>
                         <span id="flechaProductos"><i class="bi bi-caret-down-fill"></i></span>
                     </button>
 
                     <section id="verProductos" class="collapse <?= $busquedaActivaProductos ? 'show' : '' ?> showSelectAdmin">
-                        <section class="container-fluid d-flex justify-content-between">
-                            <form class="adminSearchForm mt-3 mb-4" role="search" action="#" method="GET">
+                        <section class="container-fluid fromybtnproductoadmin">
+                            <form class="adminSearchForm" role="search" action="#" method="GET">
                                 <input class="form-control me-2" type="search" placeholder="Buscador..." aria-label="Search" name="busquedaProducto">
                                 <select name="tipoBusqueda" id="tipoBusqueda">
                                     <option class="m-1" value="nombre">Por nombre</option>
@@ -254,15 +258,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['accion'] === 'cambiar_estad
                                     <option class="m-1" value="subcategoria_nombre">Por sub categoria</option>
                                     <option class="m-1" value="destacado">Por destacado</option>
                                 </select>
-                                <button class="btn m-1 btnSearchFrom" data-bs-toggle="collapse" data-bs-target="#verProductos" aria-expanded="<?= $busquedaActivaProductos ? 'true' : 'false' ?>" aria-controls="verProductos">Buscar</button>
+                                <button class="btn btnSearchFrom" data-bs-toggle="collapse" data-bs-target="#verProductos" aria-expanded="<?= $busquedaActivaProductos ? 'true' : 'false' ?>" aria-controls="verProductos">Buscar</button>
                             </form>
-                            <div class="mx-2 mt-3 ">
+                            <div class="mx-2 addproductadmin">
                                 <a class="text-decoration-none text-dark" href="adminProductAdd.php"><i class="bi bi-plus-circle-fill"></i> Agregar producto</a>
                             </div>
                         </section>
 
                         <section class=" tableAdminProductCont">
-                            <table class="table table-responsive-sm table-hover tableAdminProduct">
+                            <table class="table table-hover tableAdminProduct ">
                                 <thead>
                                     <tr class="table-secondary">
                                         <th class="text-center">Id</th> <!--1-->
@@ -331,10 +335,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['accion'] === 'cambiar_estad
                             </form>
                         </section>
 
-                        <section class="">
+                        <section class="tableAdminUserCont">
                             <table class="tableAdminUser table table-light">
                                 <thead>
-                                    <tr>
+                                    <tr class="table-secondary">
                                         <th class="text-center">Nombre</th>
                                         <th class="text-center">Ap. paterno</th>
                                         <th class="text-center">Ap. materno</th>
@@ -362,9 +366,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['accion'] === 'cambiar_estad
                                 </tbody>
                             </table>
                         </section>
-
                     </section>
-
                 </section>
             </section>
 
@@ -374,100 +376,168 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['accion'] === 'cambiar_estad
                 <h2>Gestión de pedidos</h2>
                 <p>Controla y actualiza el estado de los pedidos.</p>
 
-                <section class="table-responsive-custom containerTabPedidosAdmin">
-                    <table class="tableAdminPedidos table table-hover">
-                        <thead>
-                            <tr class="table-secondary">
-                                <th class="text-center">ID orden</th>
-                                <th class="text-center">Cliente</th>
-                                <th class="text-center">Fecha</th>
-                                <th class="text-center">Estado</th>
-                                <th class="text-center">Monto total</th>
-                                <th class="text-center">Dirección</th>
-                                <th class="text-center">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <?php foreach ($pedidos as $pedido): ?>
-                                <tr class="table-light">
-                                    <td class="text-center text-primary-emphasis">
-                                        <?= $pedido['order_id'] ?>
-                                    </td>
-
-                                    <td class="text-center text-primary-emphasis">
-                                        <?= obtenerNombreUsuario($bd, $pedido['usuario_id']) ?>
-                                    </td>
-
-                                    <td class="text-center text-primary-emphasis">
-                                        <?= $pedido['fecha_pedido'] ?>
-                                    </td>
-
-                                    <td class="text-center text-primary-emphasis">
-                                        <form action="./administrador.php#pedidos" method="POST" class="form-estado d-flex justify-content-center align-items-center gap-2">
-
-                                            <input type="hidden" name="accion" value="cambiar_estado_pedido">
-                                            <input type="hidden" name="pedido_id" value="<?= $pedido['id'] ?>">
-
-                                            <?php
-                                                $estadoActual = $pedido['estado_id'];
-                                                $opciones = obtenerOpcionesEstado($estadoActual);
-                                                $estadosDisponibles = obtenerEstadosPorIds($bd, $opciones);
-                                                $soloEstadoActual = count($opciones) === 1;
-                                            ?>
-
-                                            <?php if ($soloEstadoActual): ?>
-                                                <span class="estado estado-<?= $pedido['estado_id'] ?>">
-                                                    <?= htmlspecialchars($estadosDisponibles[0]['estado'] ?? '') ?>
-                                                </span>
-                                            <?php else: ?>
-                                                <select name="nuevo_estado" class="estado estado-<?= $pedido['estado_id'] ?>">
-                                                    <?php foreach ($estadosDisponibles as $estado): ?>
-                                                        <option value="<?= $estado['id'] ?>"
-                                                            <?= ($estado['id'] == $estadoActual) ? 'selected' : '' ?>>
-                                                            <?= htmlspecialchars($estado['estado']) ?>
-                                                        </option>
-                                                    <?php endforeach; ?>
-                                                </select>
-
-                                                <button type="submit" class="btn btnUpdtAdmin">
-                                                    <i class="bi bi-arrow-repeat"></i>
-                                                </button>
-                                            <?php endif; ?>
-                                        </form>
-                                    </td>
-
-                                    <td class="text-center text-primary-emphasis">
-                                        S/ <?= number_format($pedido['monto_total'], 2) ?>
-                                    </td>
-
-                                    <td class="text-center text-primary-emphasis">
-                                        <?= $pedido['direccion_envio'] ?>
-                                    </td>
-
-                                    <td class="text-center text-primary-emphasis">
-                                        <button class="openModalVerPedidoAdmin"
-                                                data-id="<?= $pedido['id']?>">
-                                            <i class="bi bi-eyeglasses"></i>
-                                        </button>
-                                        <button class="openModalActPedidoAdmin"
-                                                data-id="<?= $pedido['id']?>">
-                                            <i class="bi bi-pencil-fill"></i>
-                                        </button>
-                                    </td>
+                <section class="showSelectAdmin">
+                    <section class="tableAdminPedidosCont">
+                        <table class="tableAdminPedidos table table-hover">
+                            <thead>
+                                <tr class="table-secondary">
+                                    <th class="text-center">ID orden</th>
+                                    <th class="text-center">Cliente</th>
+                                    <th class="text-center">Fecha</th>
+                                    <th class="text-center">Estado</th>
+                                    <th class="text-center">Monto total</th>
+                                    <th class="text-center">Dirección</th>
+                                    <th class="text-center">Acciones</th>
                                 </tr>
-                            <?php endforeach ?>
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($pedidos as $pedido): ?>
+                                    <tr class="table-light">
+                                        <td class="text-center text-primary-emphasis">
+                                            <?= $pedido['order_id'] ?>
+                                        </td>
+
+                                        <td class="text-center text-primary-emphasis">
+                                            <?= obtenerNombreUsuario($bd, $pedido['usuario_id']) ?>
+                                        </td>
+
+                                        <td class="text-center text-primary-emphasis">
+                                            <?= $pedido['fecha_pedido'] ?>
+                                        </td>
+
+                                        <td class="text-center text-primary-emphasis">
+                                            <form action="./administrador.php#pedidos" method="POST" class="form-estado d-flex justify-content-center align-items-center gap-2">
+
+                                                <input type="hidden" name="accion" value="cambiar_estado_pedido">
+                                                <input type="hidden" name="pedido_id" value="<?= $pedido['id'] ?>">
+
+                                                <?php
+                                                    $estadoActual = $pedido['estado_id'];
+                                                    $opciones = obtenerOpcionesEstado($estadoActual);
+                                                    $estadosDisponibles = obtenerEstadosPorIds($bd, $opciones);
+                                                    $soloEstadoActual = count($opciones) === 1;
+                                                ?>
+
+                                                <?php if ($soloEstadoActual): ?>
+                                                    <span class="estado estado-<?= $pedido['estado_id'] ?>">
+                                                        <?= htmlspecialchars($estadosDisponibles[0]['estado'] ?? '') ?>
+                                                    </span>
+                                                <?php else: ?>
+                                                    <select name="nuevo_estado" class="estado estado-<?= $pedido['estado_id'] ?>">
+                                                        <?php foreach ($estadosDisponibles as $estado): ?>
+                                                            <option value="<?= $estado['id'] ?>"
+                                                                <?= ($estado['id'] == $estadoActual) ? 'selected' : '' ?>>
+                                                                <?= htmlspecialchars($estado['estado']) ?>
+                                                            </option>
+                                                        <?php endforeach; ?>
+                                                    </select>
+
+                                                    <button type="submit" class="btn btnUpdtAdmin">
+                                                        <i class="bi bi-arrow-repeat"></i>
+                                                    </button>
+                                                <?php endif; ?>
+                                            </form>
+                                        </td>
+
+                                        <td class="text-center text-primary-emphasis">
+                                            S/ <?= number_format($pedido['monto_total'], 2) ?>
+                                        </td>
+
+                                        <td class="text-center text-primary-emphasis">
+                                            <?= $pedido['direccion_envio'] ?>
+                                        </td>
+
+                                        <td class="text-center text-primary-emphasis">
+                                            <button class="openModalVerPedidoAdmin"
+                                                    data-id="<?= $pedido['id']?>">
+                                                <i class="bi bi-eyeglasses"></i>
+                                            </button>
+                                            <button class="openModalActPedidoAdmin"
+                                                    data-id="<?= $pedido['id']?>">
+                                                <i class="bi bi-pencil-fill"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                <?php endforeach ?>
+                            </tbody>
+                        </table>
+                    </section>
+                    
                 </section>
             </section>
 
             <hr>
 
-            <section id="estadisticas"  class="sector">
-                <h2>Estadísticas</h2>
-                <p>Visualiza ventas, productos más vendidos y más.</p>
-            </section>
+            <section id="reclamos"  class="sector">
+                <h2>Reclamos</h2>
+                <p>Visualiza y gestiona las hojas de reclamación registradas por los consumidores.</p>
 
+                <section class="showSelectAdmin">
+                    <section class="tableAdminReclamosCont">
+                        <table class="tableAdminReclamos table table-hover">
+                            <thead>
+                                <tr class="table-secondary">
+                                    <th class="text-center">Código</th>
+                                    <th class="text-center">Fecha</th>
+                                    <th class="text-center">Consumidor</th>
+                                    <th class="text-center">Tipo</th>
+                                    <th class="text-center">Producto / Servicio</th>
+                                    <th class="text-center">Estado</th>
+                                    <th class="text-center">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php if (empty($reclamos)): ?>
+                                    <tr>
+                                        <td colspan="7" class="text-center text-muted">
+                                            No existen reclamos registrados.
+                                        </td>
+                                    </tr>
+                                <?php else: ?>
+                                    <?php foreach ($reclamos as $reclamo): ?>
+                                        <tr class="table-light">
+                                            <td class="text-center text-primary-emphasis"> <?= htmlspecialchars($reclamo['codigo_reclamo']) ?> </td>
+                                            <td class="text-center text-primary-emphasis"> <?= date( 'd/m/Y H:i', strtotime($reclamo['fecha_registro']) ) ?> </td>
+                                            <td class="text-center text-primary-emphasis"> <?= htmlspecialchars( $reclamo['nombres'] . ' ' . $reclamo['apellido_paterno'] . ' ' . $reclamo['apellido_materno'] ) ?> </td>
+                                            <td class="text-center text-primary-emphasis">
+                                                <?php if ($reclamo['tipo'] === 'RECLAMO'): ?> 
+                                                    <span class="badge bg-danger"> Reclamo </span>
+                                                <?php else: ?>
+                                                    <span class="badge bg-warning text-dark">
+                                                        Queja
+                                                    </span>
+                                                <?php endif; ?>
+                                            </td>
+                                            <td class="text-center text-primary-emphasis"> <?= htmlspecialchars( $reclamo['producto_servicio'] ) ?> </td>
+                                            <td class="text-center">
+                                                <?php if ($reclamo['estado'] === 'PENDIENTE'): ?>
+                                                    <span class="badge bg-warning text-dark">
+                                                        Pendiente
+                                                    </span>
+                                                <?php elseif ($reclamo['estado'] === 'EN_PROCESO'): ?>
+                                                    <span class="badge bg-primary">
+                                                        En proceso
+                                                    </span>
+                                                <?php else: ?>
+                                                    <span class="badge bg-success">
+                                                        Atendido
+                                                    </span>
+                                                <?php endif; ?>
+                                            </td>
+                                            <td class="text-center">
+                                                <button type="button" class="btn btn-sm  openModalVerReclamoAdmin" data-id="<?= $reclamo['id'] ?>" >
+                                                    <i class="bi bi-eyeglasses"></i>
+                                                </button>
+                                            </td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </tbody>
+                        </table>
+                    </section>
+                    
+                </section>
+            </section>
         </section>
     </main>
 
@@ -497,10 +567,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['accion'] === 'cambiar_estad
         </div>
     </div>
 
+    <!-- modal ver/gestionar reclamo perfil admin -->
+    <div class="modalVerReclamoAdmin" id="idmodalVerReclamoAdmin">
+        <div class="modalContentVerReclamoAdmin">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h4 class="m-0">
+                    Hoja de Reclamación
+                </h4>
+                <button
+                    type="button"
+                    class="btn-close closeModalViewReclamo">
+                </button>
+            </div>
+            <div id="contenidoVerReclamoAdmin">
+                Cargando...
+            </div>
+        </div>
+    </div>
+
 
     <footer>
         <?php include_once('./src/partials/footer.php') ?>
     </footer>
+
+
+
+
+
+
+
 
     <!--Boostrap-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js" integrity="sha384-j1CDi7MgGQ12Z7Qab0qlWQ/Qqz24Gc6BM0thvEMVjHnfYGF0rmFCozFSxQBxwHKO" crossorigin="anonymous"></script>
@@ -695,6 +790,95 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['accion'] === 'cambiar_estad
             });
         })
         
+    </script>
+
+    <!-- script para ver detalle del reclamo -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const modal = document.getElementById("idmodalVerReclamoAdmin");
+            const closeBtn = document.querySelector(".closeModalViewReclamo");
+            const botones = document.querySelectorAll(".openModalVerReclamoAdmin");
+
+            botones.forEach(btn => {
+                btn.addEventListener("click", function () {
+                    modal.style.display = "flex";
+                    document.getElementById(
+                        "contenidoVerReclamoAdmin"
+                    ).innerHTML = "Cargando...";
+
+                    fetch("obtenerDetalleReclamoAdmin.php", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded"
+                        },
+                        body: "reclamo_id=" + this.dataset.id
+                    })
+
+                    .then(res => res.text())
+                    .then(html => {
+                        document.getElementById(
+                            "contenidoVerReclamoAdmin"
+                        ).innerHTML = html;
+
+                        // Formulario de gestión cargado dinámicamente
+                        const form = document.getElementById(
+                            "formGestionReclamoAdmin"
+                        );
+                        if (!form) return;
+                        form.addEventListener("submit", function(e) {
+                            e.preventDefault();
+                            const datos = new FormData(form);
+                            fetch("actualizarReclamoAdmin.php", {
+                                method: "POST",
+                                body: datos
+                            })
+                            .then(res => res.json())
+                            .then(data => {
+                                if (data.success) {
+                                    alert(
+                                        "Reclamo actualizado correctamente."
+                                    );
+                                    modal.style.display = "none";
+                                    location.reload();
+                                } else {
+                                    alert(
+                                        data.message ||
+                                        "No se pudo actualizar el reclamo."
+                                    );
+                                }
+                            })
+
+                            .catch(error => {
+                                console.error(error);
+                                alert(
+                                    "Error al actualizar el reclamo."
+                                );
+                            });
+                        });
+                    })
+
+                    .catch(error => {
+                        console.error(error);
+                        document.getElementById(
+                            "contenidoVerReclamoAdmin"
+                        ).innerHTML =
+                            "<p>Error al cargar el reclamo.</p>";
+                    });
+                });
+            });
+
+            // Cerrar con X
+            closeBtn.addEventListener("click", () => {
+                modal.style.display = "none";
+            });
+
+            // Cerrar haciendo clic fuera
+            window.addEventListener("click", (e) => {
+                if (e.target === modal) {
+                    modal.style.display = "none";
+                }
+            });
+        });
     </script>
 
 </body>

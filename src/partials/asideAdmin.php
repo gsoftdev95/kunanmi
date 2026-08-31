@@ -21,8 +21,8 @@
             </a>
         </li>
         <li class="nav-item my-2">
-            <a class="nav-link px-2" href="./administrador.php#estadisticas" title="Estadísticas">
-                <i class="bi bi-bar-chart-fill"></i><span class="link-text">Estadísticas</span>
+            <a class="nav-link px-2" href="./administrador.php#reclamos" title="Reclamos">
+                <i class="bi bi-book-fill"></i><span class="link-text">Reclamos</span>
             </a>
         </li>
         <li class="nav-item my-2">

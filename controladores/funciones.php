@@ -990,7 +990,19 @@ function obtenerPedido(PDO $bd, int $pedidoId): array {
 
     return $stmt->fetch(PDO::FETCH_ASSOC);
 }
+// Obtener reclamos de un usuario
+function obtenerReclamosPorUsuario($bd, $idUsuario) {
+    $query = "SELECT *
+                FROM libro_reclamaciones
+                WHERE usuario_id = :usuario_id
+                ORDER BY fecha_registro DESC";
 
+    $stmt = $bd->prepare($query);
+    $stmt->bindValue(':usuario_id', $idUsuario, PDO::PARAM_INT);
+    $stmt->execute();
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
 
 
 /****************** */
@@ -1050,6 +1062,31 @@ function estadoVisibleCliente($estado) {
         default:
             return ucfirst($estado);
     }
+}
+/****************** */
+/****************** */
+/*******reclamos**** */
+/****************** */
+/****************** */
+function obtenerReclamos($bd){
+    $sql = "SELECT *
+            FROM libro_reclamaciones
+            ORDER BY fecha_registro DESC";
+
+    $stmt = $bd->prepare($sql);
+    $stmt->execute();
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+function contarReclamosPendientes($bd){
+    $sql = "SELECT COUNT(*) 
+            FROM libro_reclamaciones
+            WHERE estado = 'PENDIENTE'";
+
+    $stmt = $bd->prepare($sql);
+    $stmt->execute();
+
+    return $stmt->fetchColumn();
 }
 
 
@@ -1181,6 +1218,8 @@ function enviarCorreoCompra($usuario, $pedido, $productos)
     try {
 
         // Configuración SMTP
+        //$mail->SMTPDebug = SMTP::DEBUG_SERVER; //debug temporal
+        $mail->SMTPDebug = SMTP::DEBUG_OFF;
         $mail->isSMTP();
         $mail->Host = 'smtp.gmail.com';
         $mail->SMTPAuth = true;
@@ -1188,13 +1227,7 @@ function enviarCorreoCompra($usuario, $pedido, $productos)
         $mail->Password = 'wncl tsrg bxkg fuic';
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
-
-        // Codificación
         $mail->CharSet = 'UTF-8';
-
-        // DEBUG TEMPORAL
-        //$mail->SMTPDebug = SMTP::DEBUG_SERVER;
-        $mail->SMTPDebug = SMTP::DEBUG_OFF;
 
         // Remitente
         $mail->setFrom(
@@ -1210,102 +1243,48 @@ function enviarCorreoCompra($usuario, $pedido, $productos)
             $usuario['apellido_materno']
         );
 
-        // Correo HTML
+        // CARGAR CSS DEL CORREO
+        $cssPath = __DIR__ . '/../src/style/correoCompra.css';
+        $css = file_get_contents($cssPath);
+
+        // URL DEL PEDIDO
+        $urlPedido = 'http://localhost/Paginas_web/kunanmi/Kunanmi_V1/perfilCliente.php'; //localhost
+
+
+        // CARGAR PLANTILLA HTML
+        ob_start();
+        include __DIR__ . '/../correoConfirmacionCompra.php';
+        $body = ob_get_clean();
+
+        // INSERTAR CSS
+        $body = '
+            <html>
+                <head>
+                    <meta charset="UTF-8">
+                    <style>
+                        ' . $css . '
+                    </style>
+                </head>
+                <body>
+                    ' . $body . '
+                </body>
+            </html>
+        ';
+
+        // CONFIGURAR CORREO
         $mail->isHTML(true);
-
         $mail->Subject = 'Confirmación de compra - Kunanmi';
-
-        // Productos
-        $listaProductos = '';
-
-        foreach ($productos as $producto) {
-
-            $listaProductos .= "
-                <tr>
-                    <td>{$producto['nombre']}</td>
-
-                    <td align='center'>
-                        {$producto['cantidad']}
-                    </td>
-
-                    <td align='right'>
-                        S/ " . number_format($producto['precio'], 2) . "
-                    </td>
-                </tr>
-            ";
-        }
-
-        // Cuerpo
-        $mail->Body = "
-
-            <h2>¡Gracias por tu compra!</h2>
-
-            <p>
-                Hola <strong>{$usuario['nombre']}</strong>,
-                hemos recibido correctamente tu pedido.
-            </p>
-
-            <hr>
-
-            <p>
-                <strong>Pedido:</strong> {$pedido['id']}
-            </p>
-
-            <p>
-                <strong>Fecha:</strong> {$pedido['fecha']}
-            </p>
-
-            <p>
-                <strong>Dirección:</strong> {$pedido['direccion']}
-            </p>
-
-            <table
-                border='1'
-                cellpadding='8'
-                cellspacing='0'
-                width='100%'
-            >
-                <thead>
-                    <tr>
-                        <th>Producto</th>
-                        <th>Cantidad</th>
-                        <th>Precio</th>
-                    </tr>
-                </thead>
-
-                <tbody>
-                    {$listaProductos}
-                </tbody>
-            </table>
-
-            <h3>
-                Total: S/ " . number_format($pedido['total'], 2) . "
-            </h3>
-
-            <p>
-                Puedes revisar el estado de tu pedido
-                iniciando sesión en Kunanmi.
-            </p>
-
-            <hr>
-
-            <small>
-                Gracias por confiar en nosotros.
-            </small>
-        ";
+        $mail->Body = $body;
 
         // Enviar
         $mail->send();
-
         return true;
 
     } catch (Exception $e) {
-
         error_log(
             "Error enviando correo Kunanmi: " .
             $mail->ErrorInfo
         );
-
         throw $e;
     }
 }

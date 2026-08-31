@@ -13,6 +13,9 @@ if (!isset($_SESSION['id'])) {
 $idUsuario = $_SESSION['id'];
 $usuario = obtenerUsuarioPorId($bd, $idUsuario);
 $pedidos = obtenerPedidosPorUsuario($bd, $idUsuario);
+$reclamos = obtenerReclamosPorUsuario($bd, $idUsuario);
+
+$destacados = obtenerProductosDestacados($bd);
 ?>
 
 <!doctype html>
@@ -28,12 +31,12 @@ $pedidos = obtenerPedidosPorUsuario($bd, $idUsuario);
 
     
     <main class="container mt-4 mb-5">
-        <h2 class="mb-4">Mi Perfil</h2>
+        <h2 class="mb-4 tittleCliente" >Mi Perfil</h2>
 
         <!-- Datos del usuario -->
         <div class="card mb-4">
             <div class="card-body">
-            <h5 class="card-title">Información personal</h5>
+            <h5 class="card-title subtittleCliente">Información personal</h5>
             <p><strong>Nombre:</strong> <?= $usuario['nombre'] . ' ' . $usuario['apellido_paterno'] . ' ' . $usuario['apellido_materno'] ?></p>
             <p><strong>Email:</strong> <?= $usuario['email'] ?></p>
             <p><strong>Celular:</strong> <?= $usuario['celular'] ?></p>
@@ -45,50 +48,114 @@ $pedidos = obtenerPedidosPorUsuario($bd, $idUsuario);
         <!-- Pedidos del usuario -->
         <div class="card mb-4">
             <div class="card-body">
-            <h5 class="card-title">Mis Pedidos</h5>
+            <h5 class="card-title subtittleCliente">Mis Pedidos</h5>
             <?php if (count($pedidos) > 0): ?>
-                <div class="table-responsive">
-                <table class="table text-center table-hover">
-                    <thead class="table-secondary">
-                        <tr>
-                            <th>Id del pedido</th>
-                            <th>Fecha</th>
-                            <th>Estado</th>
-                            <th>Monto Total</th>
-                            <th>Ver Detalle</th>
-                        </tr>
-                    </thead>
-                    <tbody >
-                        <?php foreach ($pedidos as $pedido): ?>
+                <div class="table-responsive containerTablePedidosCliente">
+                    <table class="table text-center table-hover tablePedidosCliente">
+                        <thead class="table-secondary">
                             <tr>
-                                <td><?= ($pedido['order_id']) ?></td>
-                                <td><?= date('d/m/Y', strtotime($pedido['fecha_pedido'])) ?></td>
-                                <td><?= ucfirst($pedido['descripcion_cliente']) ?></td>
-                                <td>S/ <?= number_format($pedido['monto_total'], 2) ?></td>
-                                <td>
-                                    <button
-                                        class="btnDetallePerfilCliente"
-                                        data-id="<?= $pedido['id'] ?>">
-                                        Ver
-                                    </button>
-                                </td>
+                                <th>Id del pedido</th>
+                                <th>Fecha</th>
+                                <th>Estado</th>
+                                <th>Monto Total</th>
+                                <th>Ver Detalle</th>
                             </tr>
-                        <?php endforeach; ?>
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody >
+                            <?php foreach ($pedidos as $pedido): ?>
+                                <tr>
+                                    <td><?= ($pedido['order_id']) ?></td>
+                                    <td><?= date('d/m/Y', strtotime($pedido['fecha_pedido'])) ?></td>
+                                    <td><?= ucfirst($pedido['descripcion_cliente']) ?></td>
+                                    <td>S/ <?= number_format($pedido['monto_total'], 2) ?></td>
+                                    <td>
+                                        <button
+                                            class="btnDetallePerfilCliente"
+                                            data-id="<?= $pedido['id'] ?>">
+                                            Ver
+                                        </button>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        </tbody>
+                    </table>
                 </div>
             <?php else: ?>
                 <p>No tienes pedidos registrados aún.</p>
             <?php endif; ?>
             </div>
         </div>
-        
-        <div class="card">
+
+        <!-- reclamos del usuario -->
+        <div class="card mb-4">
             <div class="card-body">
-                <p>Para actualización de datos comunicarse al correo correo@gmail.com</p>            </div>
+                <h5 class="card-title subtittleCliente">Mis Reclamos</h5>
+
+                <?php if (count($reclamos) > 0): ?>
+                    <div class="table-responsive containerTablePedidosCliente">
+                        <table class="table text-center table-hover tablePedidosCliente">
+                            <thead class="table-secondary">
+                                <tr>
+                                    <th>Código</th>
+                                    <th>Fecha</th>
+                                    <th>Tipo</th>
+                                    <th>Producto / Servicio</th>
+                                    <th>Estado</th>
+                                    <th>Ver Detalle</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($reclamos as $reclamo): ?>
+                                    <tr>
+                                        <td>
+                                            <?= htmlspecialchars($reclamo['codigo_reclamo']) ?>
+                                        </td>
+                                        <td>
+                                            <?= date('d/m/Y', strtotime($reclamo['fecha_registro'])) ?>
+                                        </td>
+                                        <td>
+                                            <?= htmlspecialchars($reclamo['tipo']) ?>
+                                        </td>
+                                        <td>
+                                            <?= htmlspecialchars($reclamo['producto_servicio']) ?>
+                                        </td>
+                                        <td>
+                                            <?= htmlspecialchars($reclamo['estado']) ?>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btnDetalleReclamoCliente" data-id="<?= $reclamo['id'] ?>">
+                                                Ver
+                                            </button>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
+
+                <?php else: ?>
+                    <p>No tienes reclamos registrados aún.</p>
+                <?php endif; ?>
+                
             </div>
         </div>
+
+        <div class="card mb-4">
+            <div class="card-body">
+                <p>Para actualización de datos comunicarse al correo kunanmipe@gmail.com</p>            </div>
+            </div>
+        </div>
+
+        <section class="highlights">
+            <?php include_once('./src/partials/destacados.php') ?>
+        </section> 
+        
     </main>
+
+
+
+
+
 
     <!-- modal del detalle de pedido -->
     <div id="modalPedido" class="modalPedido">
@@ -97,6 +164,19 @@ $pedidos = obtenerPedidosPorUsuario($bd, $idUsuario);
             <div id="contenidoPedido">
                 <!-- aquí llegará el pedido -->
             </div>
+        </div>
+    </div>
+
+    <!-- modal del detalle de reclamo -->
+    <div id="modalReclamo" class="modalReclamo">
+        <div class="modalReclamoContenido">
+
+            <span class="cerrarModalReclamo">&times;</span>
+
+            <div id="contenidoReclamo">
+                <!-- aquí llegará el reclamo -->
+            </div>
+
         </div>
     </div>
 
@@ -161,6 +241,62 @@ $pedidos = obtenerPedidosPorUsuario($bd, $idUsuario);
 
         });
     </script>
+
+    <!-- script para modal de detalle de reclamo -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+
+            const modal = document.getElementById("modalReclamo");
+            const contenido = document.getElementById("contenidoReclamo");
+            const cerrar = document.querySelector(".cerrarModalReclamo");
+            const botones = document.querySelectorAll(".btnDetalleReclamoCliente");
+
+            botones.forEach(boton => {
+
+                boton.addEventListener("click", function () {
+
+                    modal.style.display = "flex";
+                    contenido.innerHTML = "Cargando...";
+
+                    fetch("obtenerDetalleReclamoCliente.php", {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/x-www-form-urlencoded"
+                        },
+                        body: "reclamo_id=" + this.dataset.id
+                    })
+                    .then(res => res.text())
+                    .then(html => {
+                        contenido.innerHTML = html;
+                    })
+                    .catch(() => {
+                        contenido.innerHTML =
+                            "<p>Error al cargar el detalle del reclamo.</p>";
+                    });
+
+                });
+
+            });
+
+            cerrar.addEventListener("click", () => {
+                modal.style.display = "none";
+                contenido.innerHTML = "";
+            });
+
+            window.addEventListener("click", (e) => {
+
+                if (e.target === modal) {
+                    modal.style.display = "none";
+                    contenido.innerHTML = "";
+                }
+
+            });
+
+        });
+    </script>
+
+    <!--scrip para destacados-->
+    <script src='./src/js/carruselDestacado.js'></script>
 
 </body>
 </html>

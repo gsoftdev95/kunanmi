@@ -81,7 +81,8 @@ if($_POST){
                                     <?php endif; ?>
                                 </div>
 
-                                <button class="btnEliminateP">eliminar</button>    
+                                <button class="btnEliminateP">Eliminar</button>    
+                                <a href="administrador.php"  class="btn bSecond2">Regresar</a>
                             </div>
                         </form>
                     </section>

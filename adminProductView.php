@@ -35,16 +35,16 @@ if (!$productos) {
 
                 <section id="registrarProductos" class="containerView">
                     <section class="containerViewInner">
-                        <h6>Id:</h5>
-                        <p class="ms-5"><?= $productos['id'] ?></p>
+                        <h5>Id:</h5>
+                        <p class=""><?= $productos['id'] ?></p>
                         <hr>
 
                         <h5>Nombre:</h5>
-                        <p class="ms-5"><?= $productos['nombre'] ?></p>
+                        <p class=""><?= $productos['nombre'] ?></p>
                         <hr>
 
                         <h5>Descripción:</h5>
-                        <ul class="ms-5">
+                        <ul class="">
                             <?php
                                 if (!empty($productos['descripcion'])) {
                                     // Decodificar JSON a array
@@ -65,35 +65,35 @@ if (!$productos) {
                         <hr>
 
                         <h5>Precio:</h5>
-                        <p class="ms-5"><?= $productos['precio'] ?></p>
+                        <p class=""><?= $productos['precio'] ?></p>
                         <hr>
 
                         <h5>Stock:</h5>
-                        <p class="ms-5"><?= $productos['stock'] ?></p>
+                        <p class=""><?= $productos['stock'] ?></p>
                         <hr>
 
                         <h5>Categoria:</h5>
-                        <p class="ms-5"><?= $productos['categoria_nombre'] ?></p>
+                        <p class=""><?= $productos['categoria_nombre'] ?></p>
                         <hr>
 
                         <h5>Sub-categoria:</h5>
-                        <p class="ms-5"><?= $productos['subcategoria_nombre'] ?></p>
+                        <p class=""><?= $productos['subcategoria_nombre'] ?></p>
                         <hr>
 
                         <h5>Supra-categoria:</h5>
-                        <p class="ms-5"><?= $productos['supracategoria_nombre'] ?></p>
+                        <p class=""><?= $productos['supracategoria_nombre'] ?></p>
                         <hr>
 
                         <h5>Fecha de creación:</h5>
-                        <p class="ms-5"><?= $productos['fecha_creacion'] ?></p>
+                        <p class=""><?= $productos['fecha_creacion'] ?></p>
                         <hr>
 
                         <h5>Beneficios:</h5>
-                        <p class="ms-5"><?= $productos['beneficios'] ?></p>
+                        <p class=""><?= $productos['beneficios'] ?></p>
                         <hr>
 
                         <h5>Modo de empleo:</h5>
-                        <ul class="ms-5">
+                        <ul class="">
                             <?php
                                 if (!empty($productos['modo_empleo'])) {
                                     // Decodificar JSON a array
@@ -114,26 +114,26 @@ if (!$productos) {
                         <hr>
 
                         <h5>Ingredientes:</h5>
-                        <p class="ms-5"><?= $productos['ingredientes'] ?></p>
+                        <p class=""><?= $productos['ingredientes'] ?></p>
                         <hr>
 
                         <h5>Destacado:</h5>
-                        <p class="ms-5"><?= $productos['destacado'] ?'sí' : 'No' ?></p>
+                        <p class=""><?= $productos['destacado'] ?'sí' : 'No' ?></p>
                         <hr>
 
                         <h5>Estado:</h5>
-                        <p class="ms-5"><?= $productos['estado'] ?></p>
+                        <p class=""><?= $productos['estado'] ?></p>
                         <hr>  
 
                         <h5>Atributos:</h5>
                         <?php if (!empty($productos['atributos'])): ?>
-                            <ul class="ms-5">
+                            <ul class=" ulAtributoDetail">
                                 <?php foreach ($productos['atributos'] as $nombreAtributo => $valores): ?>
                                     <li><strong><?= htmlspecialchars($nombreAtributo) ?>:</strong> <?= implode(', ', array_map('htmlspecialchars', $valores)) ?></li>
                                 <?php endforeach; ?>
                             </ul>
                         <?php else: ?>
-                            <p class="ms-5">Sin atributos asignados.</p>
+                            <p class="">Sin atributos asignados.</p>
                         <?php endif; ?>
 
 
@@ -150,9 +150,10 @@ if (!$productos) {
                             <?php endif; ?>
                         </div>
 
-                        <div clas="containerbSecond">
+                        <div class="containerbSecond">
                             <a href="adminProductEdit.php?id=<?= $productos['id']; ?>"  class="bSecond">Editar producto</a>
                             <a href="adminProductAdd.php"  class="bSecond2">Agregar otro producto</a>
+                            <a href="administrador.php"  class="bSecond2">Regresar</a>
                         </div>
                     </section>
                 </section>

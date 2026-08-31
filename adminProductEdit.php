@@ -95,26 +95,26 @@ if ($_POST) {
 
         <section class="bodyManupulation">
             <section class="bodyManupulationInner">
-                <h2>Modo edición</h2>
+                <h2>Editar Producto</h2>
 
                 <form action="" method="POST" enctype="multipart/form-data" class="formEditProd">
                     
-                    <label for="id" class="mt-2">ID</label>
+                    <label for="id" class=" ">ID</label>
                     <input type="text" class="form-control" name="id" value="<?= $productos['id']; ?>" readonly>
 
-                    <label for="nombreProducto" class="mt-2">Nombre del producto</label>
+                    <label for="nombreProducto" class=" ">Nombre del producto</label>
                     <input type="text" class="form-control" name="nombreProducto" value="<?= htmlspecialchars($productos['nombre']) ?>" required>
 
-                    <label for="descripcionProducto" class="mt-2">Descripción del producto</label>                    
+                    <label for="descripcionProducto" class=" ">Descripción del producto</label>                    
                     <textarea class="form-control" name="descripcionProducto" id="" rows="5" ><?= htmlspecialchars($descripciones) ?></textarea>
 
-                    <label for="precioProducto" class="mt-2">Precio del producto</label>
+                    <label for="precioProducto" class=" ">Precio del producto</label>
                     <input type="text" class="form-control" name="precioProducto" value="<?= htmlspecialchars($productos['precio']) ?>" required>
 
-                    <label for="stockProducto" class="mt-2">Stock del producto</label>
+                    <label for="stockProducto" class=" ">Stock del producto</label>
                     <input type="text" class="form-control" name="stockProducto" value="<?= htmlspecialchars($productos['stock']) ?>" required>
 
-                    <div class="form-group mt-2">
+                    <div class="form-group  ">
                         <label for="categoriaProducto">Categoría</label>
                         <select id="categoriaProducto" name="categoriaProducto" class="form-control" required>
                             <option value="">Seleccione una categoría</option>  
@@ -126,7 +126,7 @@ if ($_POST) {
                         </select>
                     </div>
 
-                    <div class="form-group mt-2">
+                    <div class="form-group  ">
                         <label for="subcategoriaProducto">Subcategoría</label>
                         <select id="subcategoriaProducto" name="subcategoriaProducto" class="form-control" required>
                             <option value="">Seleccione una subcategoría</option>
@@ -139,7 +139,7 @@ if ($_POST) {
                         </select>
                     </div>
 
-                    <div class="form-group mt-2">
+                    <div class="form-group  ">
                         <label for="supracategoriaProducto">Supracategoría</label>
                         <select id="supracategoriaProducto" name="supracategoriaProducto" class="form-control">
                             <option value="">Seleccione una supracategoría</option>
@@ -151,26 +151,26 @@ if ($_POST) {
                         </select>
                     </div>
 
-                    <label for="beneficiosProducto" class="mt-2">Beneficios del producto</label>
+                    <label for="beneficiosProducto" class=" ">Beneficios del producto</label>
                     <input type="text" class="form-control" name="beneficiosProducto" value="<?= htmlspecialchars($productos['beneficios']) ?>" >
 
-                    <label for="modoEmpleo" class="mt-2">Modo de empleo</label>
+                    <label for="modoEmpleo" class=" ">Modo de empleo</label>
                     <textarea class="form-control" name="modoEmpleo" id="" rows="5" ><?= htmlspecialchars($modoEmpleoVarios) ?></textarea>
 
-                    <label for="ingredProducto" class="mt-2">Ingredientes</label>
+                    <label for="ingredProducto" class=" ">Ingredientes</label>
                     <input type="text" class="form-control" name="ingredProducto" value="<?= htmlspecialchars($productos['ingredientes']) ?>" >
 
-                    <label for="destacadoProducto" class="mt-2">Destacado</label>
+                    <label for="destacadoProducto" class=" ">Destacado</label>
                     <select name="destacadoProducto" class="form-control" required>
                         <option value="">¿Es destacado?</option>
                         <option value="1" <?= $productos['destacado'] == 1 ? 'selected' : '' ?>>Sí</option>
                         <option value="0" <?= $productos['destacado'] == 0 ? 'selected' : '' ?>>No</option>
                     </select>
 
-                    <label for="avatar" class="mt-2">Actualizar imágenes (puedes subir múltiples)</label>
+                    <label for="avatar" class=" ">Actualizar imágenes (puedes subir múltiples)</label>
                     <input type="file" class="form-control" name="avatar[]" multiple >
 
-                    <label for="estadoProducto" class="mt-2">Estado</label>
+                    <label for="estadoProducto" class=" ">Estado</label>
                     <select name="estadoProducto" class="form-control mb-2" required>
                         <option value="">Seleccione estado</option>
                         <option value="activo" <?= isset($productos['estado']) && $productos['estado'] === 'activo' ? 'selected' : '' ?>>activo</option>
@@ -178,7 +178,7 @@ if ($_POST) {
 
                     </select>
 
-                    <h5 class="mt-2">Imágenes actuales:</h5>
+                    <h5 class=" ">Imágenes actuales:</h5>
                     <div class="d-flex flex-wrap">
                         <?php if (!empty($imagenes)): ?>
                             <?php foreach ($imagenes as $imagen): ?>
@@ -189,7 +189,7 @@ if ($_POST) {
                         <?php endif; ?>
                     </div>
 
-                    <div class="form-group containerAtributo mt-2">
+                    <div class="form-group containerAtributo  ">
                         <label>Atributos</label><br>
                         <div class="listAtributos">
                             <?php foreach ($atributos as $nombreAtributo => $valores): ?>
@@ -197,7 +197,7 @@ if ($_POST) {
                                     <strong><?= htmlspecialchars($nombreAtributo) ?></strong><br>
                                     <div class="mt-1">
                                         <?php foreach ($valores as $valor): ?>
-                                            <label>
+                                            <label class="itemsatributo">
                                                 <input type="checkbox" name="atributos[]" value="<?= $valor['id'] ?>" <?= in_array($valor['id'], array_column($productos['atributosPlano'], 'id')) ? 'checked' : '' ?>>
                                                 <?= htmlspecialchars($valor['valor']) ?>
                                             </label><br>
@@ -211,8 +211,8 @@ if ($_POST) {
                     </div>
 
                     <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                    <a href="administrador.php"  class="btn bSecond2">Regresar</a>
                 </form>
-                
 
             </section>
         </section>

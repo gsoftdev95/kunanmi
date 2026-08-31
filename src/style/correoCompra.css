@@ -1,0 +1,149 @@
+.email-wrapper {
+    width: 100%;
+    background-color: #f4f6f8;
+    padding: 40px 15px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.email-container {
+    max-width: 650px;
+    margin: 0 auto;
+    background-color: #ffffff;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.email-header {
+    background-color: #17b598;
+    padding: 30px;
+    text-align: center;
+}
+
+.email-logo {
+    max-width: 150px;
+    height: auto;
+}
+
+.email-content {
+    padding: 35px;
+}
+
+.email-title {
+    margin: 0 0 15px;
+    font-size: 24px;
+    color: #ffc9c2ff;
+}
+
+.email-text {
+    font-size: 15px;
+    line-height: 1.6;
+    color: #555555;
+}
+
+.email-divider {
+    border: 0;
+    border-top: 1px solid #eeeeee;
+    margin: 25px 0;
+}
+
+.order-info {
+    width: 100%;
+    margin-bottom: 25px;
+}
+
+.order-info td {
+    padding: 6px 0;
+    font-size: 14px;
+    color: #555555;
+}
+
+.order-info strong {
+    color: #222222;
+}
+
+.products-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.products-table th {
+    background-color: #f5f5f5;
+    color: #333333;
+    font-size: 13px;
+    padding: 12px 8px;
+    text-align: left;
+}
+
+.products-table td {
+    border-bottom: 1px solid #eeeeee;
+    padding: 12px 8px;
+    font-size: 14px;
+    color: #555555;
+}
+
+.products-table .center {
+    text-align: center;
+}
+
+.products-table .right {
+    text-align: right;
+}
+
+.order-total {
+    text-align: right;
+    font-size: 20px;
+    font-weight: bold;
+    color: #222222;
+    margin-top: 20px;
+}
+
+.order-button-container {
+    text-align: center;
+    margin: 30px 0 10px;
+}
+
+.order-button {
+    display: inline-block;
+    padding: 13px 25px;
+    background-color: #ffc9c2ff;
+    color: #f9f9f9 !important;
+    text-decoration: none;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.email-footer {
+    background-color: #f7f7f7;
+    padding: 25px;
+    text-align: center;
+}
+
+.email-footer p {
+    margin: 5px 0;
+    font-size: 12px;
+    color: #888888;
+}
+
+@media only screen and (max-width: 600px) {
+
+    .email-wrapper {
+        padding: 20px 10px;
+    }
+
+    .email-content {
+        padding: 25px 20px;
+    }
+
+    .email-title {
+        font-size: 21px;
+    }
+
+    .products-table th,
+    .products-table td {
+        font-size: 12px;
+        padding: 8px 5px;
+    }
+
+}

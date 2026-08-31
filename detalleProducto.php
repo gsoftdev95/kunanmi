@@ -312,8 +312,6 @@ $modoEmpleo = !empty($producto['modo_empleo']) ? json_decode($producto['modo_emp
             });
         </script>
 
-
-
         <!--scrip para destacados-->
         <script src='./src/js/carruselDestacado.js'></script>
 

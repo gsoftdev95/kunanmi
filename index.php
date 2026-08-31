@@ -16,7 +16,7 @@ $opiniones = obtenerOpiniones($bd);
     <?php include_once('./src/partials/head.php')?>
 </head>
 <body>
-   
+
     <header>
         <section class="contTopBar">
             <div class="topBar">Hecho con amor — Productos artesanales y naturales</div>
@@ -25,7 +25,7 @@ $opiniones = obtenerOpiniones($bd);
     </header>
 
     <div class=bodyCover>
-        <img src="./src/img/portadaCliente2.png" alt="imagen de portada" loading="lazy">
+        <img src="./src/img/portadaCliente3.png" alt="imagen de portada" loading="lazy">
         <div class="bodyCoverText">
             <div class="bodyCoverTextSlogan">​La esencia de la naturaleza en tu piel y tu hogar.</div>
             <a href="./tienda.php"><div class="bodyCoverTextButtom"> Ver tienda <i class="bi bi-bag"></i></div></a>

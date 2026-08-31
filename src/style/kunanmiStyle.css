@@ -603,6 +603,8 @@ header{
 .textReview{
     position: absolute;
     background-color: var(--verdeK);
+    /* background-color: rgb(23, 181, 152, 0.5); */
+    /* background-color: rgb(255, 255, 255, 1); */
     padding: 20px;
     height: auto;
     width: 90%;
@@ -953,11 +955,13 @@ footer{
     display: flex;
     justify-content: center;
     align-items: center;
+    height: auto;
 }
 .footerInner{
     height: auto;
     max-width: 1500px;
     width: 100%;
+    padding: 0px 10px;
 
     @media (width < 990px) {
         padding: 10px;
@@ -974,7 +978,7 @@ footer{
     color: var(--blancoK);    
     padding: 10px 0px;
 
-    @media (width < 450px) {
+    @media (width < 550px) {
         display: block;
     }
 }
@@ -983,7 +987,7 @@ footer{
     margin: 100px 0px 0px 0px;
     line-height: 1.2;
 
-    @media (width < 450px) {
+    @media (width < 550px) {
         text-align: center;
         margin: 100px 0px 50px 0px;
     }
@@ -991,16 +995,24 @@ footer{
 .footerTitle{
     font-size: 4rem;
     font-weight: 600;
+
+    @media (width < 550px) {
+        line-height: 0.7;
+    }
 }
 .footerSlogan{
     font-size: 2rem;
     font-weight: 400;
+    
+    @media (width < 550px) {
+        line-height: 0.7;
+    }
 }
 .footerReview{
     font-size: 1rem;
     width: 300px;
 
-    @media (width < 450px) {
+    @media (width < 550px) {
         width: 100%;
         padding: 0px 10px;
         text-align: center;
@@ -1009,20 +1021,23 @@ footer{
 .footerContact{
     height:fit-content;
 }
-.correoKun{
+.telefonoKun,
+.correoKun,
+.direccionKun{
     font-size: 1rem;
     margin: 0px 5px;
     text-align: right;
     color: var(--blancoK);
 
-    @media (width < 450px) {
+    @media (width < 550px) {
         text-align: center;
         margin: 10px 0px;
-        font-size: 1.7rem;
+        font-size: 1rem;
     }
 }
 .rrss{
-    @media (width < 450px) {
+    text-align: right;
+    @media (width < 550px) {
         width: 100%;
         display: flex;
         align-items: center;
@@ -1035,7 +1050,9 @@ footer{
     margin: 0px 5px;
 
     @media (width < 450px) {
-        margin: 0px 15px;
+        text-align: center;
+        margin: 10px ;
+        font-size: 1.3rem;
     }
 }
 .rrss a i{
@@ -1054,8 +1071,34 @@ footer{
     text-align: center;
     font-weight: bold;
     font-size: 0.8rem;
+
+    @media (width < 450px) {
+        padding: 10px 0;
+    }
+}
+.footerLegal p {
+    margin: 5px 0;
+
+    @media (width < 450px) {
+        line-height: 1.8;
+    }
 }
 
+.footerLegal a {
+    color: var(--blancoK);
+    text-decoration: none;
+    margin: 0 5px;
+
+    @media (width < 450px) {
+        display: block;
+        margin: 5px 0;
+    }
+}
+
+.footerLegal a:hover {
+    color: var(--oscuroK);
+    text-decoration: underline;
+}
 
 /********************************/
 /********************************/
@@ -1771,19 +1814,30 @@ REGISTRO REGISTRO
 /********************************/
 /********************************/
 .registro-container {
-  max-width: 600px;
-  width: 50%;
-  margin: 60px auto;
-  padding: 30px;
-  background-color: #ffffff;
-  border-radius: 10px;
-  box-shadow: 0 0 15px rgba(0,0,0,0.1);
+    max-width: 600px;
+    width: 50%;
+    margin: 60px auto;
+    padding: 30px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.1);
+
+    @media (width < 990px) {
+        width: 70%;
+        margin: 40px auto;
+        
+    }
+    @media (width < 550px) {
+        width: 90%;
+        margin: 20px auto;
+        
+    }
 }
 
 .registro-container h2 {
-  text-align: center;
-  margin-bottom: 25px;
-  color: #333;
+    text-align: center;
+    margin-bottom: 25px;
+    color: #333;
 }
 
 .registro-form .form-group {
@@ -1852,6 +1906,10 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    @media (width < 990px) {
+        display: none;
+    }
 }
 
 .sidebarAdmin:hover {
@@ -1896,12 +1954,24 @@ body {
     flex: 1;
     padding: 2rem;
     background-color: #f9f9f9;
+    @media (width < 990px) {
+        padding: 8px;
+    }
 }
 
 .ContainerCardsDashboard {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 1rem;
+
+    @media (width < 990px) {
+        grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    }
+
+    @media (width < 450px) {
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    }
+
 }
 
 .cardDashboard {
@@ -1915,6 +1985,12 @@ body {
     flex-direction: column;
     justify-content: space-between; 
 }
+.cardDashboardStock{
+    background-color: rgb(12, 139, 118, 0.1);
+}
+.cardReclamo{
+    border: 1px solid var(--rosrojk);
+}
 .cardDashboard p{
     text-align: left;
 
@@ -1925,11 +2001,19 @@ body {
     font-variation-settings:
         "wdth" 100;
 }
-@media (max-width: 768px) {
-    .sidebar {
-        display: none;
+.cardDashboard p:nth-child(1){
+    font-size: 1rem;
+    @media (width < 450px) {
+        font-size: 0.8rem;
     }
 }
+.cardDashboard p:nth-child(2){
+    font-size: 3rem;
+    @media (width < 450px) {
+        font-size: 1.5rem;
+    }
+}
+
 .cardDashboardStock{
     position: relative;
     cursor: pointer;
@@ -1966,7 +2050,12 @@ body {
 
 .showSelectAdmin{
     background-color: #ffffff;
-    padding: 5px;
+
+    @media (width < 540px) {
+        width: 100%;
+        height: auto;
+    }
+    
 }
 .selectAdmin{
     text-decoration: none;
@@ -1974,16 +2063,30 @@ body {
 }
 .containerFormAt{
     padding: 2px 5px;
-    height: 100px;
+    margin: 0px 0px 10px;
     display: flex;
     align-items: center;
+
+    @media (width < 540px) {
+        height: auto;
+    }
 }
 .formAttributeAdmin{
     display: flex;
     align-items: self-end;
+
+    @media (width < 540px) {
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+    }
 }
 .formAttributeAdmin div{
     margin: 0px 5px;
+    @media (width < 540px) {
+        margin: 5px 0px;
+        width: 100%;
+    }
 }
 .formAttributeAdmin button{
     background-color: var(--rosaK);
@@ -1993,6 +2096,9 @@ body {
     overflow-y: auto;
     margin: 0px 0px 50px;
     width: 50%;
+    @media (width < 990px) {
+        width: 100%;
+    }
 }
 .containerTabAt thead {
     position: sticky;
@@ -2001,19 +2107,68 @@ body {
 }
 
 
+/* producto */
+/* producto */
+/* producto */
+.fromybtnproductoadmin{
+    display: flex ;
+    justify-content: space-between;
+    align-items: center;
+
+    @media (width < 750px) {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
 .adminSearchForm{
     display: flex;
     align-items: center;
     width: 60%;
+    margin: 20px 0px 30px 0px;
+
+    @media (width < 750px) {
+        margin: 10px 0px 10px 0px;
+        width: 100%;
+    }
+    @media (width < 550px) {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+.adminSearchForm select{
+    @media (width < 750px) {
+        margin: 5px 0px;
+    }
 }
 .btnSearchFrom{
     background-color: var(--rosaK);
     color: var(--oscuroK);
     border-radius: 8px;
+    margin: 10px;
+    @media (width < 750px) {
+        margin: 10px 0px;
+    }
+}
+.addproductadmin{
+    @media (width < 750px) {
+        margin: 0px 0px 10px;
+    }
 }
 .tableAdminProductCont{
     max-height: 500px;
     overflow-y: auto;
+    width: 100%;
+
+    @media (width <990px) {
+        width: 100%;
+        overflow-x: auto;        
+    }
+    @media (width <550px) {
+        width: 450px;       
+    }
+    @media (width < 450px) {
+        width: 340px;      
+    }
 }
 .tableAdminProduct{
     table-layout: auto;
@@ -2038,6 +2193,15 @@ body {
     white-space: normal;
     overflow-wrap: break-word;
     word-wrap: break-word;
+
+    @media (width < 990px) {
+        padding: 5px 2px;
+        font-size: 14px;
+    }
+    @media (width < 450px) {
+        padding: 5px 2px;
+        font-size: 12px;
+    }
 }
 
 
@@ -2070,22 +2234,65 @@ body {
     margin: 0px 15px;
 }
 
---------------------------
+/* ---------cliente admin*/
+.tableAdminUserCont {
+    max-height: 500px;
+    overflow-y: auto;
+    width: 100%;
+
+    @media (width <990px) {
+        width: 100%;
+        overflow-x: auto;        
+    }
+    @media (width <550px) {
+        width: 450px;       
+    }
+    @media (width < 450px) {
+        width: 340px;      
+    }
+}
 .tableAdminUser{
     width: 100%;
+    min-width: 700px;
     table-layout: fixed;
 }
-
-.tableAdminUser th{
-    background-color: #a3a3a3;
+.tableAdminUser thead {
+    background-color: #f2f2f2;
+    position: sticky;
+    top: 0;
+    z-index: 2;
 }
+.tableAdminUser th,
+.tableAdminUser td {
+    padding: 8px;
+    border: 1px solid #ddd;
+    text-align: left;
+
+    vertical-align: middle;
+
+    /* Permitir saltos de línea */
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+
+    @media (width < 990px) {
+        padding: 5px 2px;
+        font-size: 14px;
+    }
+    @media (width < 450px) {
+        padding: 5px 2px;
+        font-size: 12px;
+    }
+}
+
 .tableAdminUser td:nth-child(5),
 .tableAdminUser th:nth-child(5),
 .tableAdminUser td:nth-child(6),
 .tableAdminUser th:nth-child(6),
 .tableAdminUser td:nth-child(7),
 .tableAdminUser th:nth-child(7) {
-    width: 60px;
+    min-width: 60px;
+    width:80px;
 }
 
 .tableAdminUser td:nth-child(5) a,
@@ -2238,10 +2445,24 @@ body {
     cursor: pointer;
     font-size: 20px;
 }
-.containerTabPedidosAdmin{
+
+/* pedidos admin */
+
+.tableAdminPedidosCont{
     max-height: 500px;
     overflow-y: auto;
-    margin: 0px 0px 50px;
+    width: 100%;
+
+    @media (width <990px) {
+        width: 100%;
+        overflow-x: auto;        
+    }
+    @media (width <550px) {
+        width: 450px;       
+    }
+    @media (width < 450px) {
+        width: 340px;      
+    }
 }
 .tableAdminPedidos{
     table-layout: auto;
@@ -2254,6 +2475,130 @@ body {
     top: 0;
     z-index: 2;
 }
+.tableAdminPedidos th,
+.tableAdminPedidos td {
+    padding: 8px;
+    border: 1px solid #ddd;
+    text-align: left;
+
+    vertical-align: middle;
+
+    /* Permitir saltos de línea */
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+
+    @media (width < 990px) {
+        padding: 5px 2px;
+        font-size: 14px;
+    }
+    @media (width < 450px) {
+        padding: 5px 2px;
+        font-size: 12px;
+    }
+}
+/* estilo para modal de reclamo */
+.openModalActPedidoAdmin{
+    cursor:pointer;
+    background-color: transparent;
+    border: none;
+}
+.modalVerReclamoAdmin{
+    position: fixed;
+    inset:0;
+    background-color: rgba(0,0,0,0.6);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+.modalContentVerReclamoAdmin{
+    background: white;
+    border-radius: 10px;
+    max-height: 85vh;
+    overflow-y: auto;
+    max-width: 1100px;
+    width: 90%;
+    position: relative;
+    animation: fadeViewPed 0.3s ease;
+    padding: 20px;
+    background: #fff;
+    border-radius: 10px;
+    
+    @media (width < 576px) {
+        width: 95%;
+        max-height: 90vh;
+        padding: 15px;
+    }
+    
+}
+@keyframes fadeViewPed{
+    from{ transform: scale(0.9); opacity: 0; }
+    to{ transform: scale(1); opacity: 1; }
+}
+.modalContentVerReclamoAdmin div h5{
+    font-weight: bolder;
+}
+.closeModalViewReclamo{
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    cursor: pointer;
+    font-size: 20px;
+}
+.tableAdminReclamosCont{
+    max-height: 500px;
+    overflow-y: auto;
+    width: 100%;
+
+    @media (width <990px) {
+        width: 100%;
+        overflow-x: auto;        
+    }
+    @media (width <550px) {
+        width: 450px;       
+    }
+    @media (width < 450px) {
+        width: 340px;      
+    }
+}
+.tableAdminReclamos{
+    table-layout: auto;
+    width: 100%;
+}    
+.tableAdminReclamos thead {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+.tableAdminReclamos th,
+.tableAdminReclamos td {
+    padding: 8px;
+    border: 1px solid #ddd;
+    text-align: left;
+
+    vertical-align: middle;
+
+    /* Permitir saltos de línea */
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+
+    @media (width < 990px) {
+        padding: 5px 2px;
+        font-size: 14px;
+    }
+    @media (width < 450px) {
+        padding: 5px 2px;
+        font-size: 12px;
+    }
+}
+/*
+.detReclamoadmin{
+    max-height: 80dvh;
+    overflow-y: auto;
+}*/
+
 
 
 .bodyManupulation{
@@ -2262,6 +2607,10 @@ body {
     display: flex;
     justify-content: center;
     background-color: var(--blancoHumo);
+
+    @media (width <550px) {      
+        padding: 0px 5px;  
+    }
 }
 .bodyManupulationInner{
     width: 80%;
@@ -2273,6 +2622,9 @@ body {
     @media (width < 1200px) {        
         width: 90%;
     }
+    @media (width <550px) {      
+        width: 100%;        
+    }
 }
 .bodyManupulationInner h2{
     margin: 0px 0px 20px 0px;
@@ -2283,12 +2635,22 @@ body {
 .formEditProd{
     width: 80%;
     margin: 30px 0px;
+    
+    @media (width < 550px) {
+        width: 95%;
+        margin: 10px 0px;
+        font-size: 12px;
+    }
 }
 .formEditProd label {
     font-weight: 600;
 }
 .formEditProd input, .formEditProd div {
     margin-bottom: 30px;
+
+    @media (width < 550px) {
+        margin-bottom: 20px;
+    }
 }
 .containerAdd{
     display: flex;
@@ -2315,10 +2677,40 @@ body {
     column-count:2;
     column-gap:2em;
     column-rule:1px solid rgb(229, 231, 233);
+
+    @media (width < 550px) {
+        width: 100%;
+        padding: 10px 10px;
+        border-radius: 15px;
+    }
 }
 .containerViewInner{
     width: 90%;
-    margin: 0px 0px;
+    margin: 0px 0px 0px 10px;
+
+    @media (width < 550px) {
+        font-size: 12px;
+        width: 100%;
+        margin: 0px;
+        padding: 5px;
+    }
+}
+.containerViewInner p{
+    margin: 0px 0px 0px 40px;
+    @media (width < 550px) {
+        margin: 0px 0px 0px 10px;
+    }
+}
+.containerViewInner h5{
+    
+    @media (width < 550px) {
+        font-size: 1rem;
+    }
+}
+.ulAtributoDetail{
+    @media (width < 550px) {
+        margin: 0px 0px 0px 10px;
+    }
 }
 .btnEliminateP{
     background-color: rgb(253, 35, 35);
@@ -2341,25 +2733,51 @@ body {
     padding: 10px;
     background-color: var(--blancoK);
     border: 1px solid var(--blancoHumo);
+    
+    @media (width < 550px) {        
+        margin: 5px 2px;
+        padding: 2px;
+        width: 120px;
+    }
 }
 .listAtributos div div{
     padding: 0px 10px 0px 0px;
     margin:0px 0px 10px 10px;
     height: 400px;
     overflow-y: scroll;
+
+    @media (width < 550px) {        
+        padding: 0px 5px 0px 0px;
+        margin:0px 0px 5px 5px;
+        width: 120px;
+        height: 300px;
+    }
 }
 
 .containerbSecond{
-    height: 100px;
+    height: auto;
     width: 100%;
+
+    @media (width < 550px) {
+        display: flex;
+        flex-direction: column;
+    }
+}
+.containerbSecond a{
+    margin: 100px 0px 0px;
+    padding: 10px;
+    font-weight: 600;
+    text-decoration: none;
+
+    @media (width < 550px) {
+        display: flex;
+        flex-direction: column;
+        margin: 5px 0px;
+    }
 }
 .bSecond{
     border: 2px solid var(--verdeK);
     color: var(--verdeK);
-    margin: 100px 0px 0px;
-    font-weight: 600;
-    padding: 10px;
-    text-decoration: none;
     border-radius: 10px;
 }
 .bSecond:hover{
@@ -2370,10 +2788,6 @@ body {
 .bSecond2{
     border: 2px solid var(--grisK);
     color: var(--grisK);
-    margin: 100px 0px 0px;
-    font-weight: 600;
-    padding: 10px;
-    text-decoration: none;
     border-radius: 10px;
 }
 .bSecond2:hover{
@@ -2443,6 +2857,22 @@ img {
 /******************************/
 /******************************/
 
+.tittleCliente{
+    color: var(--verdeOsc);
+}
+.subtittleCliente{
+    color: var(--verdeK);
+}
+.containerTablePedidosCliente{
+    max-height: 500px;
+    overflow-y: auto;
+}
+.tablePedidosCliente thead{
+    background-color: #f2f2f2;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
 .modalPedido{
     display:none;
     position:fixed;
@@ -2481,6 +2911,56 @@ img {
 .btnDetallePerfilCliente:hover{
     background-color: var(--rosaK);
 }
+
+.btnDetalleReclamoCliente{
+    background-color: var(--rosabbK);
+    border: none;
+    border-radius: 5px;
+    padding: 8px 16px;
+}
+.btnDetalleReclamoCliente:hover{
+    background-color: var(--rosaK);
+}
+.modalReclamo {
+    display: none;
+    position: fixed;
+    z-index: 9999;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+}
+
+.modalReclamoContenido {
+    background: white;
+    width: 100%;
+    max-width: 750px;
+    max-height: 85vh;
+    overflow-y: auto;
+    border-radius: 10px;
+    padding: 25px;
+    position: relative;
+}
+
+.cerrarModalReclamo {
+    position: absolute;
+    top: 10px;
+    right: 18px;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+@media (max-width: 576px) {
+
+    .modalReclamoContenido {
+        max-height: 90vh;
+        padding: 20px 15px;
+    }
+
+}
+
+
 
 /*********/
 .cardProductoPedido{

@@ -17,9 +17,18 @@
             <div class="col-md-6">
                 <h2 class="TitleNosotros mb-3">Sobre Nosotros</h2>
                 <p>
-                    Hola, mi nombre es Verónica. Siempre me ha gustado llevar un estilo de vida saludable, cuidar de mi piel, correr, y vivir en contacto con la naturaleza. Estudié Ingeniería Electrónica en la UNMSM y trabaje varios años en la industria. A mitad de mi doctorado y en plena pandemia, una amiga me presentó el mundo de la cosmética artesanal. Es así que en julio del 2021 decidí crear Kunanmi. Empecé vendiendo una amplia variedad de jabones de glicerina, pero decidí apostar por productos de cosmética natural para toda la rutina. Al mismo tiempo, aprendí a hacer velas aromáticas. Todo bajo el concepto de vivir el presente, y siempre reservar un momento del día para cuidar de uno mismo.
+                    Hola, mi nombre es Verónica. Siempre me ha gustado llevar un estilo de vida saludable, cuidar de mi piel, correr y vivir en contacto con la naturaleza. 
+                    Estudié Ingeniería Electrónica en la UNMSM y trabajé varios años en la industria. A mitad de mi doctorado y en plena pandemia, una amiga me presentó el mundo de la cosmética artesanal. 
+                    Es así que, en julio de 2021, decidí crear Kunanmi.
+                </p>
                 <p>
-                    Elaboro cada uno de mis productos con fórmulas compuestas de insumos certificados 100% naturales, entre extractos vegetales, aceites y mantecas, vitaminas y aceites esenciales enfocados en proveer beneficios a nuestros clientes.
+                    Kunanmi es una marca dedicada a la elaboración y comercialización de productos de cosmética natural, cuidado personal y velas aromáticas. 
+                    Empecé vendiendo una amplia variedad de jabones de glicerina, pero decidí apostar por productos de cosmética natural para acompañar toda la rutina de cuidado personal. 
+                    Al mismo tiempo, aprendí a elaborar velas aromáticas, siempre bajo el concepto de vivir el presente y reservar un momento del día para cuidar de uno mismo.
+                </p>
+                <p>
+                    Elaboro cada uno de mis productos con fórmulas compuestas por insumos certificados y de origen natural, entre extractos vegetales, aceites, mantecas, vitaminas y aceites esenciales, seleccionados 
+                    para brindar productos de calidad y bienestar a nuestros clientes.
                 </p>
             </div>
         </div>
