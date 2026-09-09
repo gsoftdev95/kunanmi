@@ -2,7 +2,7 @@
     <section class="footerAnexos">
         <section class="footerAnexosText">
             <h1 class="footerTitle">KUNANMI</h1>
-            <p class="footerSlogan">Belleza Natural</p>
+            <p class="footerSlogan">Cuidado Integral Natural</p>
             <article class="footerReview">Tienda de productos cosméticos y artesanales para el cuidado de la piel y el bienestar. </article>
         </section>
         <section class="footerContact">

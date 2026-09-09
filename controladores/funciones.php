@@ -451,8 +451,8 @@ function guardarProducto($bd, $tabla, $datos, $imagen) {
 //funcion para buscar producto
 function buscarProductos($bd, $tabla, $busqueda, $tipoBusqueda) {
     $sql = "SELECT p.*, 
-                   c.nombre AS categoria_nombre, 
-                   s.nombre AS subcategoria_nombre 
+                c.nombre AS categoria_nombre, 
+                s.nombre AS subcategoria_nombre 
             FROM $tabla p
             LEFT JOIN categorias c ON p.categoria_id = c.id
             LEFT JOIN subcategorias s ON p.subcategoria_id = s.id
@@ -465,14 +465,15 @@ function buscarProductos($bd, $tabla, $busqueda, $tipoBusqueda) {
     return $producto;
 }
 
-function buscadorProductos($bd, $termino) {
+function buscadorProductosTienda($bd, $termino) {
     $sql = "SELECT p.*,
                 c.nombre AS categoria_nombre, 
                 s.nombre AS subcategoria_nombre  
             FROM productos p
             LEFT JOIN categorias c ON p.categoria_id = c.id
             LEFT JOIN subcategorias s ON p.subcategoria_id = s.id
-            WHERE p.nombre LIKE :termino OR p.descripcion LIKE :termino 
+            WHERE (p.nombre LIKE :termino OR p.descripcion LIKE :termino)
+            AND p.estado = 'activo'
             LIMIT 50"; 
     $stmt = $bd->prepare($sql);
     $stmt->execute([":termino" => "%$termino%"]);
@@ -776,10 +777,9 @@ function obtenerProdTienda($bd, $tabla) {
                     c.nombre AS categoria_nombre, 
                     s.nombre AS subcategoria_nombre 
             FROM $tabla p
-            LEFT JOIN categorias c 
-                ON p.categoria_id = c.id
-            LEFT JOIN subcategorias s 
-                ON p.subcategoria_id = s.id";
+            LEFT JOIN categorias c ON p.categoria_id = c.id
+            LEFT JOIN subcategorias s ON p.subcategoria_id = s.id
+            WHERE p.estado = 'activo' ";
 
     $query = $bd->prepare($sql);
     $query->execute();  
@@ -788,12 +788,13 @@ function obtenerProdTienda($bd, $tabla) {
 }
 function obtenerProductosPorCategoria($bd, $categoriaId) {
     $sql = "SELECT p.*, 
-                   c.nombre AS categoria_nombre, 
-                   s.nombre AS subcategoria_nombre 
+                c.nombre AS categoria_nombre, 
+                s.nombre AS subcategoria_nombre 
             FROM productos p
             LEFT JOIN categorias c ON p.categoria_id = c.id
             LEFT JOIN subcategorias s ON p.subcategoria_id = s.id
             WHERE p.categoria_id = :categoriaId
+            AND p.estado = 'activo'
             ORDER BY p.nombre ASC";
 
     $query = $bd->prepare($sql);
@@ -814,7 +815,7 @@ function obtenerProductosPorSubcategoria($bd, $subcategoriaId) {
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-
+ // ADMINISTRADOR
 //Función para eliminar el registro del producto
 function eliminarProducto($bd,$tabla,$datos){
     $id=intval($datos['id']);
@@ -854,7 +855,8 @@ function obtenerProductosDestacados($bd) {
     $sql = "SELECT p.*, s.nombre AS subcategoria_nombre 
             FROM productos p
             LEFT JOIN subcategorias s ON p.subcategoria_id = s.id
-            WHERE p.destacado = 1 
+            WHERE p.destacado = 1
+            AND p.estado = 'activo'
             ORDER BY p.fecha_creacion DESC
             LIMIT 10";
     $stmt = $bd->prepare($sql);

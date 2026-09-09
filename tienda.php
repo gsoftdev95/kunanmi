@@ -33,7 +33,7 @@ foreach ($resultado as $row) {
 //Buscador
 if ($busqueda) {
     // ejemplo: llamar una función desde funciones.php
-    $productos = buscadorProductos($bd, $busqueda);
+    $productos = buscadorProductosTienda($bd, $busqueda);
 }elseif (isset($_GET['subcategoria'])){    
     $subcategoriaId = $_GET['subcategoria'];
 

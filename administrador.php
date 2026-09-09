@@ -5,10 +5,10 @@ require_once('./src/partials/conexionBD.php');
 require_once('controladores/controlAcceso.php');
 
 $totalClientes = contarClientes($bd, 'usuarios');
-$totalProductos = contarProductos($bd, 'Productos');
-$totalProductosActivos = contarProductosactivos($bd, 'Productos');
-$totalDestacados = contarDestacados($bd, 'Productos');
-$ProductosSinStock = contarProductosSinStock($bd, 'Productos');
+$totalProductos = contarProductos($bd, 'productos');
+$totalProductosActivos = contarProductosactivos($bd, 'productos');
+$totalDestacados = contarDestacados($bd, 'productos');
+$ProductosSinStock = contarProductosSinStock($bd, 'productos');
 $mostrarProductosSinStock = ListarProductosSinStock($bd);
 $PedidosPendientes = contarPedidosPendientes($bd, 'pedidos');
 $ventasMesAnterior = obtenerVentasMesAnterior($bd);
@@ -96,13 +96,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['accion'] === 'cambiar_estad
 
     exit;
 }
-
 ?>
 
 
 <!doctype html>
 <html lang="es">
-
 <head>
     <?php include_once('./src/partials/head.php') ?>
 </head>
@@ -289,7 +287,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['accion'] === 'cambiar_estad
                                             <td class="text-center text-primary-emphasis"><?= $producto['categoria_nombre'] ?></td>
                                             <td class="text-center text-primary-emphasis"><?= $producto['subcategoria_nombre'] ?></td>
                                             <td class="text-center text-primary-emphasis"><?= $producto['stock'] ?></td>
-                                            <td class="text-center text-primary-emphasis"><?= $producto['estado'] ?></td>
+                                            <td class="text-center">
+                                                <label class="switchEstadoProducto">
+                                                    <input type="checkbox" class="inputEstadoProducto" data-id="<?= $producto['id'] ?>" <?= $producto['estado'] === 'activo' ? 'checked' : '' ?> >
+                                                    <span class="sliderEstadoProducto"></span>
+                                                </label>
+                                            </td>
                                             <td class="text-center text-primary-emphasis">
                                                 <?= $producto['destacado'] ? 'Sí' : 'No' ?>
                                             </td>
@@ -881,6 +884,58 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['accion'] === 'cambiar_estad
         });
     </script>
 
-</body>
+    <!-- script para switch de estado -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const switches = document.querySelectorAll(".inputEstadoProducto");
+            switches.forEach(switchEstado => {
+                switchEstado.addEventListener("change", function () {
 
+                    const productoId = this.dataset.id;
+                    const estadoAnterior = !this.checked;
+                    const nuevoEstado = this.checked ? "activo" : "inactivo";
+
+                    const datos = new FormData();
+
+                    datos.append("producto_id", productoId);
+                    datos.append("estado", nuevoEstado);
+
+                    fetch("actualizarEstadoProducto.php", {
+                        method: "POST",
+                        body: datos
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+
+                        if (!data.success) {
+
+                            // Si falla, devolvemos el switch
+                            // a su posición anterior
+                            this.checked = estadoAnterior;
+
+                            alert(data.message || "No se pudo actualizar el estado.");
+
+                            return;
+                        }
+
+                        console.log(
+                            "Producto " + productoId +
+                            " actualizado a " + data.estado
+                        );
+
+                    })
+                    .catch(error => {
+
+                        console.error("Error:", error);
+
+                        // Devolver switch a su estado anterior
+                        this.checked = estadoAnterior;
+
+                        alert("Ocurrió un error al actualizar el estado.");
+                    });
+                });
+            });
+        });
+    </script>
+</body>
 </html>

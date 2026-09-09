@@ -592,6 +592,8 @@ header{
         width: 100%;
         position: relative;
         align-items: center;
+
+        
     }
 }
 .containerReview img{
@@ -603,8 +605,7 @@ header{
 .textReview{
     position: absolute;
     background-color: var(--verdeK);
-    /* background-color: rgb(23, 181, 152, 0.5); */
-    /* background-color: rgb(255, 255, 255, 1); */
+    background-color: rgb(255, 255, 255, 0.8);
     padding: 20px;
     height: auto;
     width: 90%;
@@ -615,15 +616,29 @@ header{
     opacity: 0; /* inicialmente invisible */
     transition: opacity 0.5s ease-out;
 
-    @media (width < 990px) {
+    @media (width < 990px){
         font-size: 10px;
         padding: 10px;
         width: 90%;
         left: 90%;
         top:50%;
-        transform: translate(00%,-50%);
-    }    
+        transform: translate(0%,-50%);
+    }
+    @media (width < 750px) {        
+        font-size: 10px;
+        padding: 5px;
+        width: 300px;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%,-50%);
+    } 
+    @media (width < 750px) {  
+        width: 100%;
+        transform: translate(-50%,-50%);
+    } 
+    
 }
+
 /* Animación izquierda → derecha */
 @keyframes slideInLeft {
     from {
@@ -635,32 +650,21 @@ header{
         opacity: 1;
     }
 }
+
 /* Se activa con la clase que pone IntersectionObserver */
 .textReview.animate2 {
     animation: slideInLeft 1.2s ease-out forwards;
 }
-@media (width < 750px) {
-    .textReview{
-        font-size: 10px;
-        padding: 5px;
-        width: 300px;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%,-50%);
-        opacity: 0.8;
+@keyframes slideInLeft {
+    from {
+        transform: translateX(-120%) translateY(-50%);
+        opacity: 0;
     }
-    @keyframes slideInLeft {
-        from {
-            transform: translateX(-120%) translateY(-50%);
-            opacity: 0;
-        }
-        to {
-            transform: translateX(-50) translateY(-50%);
-            opacity: 1;
-        }
+    to {
+        transform: translateX(-50) translateY(-50%);
+        opacity: 1;
     }
 }
-
 
 .containerReview div h2{
     font-size: 2rem;
@@ -2233,6 +2237,58 @@ body {
     padding: 0px 3px;
     margin: 0px 15px;
 }
+
+/* switch switch switch */
+/* El interruptor: el recuadro que rodea el deslizador */
+.switchEstadoProducto {
+    font-size: 17px;
+    position: relative;
+    display: inline-block;
+    width: 53px;
+    height: 25px;
+}
+
+/* Ocultar la casilla de verificación HTML predeterminada */
+.switchEstadoProducto input {
+    opacity: 1;
+    width: 0;
+    height: 0;
+}
+
+/* El control deslizante */
+.sliderEstadoProducto {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0px;
+    background: var(--grisClaro);
+    transition: .4s;
+    border-radius: 30px;
+    border: 1px solid #ccc;
+}
+.sliderEstadoProducto:before {
+    position: absolute;
+    content: "";
+    height: 1.35em;
+    width: 1.35em;
+    border-radius: 16px;
+    left: 1.2px;
+    top: 0;
+    bottom: 0;
+    background-color: white;
+    box-shadow: 0 2px 3px #999999;
+    transition: .4s;
+}
+input:checked + .sliderEstadoProducto {
+    background-color: var(--verdeK);
+    border: 1px solid transparent;
+}
+input:checked + .sliderEstadoProducto:before {
+    transform: translateX(1.5em);
+}
+
 
 /* ---------cliente admin*/
 .tableAdminUserCont {
