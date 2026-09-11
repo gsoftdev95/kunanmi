@@ -449,20 +449,59 @@ function guardarProducto($bd, $tabla, $datos, $imagen) {
 
 
 //funcion para buscar producto
-function buscarProductos($bd, $tabla, $busqueda, $tipoBusqueda) {
+function buscarProductos($bd, $tabla, $busqueda, $tipoBusqueda, $destacado = '') {
+    $camposPermitidos = [
+        'nombre' => 'p.nombre',
+        'categoria_nombre' => 'c.nombre',
+        'subcategoria_nombre' => 's.nombre'
+    ];
+
+    // Si el tipo de búsqueda no es válido
+    if (!isset($camposPermitidos[$tipoBusqueda])) {
+        return [];
+    }
+
+    $campoBusqueda = $camposPermitidos[$tipoBusqueda];
     $sql = "SELECT p.*, 
                 c.nombre AS categoria_nombre, 
                 s.nombre AS subcategoria_nombre 
             FROM $tabla p
             LEFT JOIN categorias c ON p.categoria_id = c.id
             LEFT JOIN subcategorias s ON p.subcategoria_id = s.id
-            WHERE p.$tipoBusqueda LIKE :busqueda";
+            WHERE 1=1";
+
+    // Filtro de búsqueda por texto
+    if ($busqueda !== '') {
+        $sql .= " AND $campoBusqueda LIKE :busqueda";
+    }
+
+    // Filtro destacado
+    if ($destacado !== '') {
+        $sql .= " AND p.destacado = :destacado";
+    }
 
     $query = $bd->prepare($sql);
-    $query->bindValue(':busqueda', "%" . $busqueda . "%");
+
+    // Valor de búsqueda
+    if ($busqueda !== '') {
+        $query->bindValue(
+            ':busqueda',
+            '%' . $busqueda . '%',
+            PDO::PARAM_STR
+        );
+    }
+
+    // Valor destacado
+    if ($destacado !== '') {
+        $query->bindValue(
+            ':destacado',
+            (int)$destacado,
+            PDO::PARAM_INT
+        );
+    }
+
     $query->execute();
-    $producto = $query->fetchAll(PDO::FETCH_ASSOC);
-    return $producto;
+    return $query->fetchAll(PDO::FETCH_ASSOC);
 }
 
 function buscadorProductosTienda($bd, $termino) {

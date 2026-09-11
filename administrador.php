@@ -1,4 +1,9 @@
 <?php
+//ini_set('display_errors', 1);
+//ini_set('display_startup_errors', 1);
+//error_reporting(E_ALL);
+
+
 require_once('helpers/dd.php');
 require_once('controladores/funciones.php');
 require_once('./src/partials/conexionBD.php');
@@ -45,12 +50,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['guardar_atributo'])) 
 
 
 //logica para la tabla productos
-if (isset($_GET['busquedaProducto']) && trim($_GET['busquedaProducto']) != '') {
-    $productos = buscarProductos($bd, 'productos', $_GET['busquedaProducto'], $_GET['tipoBusqueda']);
+$busquedaProducto = trim($_GET['busquedaProducto'] ?? '');
+$tipoBusqueda = $_GET['tipoBusqueda'] ?? 'nombre';
+$destacado = $_GET['destacado'] ?? '';
+
+if ($busquedaProducto !== '' || $destacado !== '') {
+    $productos = buscarProductos($bd,'productos',$busquedaProducto,$tipoBusqueda,$destacado);
 } else {
     $productos = listarProductos($bd, 'productos');
 }
-$busquedaActivaProductos = isset($_GET['busquedaProducto']) && trim($_GET['busquedaProducto']) !== '';
+
+$busquedaActivaProductos = ($busquedaProducto !== '' || $destacado !== '');
 
 
 //logica para la tabla clientes
@@ -253,10 +263,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['accion'] === 'cambiar_estad
                                 <select name="tipoBusqueda" id="tipoBusqueda">
                                     <option class="m-1" value="nombre">Por nombre</option>
                                     <option class="m-1" value="categoria_nombre">Por categoria</option>
-                                    <option class="m-1" value="subcategoria_nombre">Por sub categoria</option>
-                                    <option class="m-1" value="destacado">Por destacado</option>
+                                    <option class="m-1" value="subcategoria_nombre">Por sub categoria</option>                                    
                                 </select>
-                                <button class="btn btnSearchFrom" data-bs-toggle="collapse" data-bs-target="#verProductos" aria-expanded="<?= $busquedaActivaProductos ? 'true' : 'false' ?>" aria-controls="verProductos">Buscar</button>
+                                <select name="destacado" id="destacado">
+                                    <option value="">Todos</option>
+                                    <option value="1" <?= ($_GET['destacado'] ?? '') === '1' ? 'selected' : '' ?>> Destacados: Sí </option>
+                                    <option value="0" <?= ($_GET['destacado'] ?? '') === '0' ? 'selected' : '' ?>> Destacados: No </option>
+                                </select>
+                                <button class="btn btnSearchFrom" type="submit" data-bs-toggle="collapse" data-bs-target="#verProductos" aria-expanded="<?= $busquedaActivaProductos ? 'true' : 'false' ?>" aria-controls="verProductos">Buscar</button>
                             </form>
                             <div class="mx-2 addproductadmin">
                                 <a class="text-decoration-none text-dark" href="adminProductAdd.php"><i class="bi bi-plus-circle-fill"></i> Agregar producto</a>

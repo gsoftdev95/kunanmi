@@ -2140,6 +2140,7 @@ body {
     }
 }
 .adminSearchForm select{
+    margin: 0px 5px;
     @media (width < 750px) {
         margin: 5px 0px;
     }
