@@ -312,7 +312,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $_POST['accion'] === 'cambiar_estad
                                             </td>
                                             <!-- Envío de ID por Query String -->
                                             <td class="text-center text-primary-emphasis">
-                                                <a href="AdminProductView.php?id=<?= $producto['id']; ?>"><i class="bi bi-eyeglasses"></i></a>
+                                                <a href="adminProductView.php?id=<?= $producto['id']; ?>"><i class="bi bi-eyeglasses"></i></a>
                                                 <a href="adminProductEdit.php?id=<?= $producto['id']; ?>"><i class="bi bi-pencil-fill"></i></a>
                                                 <a href="adminProductEliminate.php?id=<?= $producto['id']; ?>"><i class="bi bi-trash3"></i></a>
                                             </td>

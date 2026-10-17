@@ -23,6 +23,10 @@ $destacados = obtenerProductosDestacados($bd);
 $descripciones = !empty($producto['descripcion']) ?json_decode($producto['descripcion'],true) : [];
 $modoEmpleo = !empty($producto['modo_empleo']) ? json_decode($producto['modo_empleo'], true) : [];
 
+$beneficios = !empty($producto['beneficios'])
+    ? json_decode($producto['beneficios'], true)
+    : [];
+
 ?>
 
 <!doctype html>
@@ -144,8 +148,16 @@ $modoEmpleo = !empty($producto['modo_empleo']) ? json_decode($producto['modo_emp
                     </ul>
                     <div class="tab-content p-3 border">
                         <div class="tab-pane fade <?= !empty($producto['beneficios']) ? 'show active' : '' ?>" id="beneficios">
-                            <?= htmlspecialchars($producto['beneficios']) ?>
-                        </div>
+                            <ul>
+                                <?php if (!empty($beneficios) && is_array($beneficios)): ?>
+                                    <?php foreach ($beneficios as $beneficio): ?>
+                                        <li style="">
+                                            <?= htmlspecialchars($beneficio) ?>
+                                        </li>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
+                            </ul>
+                        </div>                        
                         <div class="tab-pane fade <?= (empty($producto['beneficios']) && !empty($producto['modo_empleo'])) ? 'show active' : '' ?>" id="uso">
                             <ul>
                                 <?php if (!empty($modoEmpleo)): ?>

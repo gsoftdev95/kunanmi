@@ -594,32 +594,61 @@ function detProdForAdmin($bd, $id, $tabla) {
 }
 
 //Función para modificar los datos del producto
+
 function modificarProducto($bd, $tabla, $datos, $avatar)
 {
     $id = intval($datos['id']);
+
     $nombreProducto = $datos['nombreProducto'];
-    $descripcionProducto = $datos['descripcionProducto'];
-    $descripcionProducto = json_encode(explode("\n", $datos['descripcionProducto']));
-    $precioProducto = $datos['precioProducto'];    
+
+    // Convertir descripción a JSON
+    $descripcionProducto = json_encode(
+        array_values(array_filter(
+            array_map('trim', explode("\n", $datos['descripcionProducto'])),
+            fn($valor) => $valor !== ''
+        )),
+        JSON_UNESCAPED_UNICODE
+    );
+
+    $precioProducto = $datos['precioProducto'];
     $stockProducto = $datos['stockProducto'];
     $categoriaProducto = $datos['categoriaProducto'];
     $subcategoriaProducto = $datos['subcategoriaProducto'];
     $supracategoriaProducto = $datos['supracategoriaProducto'];
-    $beneficiosProducto = $datos['beneficiosProducto'];
-    $modoEmpleo = json_encode(explode("\n", $datos['modoEmpleo']));
+
+    // Convertir beneficios a JSON
+    $beneficiosProducto = json_encode(
+        array_values(array_filter(
+            array_map('trim', explode("\n", $datos['beneficiosProducto'])),
+            fn($valor) => $valor !== ''
+        )),
+        JSON_UNESCAPED_UNICODE
+    );
+
+    // Convertir modo de empleo a JSON
+    $modoEmpleo = json_encode(
+        array_values(array_filter(
+            array_map('trim', explode("\n", $datos['modoEmpleo'])),
+            fn($valor) => $valor !== ''
+        )),
+        JSON_UNESCAPED_UNICODE
+    );
+
     $ingredProducto = $datos['ingredProducto'];
     $destacadoProducto = $datos['destacadoProducto'];
     $estadoProducto = $datos['estadoProducto'];
 
-    // Convertimos array de imágenes a JSON
-    $imagenes_json = is_array($avatar) ? json_encode($avatar) : $avatar;
+    // Convertir imágenes a JSON si es necesario
+    $imagenes_json = is_array($avatar)
+        ? json_encode($avatar, JSON_UNESCAPED_UNICODE)
+        : $avatar;
 
-    $sql = "UPDATE $tabla SET 
-            nombre = :nombreProducto, 
+    $sql = "UPDATE $tabla SET
+            nombre = :nombreProducto,
             descripcion = :descripcionProducto,
-            precio = :precioProducto,  
+            precio = :precioProducto,
             stock = :stockProducto,
-            categoria_id = :categoriaProducto, 
+            categoria_id = :categoriaProducto,
             subcategoria_id = :subcategoriaProducto,
             supracategoria_id = :supracategoriaProducto,
             beneficios = :beneficiosProducto,
@@ -631,6 +660,7 @@ function modificarProducto($bd, $tabla, $datos, $avatar)
             WHERE id = :id";
 
     $query = $bd->prepare($sql);
+
     $query->bindValue(':id', $id, PDO::PARAM_INT);
     $query->bindValue(':nombreProducto', $nombreProducto);
     $query->bindValue(':descripcionProducto', $descripcionProducto);
@@ -638,16 +668,23 @@ function modificarProducto($bd, $tabla, $datos, $avatar)
     $query->bindValue(':stockProducto', $stockProducto);
     $query->bindValue(':categoriaProducto', $categoriaProducto);
     $query->bindValue(':subcategoriaProducto', $subcategoriaProducto);
-    $query->bindValue(':supracategoriaProducto', !empty($supracategoriaProducto) ? $supracategoriaProducto : null, PDO::PARAM_INT);
+
+    $query->bindValue(
+        ':supracategoriaProducto',
+        !empty($supracategoriaProducto) ? $supracategoriaProducto : null,
+        !empty($supracategoriaProducto) ? PDO::PARAM_INT : PDO::PARAM_NULL
+    );
+
     $query->bindValue(':beneficiosProducto', $beneficiosProducto);
     $query->bindValue(':modoEmpleo', $modoEmpleo);
     $query->bindValue(':ingredProducto', $ingredProducto);
     $query->bindValue(':destacadoProducto', $destacadoProducto);
     $query->bindValue(':estadoProducto', $estadoProducto);
     $query->bindValue(':imagen', $imagenes_json);
-    
+
     $query->execute();
 }
+
 
 
 
@@ -1290,6 +1327,7 @@ function enviarCorreoCompra($usuario, $pedido, $productos)
 
         // URL DEL PEDIDO
         $urlPedido = 'http://localhost/Paginas_web/kunanmi/Kunanmi_V1/perfilCliente.php'; //localhost
+        $urlPedido = 'www.kunanmi.com/perfilCliente.php'; //produccion
 
 
         // CARGAR PLANTILLA HTML

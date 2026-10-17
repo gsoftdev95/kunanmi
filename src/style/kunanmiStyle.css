@@ -1583,7 +1583,7 @@ DETALLE PRODUCTO
     font-family: "Questrial", sans-serif;
     font-weight: 400;
     font-style: normal;
-    width: 60%;
+    width: auto;
     margin: auto;
     text-align: left;
     padding: 1px 5px;
@@ -2689,6 +2689,9 @@ input:checked + .sliderEstadoProducto:before {
     width: 100%;
     text-align: left;
 }
+
+/* formulario edicion administrador*/
+/* formulario edicion administrador*/
 .formEditProd{
     width: 80%;
     margin: 30px 0px;
@@ -2702,13 +2705,10 @@ input:checked + .sliderEstadoProducto:before {
 .formEditProd label {
     font-weight: 600;
 }
-.formEditProd input, .formEditProd div {
-    margin-bottom: 30px;
-
-    @media (width < 550px) {
-        margin-bottom: 20px;
-    }
+.containerInput{
+    margin: 10px 0px 20px;
 }
+
 .containerAdd{
     display: flex;
     justify-content: center;
@@ -2789,7 +2789,8 @@ input:checked + .sliderEstadoProducto:before {
     margin: 10px;
     padding: 10px;
     background-color: var(--blancoK);
-    border: 1px solid var(--blancoHumo);
+    border: 1px solid var(--grisClaro);
+    border-radius: 10px;
     
     @media (width < 550px) {        
         margin: 5px 2px;
@@ -2797,11 +2798,11 @@ input:checked + .sliderEstadoProducto:before {
         width: 120px;
     }
 }
-.listAtributos div div{
+.listAtributos div div{    
     padding: 0px 10px 0px 0px;
     margin:0px 0px 10px 10px;
     height: 400px;
-    overflow-y: scroll;
+    overflow-y: scroll;    
 
     @media (width < 550px) {        
         padding: 0px 5px 0px 0px;
@@ -2810,6 +2811,28 @@ input:checked + .sliderEstadoProducto:before {
         height: 300px;
     }
 }
+.listAtributos div div::-webkit-scrollbar{
+    width: 5px;
+}
+.listAtributos div div::-webkit-scrollbar-track{
+    background-color: var(--blancoHumo);
+    border-radius: 20px;
+}
+.listAtributos div div::-webkit-scrollbar-thumb{
+    border-radius: 20px;
+    background: var(--rosaK);
+}
+.itemsatributo{
+    
+    margin: 1px 0px;
+    font-weight: 400 !important;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+}
+
+
+
 
 .containerbSecond{
     height: auto;

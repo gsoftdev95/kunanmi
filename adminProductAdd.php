@@ -35,12 +35,30 @@ if ($_POST) {
         }
     }
 
-    // Convertir la descripción y modo de empleo en un array por líneas
-    $descripcionArray = array_filter(array_map('trim', explode("\n", $descripcionProducto)));
-    $modoEmpleoArray = array_filter(array_map('trim', explode("\n", $modoEmpleoProducto)));
-    // Convertir a JSON
-    $_POST['descripcionProducto'] = json_encode($descripcionArray, JSON_UNESCAPED_UNICODE);
-    $_POST['modoEmpleoProducto'] = json_encode($modoEmpleoArray, JSON_UNESCAPED_UNICODE);
+    
+/**
+ * Convertir descripción, beneficios y modo de empleo a JSON.
+ * Cada línea no vacía será un elemento de la lista.
+ */
+$descripcionArray = array_values(array_filter(
+    array_map('trim', explode("\n", $descripcionProducto)),
+    fn($valor) => $valor !== ''
+));
+
+$beneficiosArray = array_values(array_filter(
+    array_map('trim', explode("\n", $beneficiosProducto)),
+    fn($valor) => $valor !== ''
+));
+
+$modoEmpleoArray = array_values(array_filter(
+    array_map('trim', explode("\n", $modoEmpleoProducto)),
+    fn($valor) => $valor !== ''
+));
+
+$_POST['descripcionProducto'] = json_encode($descripcionArray, JSON_UNESCAPED_UNICODE);
+$_POST['beneficiosProducto'] = json_encode($beneficiosArray, JSON_UNESCAPED_UNICODE);
+$_POST['modoEmpleoProducto'] = json_encode($modoEmpleoArray, JSON_UNESCAPED_UNICODE);
+
 
     $errores = array_merge($errores, validarProducto($_POST, $_FILES));
 
@@ -142,10 +160,18 @@ if ($_POST) {
                             <label for="formFile">imagen del producto</label>
                             <input type="file" class="form-control" id="formFile" name="avatar[]" multiple>
                         </div>
+                        
                         <div class="form-group">
                             <label for="beneficiosProducto">Beneficios</label>
-                            <input type="text" class="form-control" name="beneficiosProducto" placeholder="Beneficios" value="<?= isset($beneficiosProducto) ? $beneficiosProducto:''; ?>">
+                            <textarea
+                                class="form-control"
+                                name="beneficiosProducto"
+                                id="beneficiosProducto"
+                                rows="5"
+                                placeholder="Escribe un beneficio por línea"
+                            ><?= htmlspecialchars($beneficiosProducto ?? '', ENT_QUOTES, 'UTF-8') ?></textarea>
                         </div>
+
                         <div class="form-group">
                             <label for="modoEmpleoProducto">Modo de empleo</label>
                             <textarea class="form-control" name="modoEmpleoProducto" placeholder="Modo de empleo" value="<?= isset($modoEmpleoProducto) ? $modoEmpleoProducto:''; ?>"></textarea>
