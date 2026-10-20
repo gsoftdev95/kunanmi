@@ -23,9 +23,7 @@ $destacados = obtenerProductosDestacados($bd);
 $descripciones = !empty($producto['descripcion']) ?json_decode($producto['descripcion'],true) : [];
 $modoEmpleo = !empty($producto['modo_empleo']) ? json_decode($producto['modo_empleo'], true) : [];
 
-$beneficios = !empty($producto['beneficios'])
-    ? json_decode($producto['beneficios'], true)
-    : [];
+$beneficios = !empty($producto['beneficios']) ? json_decode($producto['beneficios'], true) : [];
 
 ?>
 

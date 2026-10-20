@@ -35,127 +35,189 @@ if (!$productos) {
 
                 <section id="registrarProductos" class="containerView">
                     <section class="containerViewInner">
-                        <h5>Id:</h5>
-                        <p class=""><?= $productos['id'] ?></p>
-                        <hr>
+                        <section class="ViewDetailsAdminA">
+                            <div class="containerInputDetailsAdmin">
+                                <h5>Id:</h5>
+                                <p class=""><?= $productos['id'] ?></p>
+                            </div>                        
+                            <hr>
 
-                        <h5>Nombre:</h5>
-                        <p class=""><?= $productos['nombre'] ?></p>
-                        <hr>
+                            <div class="containerInputDetailsAdmin">
+                                <h5>Nombre:</h5>
+                                <p class=""><?= $productos['nombre'] ?></p>
+                            </div>
+                            <hr>
 
-                        <h5>Descripción:</h5>
-                        <ul class="">
-                            <?php
-                                if (!empty($productos['descripcion'])) {
-                                    // Decodificar JSON a array
-                                    $descripcionArray = json_decode($productos['descripcion'], true);
+                            <div class="containerInputDetailsAdmin">
+                                <h5>Descripción:</h5>
+                                <ul class="">
+                                    <?php
+                                        if (!empty($productos['descripcion'])) {
+                                            // Decodificar JSON a array
+                                            $descripcionArray = json_decode($productos['descripcion'], true);
 
-                                    if (is_array($descripcionArray)) {
-                                        foreach ($descripcionArray as $descripcion) {
-                                            echo "<li>" . htmlspecialchars(trim($descripcion)) . "</li>";
+                                            if (is_array($descripcionArray)) {
+                                                foreach ($descripcionArray as $descripcion) {
+                                                    echo "<li>" . htmlspecialchars(trim($descripcion)) . "</li>";
+                                                }
+                                            } else {
+                                                echo "<p>Error al leer las descripcion.</p>";
+                                            }
+                                        } else {        
+                                            echo "<p>No hay descripcion del producto.</p>";
+                                        }
+                                    ?>
+                                </ul>
+                            </div>
+                            <hr>
+
+                            <div class="containerInputDetailsAdmin">
+                                <h5>Precio:</h5>
+                                <p class=""><?= $productos['precio'] ?></p>
+                            </div>
+                            <hr>
+
+                            <div class="containerInputDetailsAdmin">
+                                <h5>Stock:</h5>
+                                <p class=""><?= $productos['stock'] ?></p>
+                            </div>
+                            <hr>
+
+                            <div class="containerInputDetailsAdmin">
+                                <h5>Categoria:</h5>
+                                <p class=""><?= $productos['categoria_nombre'] ?></p>                        
+                            </div>
+                            <hr>
+
+                            <div class="containerInputDetailsAdmin">
+                                <h5>Sub-categoria:</h5>
+                                <p class=""><?= $productos['subcategoria_nombre'] ?></p>
+                            </div>
+                            <hr>
+
+                            <div class="containerInputDetailsAdmin">
+                                <h5>Supra-categoria:</h5>
+                                <p class=""><?= $productos['supracategoria_nombre'] ?></p>
+                            </div>
+                            <hr>
+
+                            <div class="containerInputDetailsAdmin">
+                                <h5>Fecha de creación:</h5>
+                                <p class=""><?= $productos['fecha_creacion'] ?></p>
+                            </div>
+                            <hr>
+
+                            <div class="containerInputDetailsAdmin">
+                                <h5>Beneficios:</h5>
+                                <?php
+                                    $beneficios = $productos['beneficios'] ?? '';
+
+                                    if (trim($beneficios) !== '') {
+                                        $beneficiosArray = json_decode($beneficios, true);
+
+                                        if (json_last_error() === JSON_ERROR_NONE && is_array($beneficiosArray)) {
+                                            if (!empty($beneficiosArray)) {
+                                                echo '<ul>';
+                                                foreach ($beneficiosArray as $beneficio) {
+                                                    if (is_string($beneficio) || is_numeric($beneficio)) {
+                                                        echo '<li>' . htmlspecialchars(trim((string) $beneficio), ENT_QUOTES, 'UTF-8') . '</li>';
+                                                    }
+                                                }
+                                                echo '</ul>';
+                                            } else {
+                                                echo '<p>No hay beneficios registrados.</p>';
+                                            }
+                                        } else {
+                                            // Compatibilidad con productos antiguos que guardan texto normal.
+                                            echo '<p>' . nl2br(htmlspecialchars($beneficios, ENT_QUOTES, 'UTF-8')) . '</p>';
                                         }
                                     } else {
-                                        echo "<p>Error al leer las descripcion.</p>";
+                                        echo '<p>No hay beneficios registrados.</p>';
                                     }
-                                } else {        
-                                    echo "<p>No hay descripcion del producto.</p>";
-                                }
-                            ?>
-                        </ul>
-                        <hr>
+                                ?>
+                            </div>
+                            <hr>
+                        </section>
 
-                        <h5>Precio:</h5>
-                        <p class=""><?= $productos['precio'] ?></p>
-                        <hr>
+                        <section class="ViewDetailsAdminB">
+                            <div class="containerInputDetailsAdmin">
+                                <h5>Modo de empleo:</h5>
+                                <ul class="">
+                                    <?php
+                                        if (!empty($productos['modo_empleo'])) {
+                                            // Decodificar JSON a array
+                                            $modoEmpleoArray = json_decode($productos['modo_empleo'], true);
 
-                        <h5>Stock:</h5>
-                        <p class=""><?= $productos['stock'] ?></p>
-                        <hr>
-
-                        <h5>Categoria:</h5>
-                        <p class=""><?= $productos['categoria_nombre'] ?></p>
-                        <hr>
-
-                        <h5>Sub-categoria:</h5>
-                        <p class=""><?= $productos['subcategoria_nombre'] ?></p>
-                        <hr>
-
-                        <h5>Supra-categoria:</h5>
-                        <p class=""><?= $productos['supracategoria_nombre'] ?></p>
-                        <hr>
-
-                        <h5>Fecha de creación:</h5>
-                        <p class=""><?= $productos['fecha_creacion'] ?></p>
-                        <hr>
-
-                        <h5>Beneficios:</h5>
-                        <p class=""><?= $productos['beneficios'] ?></p>
-                        <hr>
-
-                        <h5>Modo de empleo:</h5>
-                        <ul class="">
-                            <?php
-                                if (!empty($productos['modo_empleo'])) {
-                                    // Decodificar JSON a array
-                                    $modoEmpleoArray = json_decode($productos['modo_empleo'], true);
-
-                                    if (is_array($modoEmpleoArray)) {
-                                        foreach ($modoEmpleoArray as $empleo) {
-                                            echo "<li>" . htmlspecialchars(trim($empleo)) . "</li>";
+                                            if (is_array($modoEmpleoArray)) {
+                                                foreach ($modoEmpleoArray as $empleo) {
+                                                    echo "<li>" . htmlspecialchars(trim($empleo)) . "</li>";
+                                                }
+                                            } else {
+                                                echo "<p>Error al leer el modo de empleo .</p>";
+                                            }
+                                        } else {        
+                                            echo "<p>No hay modo de empleo del producto.</p>";
                                         }
-                                    } else {
-                                        echo "<p>Error al leer el modo de empleo .</p>";
-                                    }
-                                } else {        
-                                    echo "<p>No hay modo de empleo del producto.</p>";
-                                }
-                            ?>
-                        </ul>
-                        <hr>
+                                    ?>
+                                </ul>
+                            </div>
+                            <hr>
 
-                        <h5>Ingredientes:</h5>
-                        <p class=""><?= $productos['ingredientes'] ?></p>
-                        <hr>
+                            <div class="containerInputDetailsAdmin">
+                                <h5>Ingredientes:</h5>
+                                <p class=""><?= $productos['ingredientes'] ?></p>
+                            </div>
+                            <hr>
 
-                        <h5>Destacado:</h5>
-                        <p class=""><?= $productos['destacado'] ?'sí' : 'No' ?></p>
-                        <hr>
+                            <div class="containerInputDetailsAdmin">
+                                <h5>Destacado:</h5>
+                                <p class=""><?= $productos['destacado'] ?'sí' : 'No' ?></p>
+                            </div>
+                            <hr>
 
-                        <h5>Estado:</h5>
-                        <p class=""><?= $productos['estado'] ?></p>
-                        <hr>  
+                            <div class="containerInputDetailsAdmin">
+                                <h5>Estado:</h5>
+                                <p class=""><?= $productos['estado'] ?></p>
+                            </div>
+                            <hr>
 
-                        <h5>Atributos:</h5>
-                        <?php if (!empty($productos['atributos'])): ?>
-                            <ul class=" ulAtributoDetail">
-                                <?php foreach ($productos['atributos'] as $nombreAtributo => $valores): ?>
-                                    <li><strong><?= htmlspecialchars($nombreAtributo) ?>:</strong> <?= implode(', ', array_map('htmlspecialchars', $valores)) ?></li>
-                                <?php endforeach; ?>
-                            </ul>
-                        <?php else: ?>
-                            <p class="">Sin atributos asignados.</p>
-                        <?php endif; ?>
+                            <div class="containerInputDetailsAdmin">
+                                <h5>Atributos:</h5>
+                                <?php if (!empty($productos['atributos'])): ?>
+                                    <ul class=" ulAtributoDetail">
+                                        <?php foreach ($productos['atributos'] as $nombreAtributo => $valores): ?>
+                                            <li><strong><?= htmlspecialchars($nombreAtributo) ?>:</strong> <?= implode(', ', array_map('htmlspecialchars', $valores)) ?></li>
+                                        <?php endforeach; ?>
+                                    </ul>
+                                <?php else: ?>
+                                    <p class="">Sin atributos asignados.</p>
+                                <?php endif; ?>
+                            </div>
+                            <hr>
 
+                            <div class="containerInputDetailsAdmin">
+                                <h5>Imagenes:</h5>
+                                <div class="d-flex flex-wrap mb-5">
+                                    <?php if (!empty($productos['imagen']) && is_array($productos['imagen'])): ?>
+                                        <?php foreach ($productos['imagen'] as $imagen): ?>
+                                            <figure class="m-2">
+                                                <img class="" src="./src/imgBD/Productos/<?= $imagen ?>" alt="<?= $productos['nombre']; ?>" style="max-width: 150px; max-height: 150px;">
+                                            </figure>
+                                        <?php endforeach; ?>
+                                    <?php else: ?>
+                                        <p>No hay imágenes disponibles.</p>
+                                    <?php endif; ?>
+                                </div>
+                            </div>
 
-                        <h5>Imagenes:</h5>
-                        <div class="d-flex flex-wrap mb-5">
-                            <?php if (!empty($productos['imagen']) && is_array($productos['imagen'])): ?>
-                                <?php foreach ($productos['imagen'] as $imagen): ?>
-                                    <figure class="m-2">
-                                        <img class="" src="./src/imgBD/Productos/<?= $imagen ?>" alt="<?= $productos['nombre']; ?>" style="max-width: 150px; max-height: 150px;">
-                                    </figure>
-                                <?php endforeach; ?>
-                            <?php else: ?>
-                                <p>No hay imágenes disponibles.</p>
-                            <?php endif; ?>
-                        </div>
-
-                        <div class="containerbSecond">
-                            <a href="adminProductEdit.php?id=<?= $productos['id']; ?>"  class="bSecond">Editar producto</a>
-                            <a href="adminProductAdd.php"  class="bSecond2">Agregar otro producto</a>
-                            <a href="administrador.php"  class="bSecond2">Regresar</a>
-                        </div>
+                        </section>                        
                     </section>
+
+                    <div class="containerbSecond">
+                        <a href="adminProductEdit.php?id=<?= $productos['id']; ?>"  class="bSecond">Editar producto</a>
+                        <a href="adminProductAdd.php"  class="bSecond2">Agregar otro producto</a>
+                        <a href="administrador.php"  class="bSecond2">Regresar</a>
+                    </div>
                 </section>
 
             </section>

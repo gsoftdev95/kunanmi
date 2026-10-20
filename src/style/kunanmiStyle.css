@@ -2731,9 +2731,6 @@ input:checked + .sliderEstadoProducto:before {
     padding: 10px 30px;
     border-radius: 15px;
     background-color: var(--blancoK);
-    column-count:2;
-    column-gap:2em;
-    column-rule:1px solid rgb(229, 231, 233);
 
     @media (width < 550px) {
         width: 100%;
@@ -2742,9 +2739,13 @@ input:checked + .sliderEstadoProducto:before {
     }
 }
 .containerViewInner{
-    width: 90%;
+    width: 100%;
     margin: 0px 0px 0px 10px;
+    display: flex;
 
+    @media (width < 990px) {
+        display: block;
+    }
     @media (width < 550px) {
         font-size: 12px;
         width: 100%;
@@ -2752,8 +2753,23 @@ input:checked + .sliderEstadoProducto:before {
         padding: 5px;
     }
 }
+.containerInputDetailsAdmin{
+    @media (width < 550px) {
+    }
+}
+.containerViewInner > section{
+    margin: 1px 10px;
+    width: 100%;
+
+    
+}
+.containerViewInner hr{
+    @media (width < 550px) {
+        margin: 5px;
+    }
+}
 .containerViewInner p{
-    margin: 0px 0px 0px 40px;
+    margin: 0px 0px 0px 20px;
     @media (width < 550px) {
         margin: 0px 0px 0px 10px;
     }
@@ -2831,21 +2847,22 @@ input:checked + .sliderEstadoProducto:before {
     gap: 6px;
 }
 
-
-
-
 .containerbSecond{
+    max-height: 100px;
     height: auto;
     width: 100%;
+    display: flex;
+    align-items: center;
 
     @media (width < 550px) {
+        max-height: 200px;
+        height: auto;
         display: flex;
         flex-direction: column;
     }
 }
 .containerbSecond a{
-    margin: 100px 0px 0px;
-    padding: 10px;
+    margin: 10px 5px 10px;
     font-weight: 600;
     text-decoration: none;
 
@@ -2859,6 +2876,12 @@ input:checked + .sliderEstadoProducto:before {
     border: 2px solid var(--verdeK);
     color: var(--verdeK);
     border-radius: 10px;
+    padding: 10px;
+
+    @media (width < 550px) {        
+        padding: 5px 10px;
+        font-size: 12px;
+    }
 }
 .bSecond:hover{
     border: 2px solid var(--verdeK);
@@ -2869,6 +2892,12 @@ input:checked + .sliderEstadoProducto:before {
     border: 2px solid var(--grisK);
     color: var(--grisK);
     border-radius: 10px;
+    padding: 10px;
+
+    @media (width < 550px) {        
+        padding: 5px 10px;
+        font-size: 12px;
+    }
 }
 .bSecond2:hover{
     border: 2px solid var(--grisK);
